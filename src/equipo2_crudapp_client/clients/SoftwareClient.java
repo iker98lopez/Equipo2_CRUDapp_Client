@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package equipo2_crudapp_client;
+package equipo2_crudapp_client.clients;
 
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;

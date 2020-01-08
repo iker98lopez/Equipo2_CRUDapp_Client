@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="RIGHT_TO_LEFT" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox alignment="TOP_CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="600.0" prefWidth="600.0" spacing="30.0" HBox.hgrow="ALWAYS">
+         <children>
+            <Label id="labelSearch" fx:id="labelSearch" text="Search">
+               <VBox.margin>
+                  <Insets top="19.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER" prefHeight="25.0" prefWidth="600.0">
+               <children>
+                  <TextField id="textFieldSearchBar" fx:id="textFieldSearchBar" alignment="TOP_LEFT" prefHeight="25.0" prefWidth="279.0" text="Search bar...">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </TextField>
+                  <Button id="buttonSearch" fx:id="buttonSearch" mnemonicParsing="false" text="Search" />
+               </children>
+            </HBox>
+            <HBox prefHeight="139.0" prefWidth="600.0" VBox.vgrow="NEVER">
+               <children>
+                  <VBox prefHeight="232.0" prefWidth="170.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label alignment="TOP_LEFT" text="Order by">
+                           <VBox.margin>
+                              <Insets left="78.0" />
+                           </VBox.margin>
+                        </Label>
+                        <RadioButton id="radioButtonName" fx:id="radioButtonName" mnemonicParsing="false" text="Name">
+                           <VBox.margin>
+                              <Insets left="60.0" />
+                           </VBox.margin>
+                        </RadioButton>
+                        <RadioButton id="radioButtonPublisher" fx:id="radioButtonPublisher" mnemonicParsing="false" text="Publisher">
+                           <VBox.margin>
+                              <Insets left="60.0" />
+                           </VBox.margin>
+                        </RadioButton>
+                        <RadioButton id="radioButtonNumOfOfers" fx:id="radioButtonNumOfOfers" mnemonicParsing="false" text="Nº of offers">
+                           <VBox.margin>
+                              <Insets left="60.0" />
+                           </VBox.margin>
+                        </RadioButton>
+                        <RadioButton id="radioButtonReleaseDate" fx:id="radioButtonReleaseDate" mnemonicParsing="false" text="Release Date">
+                           <VBox.margin>
+                              <Insets left="60.0" />
+                           </VBox.margin>
+                        </RadioButton>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="139.0" prefWidth="228.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label alignment="TOP_LEFT" text="Type">
+                           <VBox.margin>
+                              <Insets left="83.0" />
+                           </VBox.margin>
+                        </Label>
+                        <CheckBox id="checkBoxProgram" fx:id="checkBoxProgram" mnemonicParsing="false" prefWidth="81.0" text="Program">
+                           <VBox.margin>
+                              <Insets left="60.0" />
+                           </VBox.margin>
+                        </CheckBox>
+                        <CheckBox id="checkBoxExtension" fx:id="checkBoxExtension" layoutX="70.0" layoutY="37.0" mnemonicParsing="false" prefWidth="81.0" text="Extension">
+                           <VBox.margin>
+                              <Insets left="60.0" />
+                           </VBox.margin>
+                        </CheckBox>
+                        <CheckBox id="checkBoxGame" fx:id="checkBoxGame" layoutX="10.0" layoutY="64.0" mnemonicParsing="false" prefWidth="81.0" text="Game">
+                           <VBox.margin>
+                              <Insets left="60.0" />
+                           </VBox.margin>
+                        </CheckBox>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="232.0" prefWidth="164.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <RadioButton id="radioButonAscending" fx:id="radioButtonAscending" mnemonicParsing="false" text="Ascending">
+                           <VBox.margin>
+                              <Insets top="40.0" />
+                           </VBox.margin>
+                        </RadioButton>
+                        <RadioButton id="radioButtonDescending" fx:id="radioButtonDescending" mnemonicParsing="false" text="Decending" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <ListView id="listViewResults" fx:id="listViewResults" prefHeight="252.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
+               <VBox.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" />
+               </VBox.margin>
+            </ListView>
+         </children>
+      </VBox>
+      <GridPane alignment="CENTER" prefHeight="600.0" prefWidth="200.0" style="-fx-background-color: #383838;">
+         <columnConstraints>
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="134.0" minHeight="10.0" prefHeight="69.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="458.0" minHeight="10.0" prefHeight="418.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="529.0" minHeight="0.0" prefHeight="66.0" valignment="TOP" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="327.0" minHeight="10.0" prefHeight="45.0" valignment="TOP" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Label id="labelOfertapps" fx:id="labelOfertapps" text="OfertAPPs" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Button id="buttonExit" fx:id="buttonExit" cancelButton="true" minWidth="50.0" mnemonicParsing="false" text="Log Out" GridPane.rowIndex="3">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <VBox alignment="CENTER" GridPane.rowIndex="2">
+               <children>
+                  <Label text="Logged in as:" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label id="labelUsername" fx:id="labelUsername" text="USERNAME" textFill="WHITE" />
+               </children>
+            </VBox>
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
+               <children>
+                  <Button id="buttonMyOffers" fx:id="buttonMyOffers" alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="45.0" prefWidth="195.0" style="-fx-background-color: #454545; -fx-border-color: #383838; -fx-border-width: 0.5; hover:-fx-background-color: #fffff;" text="My Offers" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="1.0" />
+                     </VBox.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button id="buttonNewOffer" fx:id="buttonNewOffer" alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="45.0" prefWidth="195.0" style="-fx-background-color: #454545; -fx-border-color: #383838; -fx-border-width: 0.5;" text="Create New Offer" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="1.0" />
+                     </VBox.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button id="buttonNewSoftware" fx:id="buttonNewSoftware" alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="45.0" prefWidth="195.0" style="-fx-background-color: #454545; -fx-border-color: #383838; -fx-border-width: 0.5;" text="Create New Software" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="1.0" />
+                     </VBox.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button id="butttonViewShops" fx:id="buttonViewShops" alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="45.0" prefWidth="195.0" style="-fx-background-color: #454545; -fx-border-color: #383838; -fx-border-width: 0.5;" text="View Shops List" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button id="butttonViewWishlist" fx:id="buttonViewWishlist" alignment="CENTER_RIGHT" layoutX="13.0" layoutY="148.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="195.0" style="-fx-background-color: #454545; -fx-border-color: #383838; -fx-border-width: 0.5;" text="View Wishlist" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button id="buttonViewUser" fx:id="buttonViewUser" alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="45.0" prefWidth="195.0" style="-fx-background-color: #454545; -fx-border-color: #383838; -fx-border-width: 0.5;" text="User Configuration" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="1.0" />
+                     </VBox.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+      </GridPane>
+   </children>
+</HBox>
