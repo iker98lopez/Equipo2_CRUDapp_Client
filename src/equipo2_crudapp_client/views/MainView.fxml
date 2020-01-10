@@ -136,7 +136,7 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Button id="buttonLogOut" fx:id="buttonLogOut" cancelButton="true" minWidth="50.0" mnemonicParsing="false" onAction="#handleButtonExitAction" text="Log Out" GridPane.rowIndex="3">
+            <Button id="buttonLogOut" fx:id="buttonLogOut" cancelButton="true" minWidth="50.0" mnemonicParsing="false" text="Log Out" GridPane.rowIndex="3">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
@@ -163,7 +163,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button id="buttonNewOffer" fx:id="buttonNewOffer" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#handleButtonNewOfferAction" prefHeight="45.0" prefWidth="195.0" style="-fx-background-color: #454545; -fx-border-color: #383838; -fx-border-width: 0.5;" text="Create New Offer" textFill="WHITE">
+                  <Button id="buttonNewOffer" fx:id="buttonNewOffer" alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="45.0" prefWidth="195.0" style="-fx-background-color: #454545; -fx-border-color: #383838; -fx-border-width: 0.5;" text="Create New Offer" textFill="WHITE">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -174,7 +174,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button id="buttonNewSoftware" fx:id="buttonNewSoftware" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#handleButtonNewSoftwareAction" prefHeight="45.0" prefWidth="195.0" style="-fx-background-color: #454545; -fx-border-color: #383838; -fx-border-width: 0.5;" text="Create New Software" textFill="WHITE">
+                  <Button id="buttonNewSoftware" fx:id="buttonNewSoftware" alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="45.0" prefWidth="195.0" style="-fx-background-color: #454545; -fx-border-color: #383838; -fx-border-width: 0.5;" text="Create New Software" textFill="WHITE">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -185,7 +185,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button id="butttonViewShops" fx:id="buttonViewShops" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#handleButtonViewShopsAction" prefHeight="45.0" prefWidth="195.0" style="-fx-background-color: #454545; -fx-border-color: #383838; -fx-border-width: 0.5;" text="View Shops List" textFill="WHITE">
+                  <Button id="butttonViewShops" fx:id="buttonViewShops" alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="45.0" prefWidth="195.0" style="-fx-background-color: #454545; -fx-border-color: #383838; -fx-border-width: 0.5;" text="View Shops List" textFill="WHITE">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -193,7 +193,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-		  <Button id="butttonViewWishlist" fx:id="buttonViewWishlist" alignment="CENTER_RIGHT" layoutX="13.0" layoutY="148.0" mnemonicParsing="false" onAction="#handleButtonViewWishlistAction" prefHeight="45.0" prefWidth="195.0" style="-fx-background-color: #454545; -fx-border-color: #383838; -fx-border-width: 0.5;" text="View Wishlist" textFill="WHITE">
+		  <Button id="butttonViewWishlist" fx:id="buttonViewWishlist" alignment="CENTER_RIGHT" layoutX="13.0" layoutY="148.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="195.0" style="-fx-background-color: #454545; -fx-border-color: #383838; -fx-border-width: 0.5;" text="View Wishlist" textFill="WHITE">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -201,7 +201,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button id="buttonViewUser" fx:id="buttonViewUser" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#handleButtonViewUserAction" prefHeight="45.0" prefWidth="195.0" style="-fx-background-color: #454545; -fx-border-color: #383838; -fx-border-width: 0.5;" text="User Configuration" textFill="WHITE">
+                  <Button id="buttonViewUser" fx:id="buttonViewUser" alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="45.0" prefWidth="195.0" style="-fx-background-color: #454545; -fx-border-color: #383838; -fx-border-width: 0.5;" text="User Configuration" textFill="WHITE">
                      <font>
                         <Font size="14.0" />
                      </font>
