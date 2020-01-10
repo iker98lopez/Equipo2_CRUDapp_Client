@@ -16,177 +16,166 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+
 <HBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <HBox HBox.hgrow="ALWAYS">
+      <GridPane alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT" prefHeight="600.0" prefWidth="200.0" style="-fx-background-color: #383838;">
+         <columnConstraints>
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="134.0" minHeight="10.0" prefHeight="69.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="458.0" minHeight="10.0" prefHeight="418.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="529.0" minHeight="0.0" prefHeight="66.0" valignment="TOP" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="327.0" minHeight="10.0" prefHeight="45.0" valignment="TOP" vgrow="SOMETIMES" />
+         </rowConstraints>
          <children>
-            <GridPane alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT" prefHeight="600.0" prefWidth="200.0" style="-fx-background-color: #383838;">
-               <columnConstraints>
-                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints maxHeight="134.0" minHeight="10.0" prefHeight="69.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="458.0" minHeight="10.0" prefHeight="418.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="529.0" minHeight="0.0" prefHeight="66.0" valignment="TOP" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="327.0" minHeight="10.0" prefHeight="45.0" valignment="TOP" vgrow="SOMETIMES" />
-               </rowConstraints>
+            <Label id="labelOfertapps" fx:id="labelOfertapps" text="OfertAPPs" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Button id="buttonExit" fx:id="buttonExit" cancelButton="true" minWidth="50.0" mnemonicParsing="false" text="Log Out" GridPane.rowIndex="3">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <VBox alignment="CENTER" GridPane.rowIndex="2">
                <children>
-                  <Label id="labelOfertapps" fx:id="labelOfertapps" text="OfertAPPs" textFill="WHITE">
+                  <Label text="Logged in as:" textFill="WHITE">
                      <font>
-                        <Font name="System Bold" size="18.0" />
+                        <Font size="14.0" />
                      </font>
                   </Label>
-                  <Button id="buttonExit" fx:id="buttonExit" cancelButton="true" minWidth="50.0" mnemonicParsing="false" text="Log Out" GridPane.rowIndex="3">
+                  <Label id="labelUsername" fx:id="labelUsername" text="USERNAME" textFill="WHITE" />
+               </children>
+            </VBox>
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
+               <children>
+                  <Button id="buttonMyOffers" fx:id="buttonMyOffers" alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="45.0" prefWidth="195.0" style="-fx-background-color: #454545; -fx-border-color: #383838; -fx-border-width: 0.5; hover:-fx-background-color: #fffff;" text="My Offers" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="1.0" />
+                     </VBox.margin>
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <VBox alignment="CENTER" GridPane.rowIndex="2">
-                     <children>
-                        <Label text="Logged in as:" textFill="WHITE">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Label>
-                        <Label id="labelUsername" fx:id="labelUsername" text="USERNAME" textFill="WHITE" />
-                     </children>
-                  </VBox>
-                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
-                     <children>
-                        <Button id="buttonMyOffers" fx:id="buttonMyOffers" alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="45.0" prefWidth="195.0" style="-fx-background-color: #454545; -fx-border-color: #383838; -fx-border-width: 0.5; hover:-fx-background-color: #fffff;" text="My Offers" textFill="WHITE">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets top="1.0" />
-                           </VBox.margin>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </Button>
-                        <Button id="buttonNewOffer" fx:id="buttonNewOffer" alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="45.0" prefWidth="195.0" style="-fx-background-color: #454545; -fx-border-color: #383838; -fx-border-width: 0.5;" text="Create New Offer" textFill="WHITE">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets top="1.0" />
-                           </VBox.margin>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </Button>
-                        <Button id="buttonNewSoftware" fx:id="buttonNewSoftware" alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="45.0" prefWidth="195.0" style="-fx-background-color: #454545; -fx-border-color: #383838; -fx-border-width: 0.5;" text="Create New Software" textFill="WHITE">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets top="1.0" />
-                           </VBox.margin>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </Button>
-                        <Button id="butttonViewShops" fx:id="buttonViewShops" alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="45.0" prefWidth="195.0" style="-fx-background-color: #454545; -fx-border-color: #383838; -fx-border-width: 0.5;" text="View Shops List" textFill="WHITE">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </Button>
-                        <Button id="butttonViewWishlist" fx:id="buttonViewWishlist" alignment="CENTER_RIGHT" layoutX="13.0" layoutY="148.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="195.0" style="-fx-background-color: #454545; -fx-border-color: #383838; -fx-border-width: 0.5;" text="View Wishlist" textFill="WHITE">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </Button>
-                        <Button id="buttonViewUser" fx:id="buttonViewUser" alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="45.0" prefWidth="195.0" style="-fx-background-color: #454545; -fx-border-color: #383838; -fx-border-width: 0.5;" text="User Configuration" textFill="WHITE">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets top="1.0" />
-                           </VBox.margin>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </Button>
-                     </children>
-                  </VBox>
-               </children>
-            </GridPane>
-            <VBox alignment="CENTER" prefHeight="500.0" prefWidth="700.0" style="-fx-background-color: #323232;" HBox.hgrow="ALWAYS">
-               <children>
-                  <TableView id="tableViewWishList" fx:id="tableViewWishList" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
-                    <columns>
-                      <TableColumn id="tableColumnSoftware" fx:id="tableColumnSoftware" editable="false" minWidth="100.0" prefWidth="178.3999878168106" text="Software" />
-                      <TableColumn id="tableColumnMinPrice" fx:id="tableColumnMinPrice" minWidth="100.0" prefWidth="416.0000305175781" text="Minimum price" />
-                    </columns>
-                     <columnResizePolicy>
-                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                     </columnResizePolicy>
-                     <effect>
-                        <DropShadow color="#0000005e" offsetY="3.0" />
-                     </effect>
-                  </TableView>
-                  <HBox alignment="CENTER" prefHeight="208.0" prefWidth="700.0" VBox.vgrow="ALWAYS">
-                     <children>
-                        <Label id="labelFilter" fx:id="labelFilter" prefHeight="20.0" prefWidth="105.0" text="Software name:" textFill="WHITE">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets bottom="40.0" left="35.0" />
-                           </HBox.margin>
-                        </Label>
-                        <TextField id="textFieldFilter" fx:id="textFieldFilter" prefHeight="30.0" prefWidth="183.0" promptText="Enter a software to search">
-                           <HBox.margin>
-                              <Insets bottom="40.0" />
-                           </HBox.margin>
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <effect>
-                              <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
-                           </effect>
-                        </TextField>
-                        <Button id="buttonFilter" fx:id="buttonFilter" mnemonicParsing="false" prefHeight="30.0" prefWidth="56.0" text="Filter">
-                           <HBox.margin>
-                              <Insets bottom="40.0" />
-                           </HBox.margin>
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <effect>
-                              <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
-                           </effect>
-                        </Button>
-                        <CheckBox id="checkBoxEdit" fx:id="checkBoxEdit" mnemonicParsing="false" prefHeight="17.0" prefWidth="48.0" text="Edit" textFill="WHITE">
-                           <HBox.margin>
-                              <Insets bottom="40.0" left="50.0" />
-                           </HBox.margin>
-                        </CheckBox>
-                        <Button fx:id="buttonClose" alignment="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="67.0" text="Close">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets bottom="10.0" left="80.0" />
-                           </HBox.margin>
-                           <effect>
-                              <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
-                           </effect>
-                        </Button>
-                     </children>
+                  <Button id="buttonNewOffer" fx:id="buttonNewOffer" alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="45.0" prefWidth="195.0" style="-fx-background-color: #454545; -fx-border-color: #383838; -fx-border-width: 0.5;" text="Create New Offer" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
                      <VBox.margin>
-                        <Insets />
+                        <Insets top="1.0" />
                      </VBox.margin>
-                  </HBox>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button id="buttonNewSoftware" fx:id="buttonNewSoftware" alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="45.0" prefWidth="195.0" style="-fx-background-color: #454545; -fx-border-color: #383838; -fx-border-width: 0.5;" text="Create New Software" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="1.0" />
+                     </VBox.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button id="butttonViewShops" fx:id="buttonViewShops" alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="45.0" prefWidth="195.0" style="-fx-background-color: #454545; -fx-border-color: #383838; -fx-border-width: 0.5;" text="View Shops List" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button id="butttonViewWishlist" fx:id="buttonViewWishlist" alignment="CENTER_RIGHT" layoutX="13.0" layoutY="148.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="195.0" style="-fx-background-color: #454545; -fx-border-color: #383838; -fx-border-width: 0.5;" text="View Wishlist" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button id="buttonViewUser" fx:id="buttonViewUser" alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="45.0" prefWidth="195.0" style="-fx-background-color: #454545; -fx-border-color: #383838; -fx-border-width: 0.5;" text="User Configuration" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="1.0" />
+                     </VBox.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
                </children>
             </VBox>
          </children>
-      </HBox>
+      </GridPane>
+      <VBox alignment="CENTER_LEFT" prefHeight="500.0" prefWidth="700.0" style="-fx-background-color: #323232;" HBox.hgrow="ALWAYS">
+         <children>
+            <TableView id="tableViewWishList" fx:id="tableViewWishList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" tableMenuButtonVisible="true" VBox.vgrow="NEVER">
+              <columns>
+                <TableColumn id="tableColumnSoftware" fx:id="tableColumnSoftware" editable="false" minWidth="100.0" prefWidth="511.199951171875" text="Software" />
+                <TableColumn id="tableColumnMinPrice" fx:id="tableColumnMinPrice" minWidth="100.0" prefWidth="187.60009765625" text="Minimum price" />
+              </columns>
+               <effect>
+                  <DropShadow color="#0000005e" offsetY="3.0" />
+               </effect>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </TableView>
+            <HBox alignment="CENTER_LEFT" prefHeight="208.0" prefWidth="700.0" VBox.vgrow="NEVER">
+               <children>
+                  <Label id="labelFilter" fx:id="labelFilter" prefHeight="20.0" prefWidth="105.0" text="Software name:" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets bottom="40.0" left="100.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField id="textFieldFilter" fx:id="textFieldFilter" prefHeight="30.0" prefWidth="183.0" promptText="Enter a software to search">
+                     <HBox.margin>
+                        <Insets bottom="40.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <effect>
+                        <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
+                     </effect>
+                  </TextField>
+                  <Button id="buttonFilter" fx:id="buttonFilter" mnemonicParsing="false" prefHeight="30.0" prefWidth="56.0" text="Filter">
+                     <HBox.margin>
+                        <Insets bottom="40.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <effect>
+                        <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
+                     </effect>
+                  </Button>
+                  <CheckBox id="checkBoxEdit" fx:id="checkBoxEdit" mnemonicParsing="false" prefHeight="17.0" prefWidth="48.0" text="Edit" textFill="WHITE">
+                     <HBox.margin>
+                        <Insets bottom="40.0" left="50.0" />
+                     </HBox.margin>
+                  </CheckBox>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </HBox>
+         </children>
+      </VBox>
    </children>
 </HBox>
