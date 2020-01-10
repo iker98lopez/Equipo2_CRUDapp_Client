@@ -2,9 +2,10 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -16,7 +17,7 @@
    <children>
       <HBox prefHeight="211.0" prefWidth="580.0">
          <children>
-            <ImageView id="imageViewSoftwareImage" fx:id="imageViewSoftwareImage" fitHeight="214.0" fitWidth="165.0" pickOnBounds="true">
+            <ImageView id="imageViewSoftwareImage" fx:id="imageViewSoftwareImage" fitHeight="200.0" fitWidth="165.0" pickOnBounds="true">
                <image>
                   <Image url="@Placeholder.png" />
                </image>
@@ -28,44 +29,38 @@
                <children>
                   <HBox alignment="CENTER_LEFT">
                      <children>
-                        <Label id="labelTitle" fx:id="labelTitle" prefHeight="47.0" prefWidth="275.0" text="Title of the software" wrapText="true">
+                        <TextField editable="false" prefHeight="37.0" prefWidth="284.0" text="Title">
                            <font>
-                              <Font name="System Bold" size="20.0" />
+                              <Font name="System Bold" size="24.0" />
                            </font>
-                        </Label>
-                        <Label id="labelPrice" fx:id="labelPrice" prefHeight="47.0" prefWidth="110.0" text="000.00">
+                        </TextField>
+                        <TextField editable="false" prefHeight="50.0" prefWidth="79.0" text="000.00">
                            <font>
-                              <Font size="32.0" />
+                              <Font size="24.0" />
                            </font>
-                           <HBox.margin>
-                              <Insets left="20.0" />
-                           </HBox.margin>
+                        </TextField>
+                        <Label text="€">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
                         </Label>
                      </children>
                   </HBox>
-                  <Label id="labelShop" fx:id="labelShop" text="Name of the shop">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <HBox>
+                  <HBox alignment="CENTER_LEFT">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
                      <children>
                         <Label text="Base Price:">
                            <font>
-                              <Font size="14.0" />
+                              <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
-                        <Label id="labelBasePrice" fx:id="labelBasePrice" text="000.00">
+                        <TextField editable="false" prefHeight="25.0" prefWidth="55.0" text="000.00">
                            <font>
                               <Font size="14.0" />
                            </font>
-                           <HBox.margin>
-                              <Insets left="10.0" />
-                           </HBox.margin>
-                        </Label>
+                        </TextField>
                         <Label text="€">
                            <font>
                               <Font size="14.0" />
@@ -76,25 +71,22 @@
                         </Label>
                      </children>
                   </HBox>
-                  <HBox>
+                  <HBox alignment="CENTER_LEFT">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
                      <children>
-                        <Label style="-fx-strikethrough: true;" text="Discount:">
+                        <Label prefHeight="20.0" prefWidth="67.0" style="-fx-strikethrough: true;" text="Discount:">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <TextField editable="false" prefHeight="25.0" prefWidth="35.0" text="000">
                            <font>
                               <Font size="14.0" />
                            </font>
-                        </Label>
-                        <Label id="labelDiscount" fx:id="labelDiscount" text="00">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets left="10.0" />
-                           </HBox.margin>
-                        </Label>
-                        <Label text="\%">
+                        </TextField>
+                        <Label prefHeight="20.0" prefWidth="22.0" text="\%">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -102,39 +94,52 @@
                               <Insets left="2.0" />
                            </HBox.margin>
                         </Label>
+                        <ToggleButton mnemonicParsing="false" prefWidth="70.0" text="Edit">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="190.0" />
+                           </HBox.margin>
+                        </ToggleButton>
                      </children>
                   </HBox>
-                  <HBox>
+                  <HBox alignment="CENTER_LEFT">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
                      <children>
-                        <Label text="User:">
+                        <Label prefHeight="20.0" prefWidth="36.0" text="User:">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <TextField editable="false" prefHeight="25.0" prefWidth="280.0" text="Login">
                            <font>
                               <Font size="14.0" />
                            </font>
-                        </Label>
-                        <Label id="labelAuthorLogin" fx:id="labelAuthorLogin" text="Login of the author">
+                        </TextField>
+                        <Button mnemonicParsing="false" prefWidth="70.0" text="Delete" textFill="RED">
                            <font>
                               <Font size="14.0" />
                            </font>
                            <HBox.margin>
-                              <Insets left="10.0" />
+                              <Insets />
                            </HBox.margin>
-                        </Label>
+                        </Button>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER_RIGHT">
+                  <HBox alignment="CENTER_LEFT">
                      <VBox.margin>
-                        <Insets top="20.0" />
+                        <Insets top="10.0" />
                      </VBox.margin>
                      <children>
-                        <Hyperlink id="hyperlinkUrl" fx:id="hyperlinkUrl" prefHeight="23.0" prefWidth="285.0" text="http:\\uroftheoffer.com\softwares\software\offer">
-                           <HBox.margin>
-                              <Insets right="30.0" />
-                           </HBox.margin>
-                        </Hyperlink>
-                        <Button id="buttonReport" fx:id="buttonReport" mnemonicParsing="false" prefHeight="30.0" prefWidth="70.0" text="Report">
+                        <TextField editable="false" prefHeight="25.0" prefWidth="317.0" style="-fx-text-fill: blue;" text="hhtps://urloftheoffer.com">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TextField>
+                        <Button id="buttonReport" fx:id="buttonReport" mnemonicParsing="false" prefWidth="70.0" text="Report">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -153,7 +158,7 @@
       </HBox>
       <VBox prefHeight="170.0" prefWidth="580.0">
          <padding>
-            <Insets top="15.0" />
+            <Insets top="5.0" />
          </padding>
          <children>
             <Label text="COMMENTS">
@@ -161,11 +166,16 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <ListView id="listViewComments" fx:id="listViewComments" prefHeight="200.0" prefWidth="200.0">
+            <ListView id="listViewComments" fx:id="listViewComments" prefHeight="106.0" prefWidth="580.0">
                <effect>
                   <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
                </effect>
             </ListView>
+            <Button mnemonicParsing="false" text="Comment">
+               <VBox.margin>
+                  <Insets left="255.0" top="10.0" />
+               </VBox.margin>
+            </Button>
          </children>
       </VBox>
    </children>

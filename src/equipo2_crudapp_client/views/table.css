@@ -1,0 +1,35 @@
+.table-view {
+    -fx-base: #323232;
+	-fx-color: derive(-fx-base, 10%);
+    -fx-control-inner-background: #191919;
+    -fx-background-color: linear-gradient(#323232 45%, #4c4c4c 80%);
+    -fx-padding: 5;
+	-fx-border-color: #191919;
+	-fx-border-width: 1;
+}
+
+.table-view .column-header .label {
+    -fx-font-size: 12pt;
+    -fx-font-family: "System";
+    -fx-alignment: center-left;
+	-fx-background-color: linear-gradient( #323232 55%, #191919 85%, #323232 95%);
+	-fx-padding: 0 0 0 10;
+}
+
+.table-view .column-header, .table-view .filler {
+    -fx-size: 35;
+    -fx-background-color: #323232;
+}
+
+.table-row-cell:even {
+	-fx-background-color: #4c4c4c;
+}
+
+.table-row-cell {
+	-fx-background-color: #666666;
+	-fx-font-size: 14pt;
+}
+
+.table-view:focused .table-row-cell:filled:focused:selected {
+    -fx-background-color: -fx-focus-color;
+}
