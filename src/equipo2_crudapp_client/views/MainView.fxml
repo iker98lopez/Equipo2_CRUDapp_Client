@@ -13,23 +13,36 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="RIGHT_TO_LEFT" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<HBox alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="RIGHT_TO_LEFT" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="equipo2_crudapp_client.controllers.MainViewController">
    <children>
-      <VBox alignment="TOP_RIGHT" HBox.hgrow="ALWAYS">
+      <VBox alignment="TOP_RIGHT" nodeOrientation="LEFT_TO_RIGHT" HBox.hgrow="ALWAYS">
          <HBox.margin>
             <Insets />
          </HBox.margin>
          <children>
-            <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="138.0" prefWidth="599.0">
+            <VBox alignment="TOP_CENTER" prefHeight="98.0" prefWidth="602.0">
                <children>
-                  <TextField id="textFieldSearch" fx:id="textFieldSearch" prefHeight="26.0" prefWidth="321.0" promptText="Search" />
-                  <Button id="buttonSearch" fx:id="buttonSearch" mnemonicParsing="false" text="Search">
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                  </Button>
+                  <HBox prefHeight="93.0" prefWidth="602.0" />
+                  <Label alignment="CENTER" prefHeight="28.0" prefWidth="143.0" text="SEARCH">
+                     <font>
+                        <Font name="System Bold" size="19.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </Label>
+                  <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="95.0" prefWidth="602.0">
+                     <children>
+                        <TextField id="textFieldSearch" fx:id="textFieldSearch" prefHeight="26.0" prefWidth="321.0" promptText="Search" />
+                        <Button id="buttonSearch" fx:id="buttonSearch" mnemonicParsing="false" text="Search">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
                </children>
-            </HBox>
+            </VBox>
             <HBox nodeOrientation="LEFT_TO_RIGHT">
                <children>
                   <VBox HBox.hgrow="ALWAYS">
@@ -123,7 +136,7 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Button id="buttonExit" fx:id="buttonExit" cancelButton="true" minWidth="50.0" mnemonicParsing="false" text="Log Out" GridPane.rowIndex="3">
+            <Button id="buttonLogOut" fx:id="buttonLogOut" cancelButton="true" minWidth="50.0" mnemonicParsing="false" onAction="#handleButtonExitAction" text="Log Out" GridPane.rowIndex="3">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
@@ -150,7 +163,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button id="buttonNewOffer" fx:id="buttonNewOffer" alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="45.0" prefWidth="195.0" style="-fx-background-color: #454545; -fx-border-color: #383838; -fx-border-width: 0.5;" text="Create New Offer" textFill="WHITE">
+                  <Button id="buttonNewOffer" fx:id="buttonNewOffer" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#handleButtonNewOfferAction" prefHeight="45.0" prefWidth="195.0" style="-fx-background-color: #454545; -fx-border-color: #383838; -fx-border-width: 0.5;" text="Create New Offer" textFill="WHITE">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -161,7 +174,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button id="buttonNewSoftware" fx:id="buttonNewSoftware" alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="45.0" prefWidth="195.0" style="-fx-background-color: #454545; -fx-border-color: #383838; -fx-border-width: 0.5;" text="Create New Software" textFill="WHITE">
+                  <Button id="buttonNewSoftware" fx:id="buttonNewSoftware" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#handleButtonNewSoftwareAction" prefHeight="45.0" prefWidth="195.0" style="-fx-background-color: #454545; -fx-border-color: #383838; -fx-border-width: 0.5;" text="Create New Software" textFill="WHITE">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -172,7 +185,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button id="butttonViewShops" fx:id="buttonViewShops" alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="45.0" prefWidth="195.0" style="-fx-background-color: #454545; -fx-border-color: #383838; -fx-border-width: 0.5;" text="View Shops List" textFill="WHITE">
+                  <Button id="butttonViewShops" fx:id="buttonViewShops" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#handleButtonViewShopsAction" prefHeight="45.0" prefWidth="195.0" style="-fx-background-color: #454545; -fx-border-color: #383838; -fx-border-width: 0.5;" text="View Shops List" textFill="WHITE">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -180,7 +193,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-		  <Button id="butttonViewWishlist" fx:id="buttonViewWishlist" alignment="CENTER_RIGHT" layoutX="13.0" layoutY="148.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="195.0" style="-fx-background-color: #454545; -fx-border-color: #383838; -fx-border-width: 0.5;" text="View Wishlist" textFill="WHITE">
+		  <Button id="butttonViewWishlist" fx:id="buttonViewWishlist" alignment="CENTER_RIGHT" layoutX="13.0" layoutY="148.0" mnemonicParsing="false" onAction="#handleButtonViewWishlistAction" prefHeight="45.0" prefWidth="195.0" style="-fx-background-color: #454545; -fx-border-color: #383838; -fx-border-width: 0.5;" text="View Wishlist" textFill="WHITE">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -188,7 +201,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button id="buttonViewUser" fx:id="buttonViewUser" alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="45.0" prefWidth="195.0" style="-fx-background-color: #454545; -fx-border-color: #383838; -fx-border-width: 0.5;" text="User Configuration" textFill="WHITE">
+                  <Button id="buttonViewUser" fx:id="buttonViewUser" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#handleButtonViewUserAction" prefHeight="45.0" prefWidth="195.0" style="-fx-background-color: #454545; -fx-border-color: #383838; -fx-border-width: 0.5;" text="User Configuration" textFill="WHITE">
                      <font>
                         <Font size="14.0" />
                      </font>

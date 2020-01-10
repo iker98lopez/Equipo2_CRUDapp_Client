@@ -6,7 +6,10 @@
 package equipo2_crudapp_client;
 
 import equipo2_crudapp_client.clients.UserClient;
+import equipo2_crudapp_client.controllers.MainViewController;
 import static javafx.application.Application.launch;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.stage.Stage;
 import javax.ws.rs.core.MediaType;
 
@@ -18,13 +21,19 @@ import javax.ws.rs.core.MediaType;
 public class Application extends javafx.application.Application{
     
     public static void main(String[] args) {
-        //launch(args);
-        UserClient userClient = new UserClient();
+        
+        launch(args);
+        //UserClient userClient = new UserClient();
         //Object response = userClient.findAllUsers();
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("views/MainView.fxml"));
+        Parent root = (Parent) loader.load();
+        MainViewController controller = ((MainViewController) loader.getController());
+        controller.setStage(primaryStage);
+        controller.initStage(root);   
     }
 }
