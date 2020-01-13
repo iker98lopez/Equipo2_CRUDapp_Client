@@ -52,6 +52,8 @@ public class SignInController {
     private Hyperlink hyperLinkSignUp;
     @FXML
     private Button buttonExit;
+    @FXML
+    private Hyperlink hyperLinkForgotPassword;
     
     /**
      * This method initializes the stage and shows the window, sets the
@@ -210,6 +212,10 @@ public class SignInController {
 
             textFieldPassword.setText(textFieldPasswordShow.getText());
         }
+    }
+    
+    public void handleHyperlinkForgotPassword(ActionEvent event){
+        
     }
     
     /**

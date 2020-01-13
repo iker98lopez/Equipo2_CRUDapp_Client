@@ -14,11 +14,10 @@ import javafx.stage.Stage;
  *
  * @author Diego Corral
  */
-public class UserViewController {
+public class UserViewController extends SideBarViewController{
     
     private static final Logger LOGGER = Logger.getLogger("equipo2_crudapp_client.controllers.UserViewController");
     
-    private Stage stage;
     
     /**
      * This method initializes the stage and shows the window, sets the
@@ -26,8 +25,10 @@ public class UserViewController {
      *
      * @param root Root to assign to the scene
      */
+    @Override
     public void initStage(Parent root) {
 
+        super.initStage(root);
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("User");

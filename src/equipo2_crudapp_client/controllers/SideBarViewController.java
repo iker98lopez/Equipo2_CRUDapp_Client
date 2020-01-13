@@ -167,7 +167,16 @@ public class SideBarViewController {
      * @param event The action event
      */
     public void handleButtonViewUserAction(ActionEvent event){
-        
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/UserView.fxml"));
+            Parent root = (Parent) loader.load();
+            UserViewController controller = ((UserViewController) loader.getController());
+            controller.setStage(new Stage());
+            controller.initStage(root);
+            stage.hide();
+        } catch (IOException ex) {
+            LOGGER.severe(ex.getMessage());
+        }
     }
     
     /**
