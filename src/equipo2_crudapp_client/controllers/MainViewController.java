@@ -13,31 +13,53 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
 /**
- *
+ * Controller for the main view of the application
  * @author Diego Corral
  */
 public class MainViewController extends SideBarViewController{
     
+    /**
+     * Logger of MainViewController
+     */
     private static final Logger LOGGER = Logger.getLogger("equipo2_crudapp_client.controllers.MainViewController");
     
-    //private Stage stage;
-    
+    /**
+     * 
+     */
     @FXML
     private TextField textFieldSearch;
+    
+    /**
+     * 
+     */
     @FXML
     private Button buttonSearch; 
+    
+    /**
+     * Free offers
+     */
     @FXML
     private ListView listViewGiveaways;
+    
+    /**
+     * The most discounted offers
+     */
     @FXML
     private ListView listViewMostDiscounted;
+    
+    /**
+     * Offers that expire soon
+     */
     @FXML
     private ListView listViewExpiringSoon;
     
+    /**
+     * Empty constructor for the class MainViewController
+     */
     public MainViewController(){
-        super();
+        
     }
     
     /**
@@ -57,25 +79,10 @@ public class MainViewController extends SideBarViewController{
         
         buttonSearch.setOnAction(this::handleButtonSearchAction);
         
-        
     }
-    
-    /**
-     * This method sets the stage
-     *
-     * @param stage Stage to be set
-     *
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }*/
     
     public void handleButtonSearchAction(ActionEvent event){
         
-        
-        
-    }
-    
-    public void handleButtonLogOutAction(){
         
     }
     
