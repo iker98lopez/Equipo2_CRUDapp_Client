@@ -6,8 +6,11 @@
 package equipo2_crudapp_client.controllers;
 
 import java.util.logging.Logger;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -21,6 +24,9 @@ public class ShopsViewController{
     
     private Stage stage;
     
+    @FXML
+    private Button buttonClose;
+    
     /**
      * This method initializes the stage and shows the window, sets the
      * visibility of the components and assigns the listeners.
@@ -33,6 +39,11 @@ public class ShopsViewController{
         stage.setTitle("Shops");
         stage.show();
         
+        buttonClose.setOnAction(this::handleButtonCloseAction);
+    }
+    
+    public void handleButtonCloseAction(ActionEvent event){
+        stage.hide();
     }
     
     /**

@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<HBox xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox HBox.hgrow="ALWAYS">
          <children>
@@ -36,7 +36,7 @@
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Button id="buttonExit" fx:id="buttonExit" cancelButton="true" minWidth="50.0" mnemonicParsing="false" text="Log Out" GridPane.rowIndex="3">
+                  <Button id="buttonLogOut" fx:id="buttonExit" cancelButton="true" minWidth="50.0" mnemonicParsing="false" onAction="#buttonLogOut" text="Log Out" GridPane.rowIndex="3">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>

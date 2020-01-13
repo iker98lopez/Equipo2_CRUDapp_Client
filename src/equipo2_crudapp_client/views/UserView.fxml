@@ -98,7 +98,7 @@
                   </VBox>
                </children>
             </HBox>
-            <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="104.0" prefWidth="599.0">
+            <HBox alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT" prefHeight="104.0" prefWidth="599.0">
                <children>
                   <Label id="labelNewPassword" fx:id="labelNewPassword" text="New Password:">
                      <HBox.margin>
@@ -140,7 +140,7 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Button id="buttonExit" fx:id="buttonExit" cancelButton="true" minWidth="50.0" mnemonicParsing="false" text="Log Out" GridPane.rowIndex="3">
+            <Button id="buttonLogOut" fx:id="buttonLogOut" cancelButton="true" minWidth="50.0" mnemonicParsing="false" text="Log Out" GridPane.rowIndex="3">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>

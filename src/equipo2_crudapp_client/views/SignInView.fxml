@@ -97,6 +97,11 @@
                         <Insets left="100.0" />
                      </VBox.margin>
                   </HBox>
+                  <Hyperlink id="hyperLinkForgotPassword" fx:id="hyperLinkForgotPassword" text="I forgot my password">
+                     <VBox.margin>
+                        <Insets left="100.0" top="5.0" />
+                     </VBox.margin>
+                  </Hyperlink>
                </children>
             </VBox>
             
