@@ -18,7 +18,7 @@ import javafx.scene.control.TextField;
  * Controller for the main view of the application
  * @author Diego Corral
  */
-public class MainViewController extends SideBarViewController{
+public class MainViewController extends GenericSideBarController{
     
     /**
      * Logger of MainViewController

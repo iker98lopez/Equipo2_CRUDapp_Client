@@ -21,10 +21,10 @@ import javafx.stage.WindowEvent;
  * Controller for the side bar of the application
  * @author Diego Corral
  */
-public class SideBarViewController {
+public class GenericSideBarController {
     
     /**
-     * Logger for the SideBarViewController
+     * Logger for the GenericSideBarController
      */
     private static final Logger LOGGER = Logger.getLogger("equipo2_crudapp_client.controllers.SideBarViewController");
     
@@ -88,7 +88,7 @@ public class SideBarViewController {
     protected Button buttonLogOut;
     
     /**
-     * Method that initializes the SideBarViewController stage and shows its 
+     * Method that initializes the GenericSideBarController stage and shows its 
      * view.
      * @param root Root to assign to the scene
      */

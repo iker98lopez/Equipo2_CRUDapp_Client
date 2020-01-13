@@ -14,7 +14,7 @@ import javafx.stage.Stage;
  *
  * @author Diego Corral
  */
-public class UserViewController extends SideBarViewController{
+public class UserViewController extends GenericSideBarController{
     
     private static final Logger LOGGER = Logger.getLogger("equipo2_crudapp_client.controllers.UserViewController");
     

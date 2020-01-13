@@ -18,11 +18,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="RIGHT_TO_LEFT" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="signupsigninapp.controllers.SignInController">
+<HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="RIGHT_TO_LEFT" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="equipo2_crudapp_client.controllers.SignInController">
    <children>
       <StackPane>
          <children>
-            <VBox alignment="TOP_CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="600.0" prefWidth="600.0" spacing="60.0">
+            <VBox alignment="TOP_CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="600.0" prefWidth="600.0" spacing="40.0">
                <children>
                   <Label id="signInLabel" text="Sign In" textFill="#383838">
                      <font>
@@ -120,18 +120,27 @@
                         </Label>
                      </children>
                   </VBox>
-                  
-                        <Button id="buttonSignIn" fx:id="buttonSignIn" defaultButton="true" mnemonicParsing="false" text="Sign In" textFill="#383838">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <effect>
-                        <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
-                     </effect>
-                  </Button>
+                  <VBox alignment="TOP_CENTER" prefHeight="94.0" prefWidth="600.0">
+                     <children>
+                        
+                              <Button id="buttonSignIn" fx:id="buttonSignIn" defaultButton="true" mnemonicParsing="false" text="Sign In" textFill="#383838">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <effect>
+                              <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
+                           </effect>
+                        </Button>
+                        <Hyperlink id="HyperlinkForgotPassword" fx:id="HyperlinkForgotPassword" alignment="CENTER" prefHeight="23.0" prefWidth="185.0" text="I forgot my password">
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </Hyperlink>
+                     </children>
+                  </VBox>
                   <HBox alignment="CENTER" prefHeight="100.0">
                      <children>
                         <Hyperlink id="hyperLinkHelp" fx:id="hyperLinkHelp" text="Help" underline="true">
