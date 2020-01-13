@@ -18,31 +18,112 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="RIGHT_TO_LEFT" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="equipo2_crudapp_client.controllers.SignInController">
+<HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="RIGHT_TO_LEFT" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="signupsigninapp.controllers.SignInController">
    <children>
-      <VBox alignment="TOP_CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="600.0" prefWidth="600.0" spacing="60.0" HBox.hgrow="ALWAYS">
+      <StackPane>
          <children>
-            <Label id="signInLabel" text="Sign In" textFill="#383838">
-               <font>
-                  <Font name="Impact" size="48.0" />
-               </font>
-               <VBox.margin>
-                  <Insets top="70.0" />
-               </VBox.margin>
-            </Label>
-            <VBox alignment="CENTER_LEFT" fillWidth="false" maxWidth="-Infinity" prefHeight="100.0" prefWidth="400.0" VBox.vgrow="SOMETIMES">
+            <VBox alignment="TOP_CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="600.0" prefWidth="600.0" spacing="60.0">
                <children>
-                  <Label id="labelLoginWarning" fx:id="labelLoginWarning" text="*Login is not valid" textFill="RED">
-                     <VBox.margin>
-                        <Insets bottom="5.0" left="100.0" />
-                     </VBox.margin>
+                  <Label id="signInLabel" text="Sign In" textFill="#383838">
                      <font>
-                        <Font size="14.0" />
+                        <Font name="Impact" size="48.0" />
                      </font>
-                  </Label>
-                  <TextField id="textFieldLogin" fx:id="textFieldLogin" maxHeight="30.0" maxWidth="400.0" minHeight="-Infinity" prefHeight="30.0" prefWidth="200.0" promptText="Login">
                      <VBox.margin>
-                        <Insets left="100.0" />
+                        <Insets top="70.0" />
+                     </VBox.margin>
+                  </Label>
+                  <VBox alignment="CENTER_LEFT" fillWidth="false" maxWidth="-Infinity" prefHeight="100.0" prefWidth="400.0" VBox.vgrow="SOMETIMES">
+                     <children>
+                        <Label id="labelLogin" fx:id="labelLogin" text="Login">
+                           <VBox.margin>
+                              <Insets left="100.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                           <padding>
+                              <Insets bottom="5.0" />
+                           </padding>
+                        </Label>
+                        <TextField id="textFieldLogin" fx:id="textFieldLogin" maxHeight="30.0" maxWidth="400.0" minHeight="-Infinity" prefHeight="30.0" prefWidth="200.0">
+                           <VBox.margin>
+                              <Insets left="100.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <effect>
+                              <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
+                           </effect>
+                        </TextField>
+                        <Label id="labelLoginWarning" fx:id="labelLoginWarning" text="*Login is not valid" textFill="RED">
+                           <VBox.margin>
+                              <Insets bottom="10.0" left="100.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label id="labelPassword" fx:id="labelPassword" text="Password">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="100.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <HBox alignment="CENTER" prefHeight="30.0">
+                           <children>
+                              <StackPane>
+                                 <children>
+                                    <PasswordField id="textFieldPassword" fx:id="textFieldPassword" maxHeight="30.0" maxWidth="400.0" minHeight="-Infinity" prefHeight="30.0" prefWidth="200.0">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                       <effect>
+                                          <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
+                                       </effect>
+                                    </PasswordField>
+                                    <TextField id="textFieldPasswordShow" fx:id="textFieldPasswordShow" promptText="Password" visible="false">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                       <effect>
+                                          <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
+                                       </effect>
+                                    </TextField>
+                                 </children>
+                              </StackPane>
+                              <CheckBox id="checkBoxShowPassword" fx:id="checkBoxShowPassword" mnemonicParsing="false" text="Show" textFill="#383838">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="15.0" />
+                                 </HBox.margin>
+                                 <effect>
+                                    <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
+                                 </effect>
+                              </CheckBox>
+                           </children>
+                           <VBox.margin>
+                              <Insets left="100.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <Label id="labelPasswordWarning" fx:id="labelPasswordWarning" alignment="CENTER" text="*Password is not valid" textFill="RED">
+                           <VBox.margin>
+                              <Insets left="100.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  
+                        <Button id="buttonSignIn" fx:id="buttonSignIn" defaultButton="true" mnemonicParsing="false" text="Sign In" textFill="#383838">
+                     <VBox.margin>
+                        <Insets />
                      </VBox.margin>
                      <font>
                         <Font size="14.0" />
@@ -50,94 +131,33 @@
                      <effect>
                         <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
                      </effect>
-                  </TextField>
-                  <Label id="labelPasswordWarning" fx:id="labelPasswordWarning" alignment="CENTER" text="*Password is not valid" textFill="RED">
-                     <VBox.margin>
-                        <Insets left="100.0" top="15.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-                  <HBox alignment="CENTER" prefHeight="30.0">
+                  </Button>
+                  <HBox alignment="CENTER" prefHeight="100.0">
                      <children>
-                        <StackPane>
-                           <children>
-                              <PasswordField id="textFieldPassword" fx:id="textFieldPassword" maxHeight="30.0" maxWidth="400.0" minHeight="-Infinity" prefHeight="30.0" prefWidth="200.0" promptText="Password">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                                 <effect>
-                                    <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
-                                 </effect>
-                              </PasswordField>
-                              <TextField id="textFieldPasswordShow" fx:id="textFieldPasswordShow" promptText="Password" visible="false">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                                 <effect>
-                                    <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
-                                 </effect>
-                              </TextField>
-                           </children>
-                        </StackPane>
-                        <CheckBox id="checkBoxShowPassword" fx:id="checkBoxShowPassword" mnemonicParsing="false" text="Show" textFill="#383838">
+                        <Hyperlink id="hyperLinkHelp" fx:id="hyperLinkHelp" text="Help" underline="true">
                            <font>
                               <Font size="14.0" />
                            </font>
-                           <HBox.margin>
-                              <Insets left="15.0" />
-                           </HBox.margin>
-                           <effect>
-                              <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
-                           </effect>
-                        </CheckBox>
+                        </Hyperlink>
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="| You do not have an account?" textFill="#383838">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Hyperlink id="hyperLinkSignUp" fx:id="hyperLinkSignUp" text="Click here" underline="true">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Hyperlink>
                      </children>
                      <VBox.margin>
-                        <Insets left="100.0" />
+                        <Insets bottom="10.0" />
                      </VBox.margin>
                   </HBox>
-                  <Hyperlink id="hyperLinkForgotPassword" fx:id="hyperLinkForgotPassword" text="I forgot my password">
-                     <VBox.margin>
-                        <Insets left="100.0" top="5.0" />
-                     </VBox.margin>
-                  </Hyperlink>
                </children>
             </VBox>
-            
-                  <Button id="buttonSignIn" fx:id="buttonSignIn" defaultButton="true" mnemonicParsing="false" text="Sign In" textFill="#383838">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <font>
-                  <Font size="14.0" />
-               </font>
-               <effect>
-                  <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
-               </effect>
-            </Button>
-            <HBox alignment="CENTER" prefHeight="100.0">
-               <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" text="You do not have an account?" textFill="#383838">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-                  <Hyperlink id="hyperLinkSignUp" fx:id="hyperLinkSignUp" text="Click here" underline="true">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Hyperlink>
-               </children>
-               <VBox.margin>
-                  <Insets bottom="10.0" />
-               </VBox.margin>
-            </HBox>
          </children>
-         <HBox.margin>
-            <Insets />
-         </HBox.margin>
-      </VBox>
+      </StackPane>
       <GridPane alignment="CENTER" prefHeight="600.0" prefWidth="200.0" style="-fx-background-color: #383838;" HBox.hgrow="NEVER">
          <columnConstraints>
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
