@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<HBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox HBox.hgrow="ALWAYS">
          <children>
@@ -31,10 +31,13 @@
                   <RowConstraints maxHeight="327.0" minHeight="10.0" prefHeight="45.0" valignment="TOP" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Label id="labelOfertapps" fx:id="labelOfertapps" text="OfertAPPs" textFill="WHITE">
+                  <Label id="labelOfertAPPs" fx:id="labelOfertAPPs" text="OfertAPPs" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </Label>
                   <Button id="buttonLogOut" fx:id="buttonExit" cancelButton="true" minWidth="50.0" mnemonicParsing="false" onAction="#buttonLogOut" text="Log Out" GridPane.rowIndex="3">
                      <cursor>
