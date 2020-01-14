@@ -24,7 +24,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 /*import signupsigninapp.client.ClientFactory;
 import signupsigninapp.client.ClientInterface;
-import signupsigninapp.controllers.SignInController;*/
+import signupsigninapp.controllers.SignInViewController;*/
 
 /**
  * This class controls the SignUpView
@@ -136,7 +136,7 @@ public class SignUpController {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/signupsigninapp/views/SignInView.fxml"));
                 Parent root = (Parent) loader.load();
-                SignInController controller = ((SignInController) loader.getController());
+                SignInViewController controller = ((SignInViewController) loader.getController());
                 controller.setStage(new Stage());
                 controller.initStage(root);
                 stage.hide();
@@ -185,7 +185,7 @@ public class SignUpController {
 
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/signupsigninapp/views/SignInView.fxml"));
                     Parent root = (Parent) loader.load();
-                    SignInController controller = ((SignInController) loader.getController());
+                    SignInViewController controller = ((SignInViewController) loader.getController());
                     controller.setStage(new Stage());
                     controller.initStage(root);
                     stage.hide();

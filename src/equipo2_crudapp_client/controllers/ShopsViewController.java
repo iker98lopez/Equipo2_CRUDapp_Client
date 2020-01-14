@@ -21,14 +21,19 @@ import javafx.stage.Stage;
 public class ShopsViewController{
     
     /**
-     * Logger for ShopsViewController
+     * Logger for ShopsViewController class
      */
     private static final Logger LOGGER = Logger.getLogger("equipo2_crudapp_client.controllers.ShopsViewController");
     
     /**
-     * Stage of the application
+     * Stage of the controller
      */
     private Stage stage;
+    
+    /**
+     * Scene of the controller
+     */
+    private Scene scene;
     
     /**
      * Closes the application
@@ -42,7 +47,7 @@ public class ShopsViewController{
      * @param root Root to assign to the scene
      */
     public void initStage(Parent root) {
-        Scene scene = new Scene(root);
+        scene = new Scene(root);
         scene.getStylesheets().add("/equipo2_crudapp_client/views/table.css");
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);

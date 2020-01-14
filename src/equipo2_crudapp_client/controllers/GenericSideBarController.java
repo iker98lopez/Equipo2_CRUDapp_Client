@@ -15,7 +15,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -26,7 +25,7 @@ import javafx.stage.WindowEvent;
 public class GenericSideBarController {
     
     /**
-     * Logger for the GenericSideBarController
+     * Logger for GenericSideBarController class
      */
     private static final Logger LOGGER = Logger.getLogger("equipo2_crudapp_client.controllers.SideBarViewController");
     
@@ -210,7 +209,7 @@ public class GenericSideBarController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/SignInView.fxml"));
             Parent root = (Parent) loader.load();
-            SignInController controller = ((SignInController) loader.getController());
+            SignInViewController controller = ((SignInViewController) loader.getController());
             controller.setStage(new Stage());
             controller.initStage(root);
             stage.hide();
