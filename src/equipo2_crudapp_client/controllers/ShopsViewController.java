@@ -34,13 +34,16 @@ public class ShopsViewController{
      */
     public void initStage(Parent root) {
         Scene scene = new Scene(root);
+        scene.getStylesheets().add("/equipo2_crudapp_client/views/table.css");
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.setTitle("Shops");
         stage.show();
         
         buttonClose.setOnAction(this::handleButtonCloseAction);
     }
+    
     
     public void handleButtonCloseAction(ActionEvent event){
         stage.hide();

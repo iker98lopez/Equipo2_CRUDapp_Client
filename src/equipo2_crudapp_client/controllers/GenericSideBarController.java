@@ -14,6 +14,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -86,6 +88,9 @@ public class GenericSideBarController {
      */
     @FXML
     protected Button buttonLogOut;
+    
+    @FXML
+    protected GridPane gridPaneOfertApps;
     
     /**
      * Method that initializes the GenericSideBarController stage and shows its 
@@ -172,6 +177,19 @@ public class GenericSideBarController {
             Parent root = (Parent) loader.load();
             UserViewController controller = ((UserViewController) loader.getController());
             controller.setStage(new Stage());
+            controller.initStage(root);
+            stage.hide();
+        } catch (IOException ex) {
+            LOGGER.severe(ex.getMessage());
+        }
+    }
+    
+    public void handleLabelOfertAPPsMouseClick(MouseEvent event){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/MainView.fxml"));
+            Parent root = (Parent) loader.load();
+            MainViewController controller = ((MainViewController) loader.getController());
+            //controller.setUser(user);
             controller.initStage(root);
             stage.hide();
         } catch (IOException ex) {

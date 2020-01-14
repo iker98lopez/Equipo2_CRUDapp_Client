@@ -177,7 +177,7 @@
             <RowConstraints maxHeight="327.0" minHeight="10.0" prefHeight="67.0" valignment="CENTER" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Label text="Company Name" textFill="WHITE">
+            <Label text="OfertApps" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
