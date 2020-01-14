@@ -20,10 +20,19 @@ import javafx.stage.Stage;
  */
 public class ShopsViewController{
     
+    /**
+     * Logger for ShopsViewController
+     */
     private static final Logger LOGGER = Logger.getLogger("equipo2_crudapp_client.controllers.ShopsViewController");
     
+    /**
+     * Stage of the application
+     */
     private Stage stage;
     
+    /**
+     * Closes the application
+     */
     @FXML
     private Button buttonClose;
     
@@ -44,7 +53,10 @@ public class ShopsViewController{
         buttonClose.setOnAction(this::handleButtonCloseAction);
     }
     
-    
+    /**
+     * Handles the action of the close button. Closes the application
+     * @param event the action event
+     */
     public void handleButtonCloseAction(ActionEvent event){
         stage.hide();
     }

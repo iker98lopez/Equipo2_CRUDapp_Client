@@ -90,7 +90,7 @@ public class GenericSideBarController {
     protected Button buttonLogOut;
     
     @FXML
-    protected GridPane gridPaneOfertApps;
+    protected Label labelOfertAPPs;
     
     /**
      * Method that initializes the GenericSideBarController stage and shows its 
@@ -107,6 +107,7 @@ public class GenericSideBarController {
         buttonViewWishlist.setOnAction(this::handleButtonViewWishlistAction);
         buttonViewUser.setOnAction(this::handleButtonViewUserAction);
         buttonLogOut.setOnAction(this::handleButtonLogOutAction);
+        labelOfertAPPs.setOnMouseClicked(this::handleLabelOfertAPPsMouseClick);
         stage.setOnShowing(this::windowShowing);
     }
     
@@ -184,6 +185,10 @@ public class GenericSideBarController {
         }
     }
     
+    /**
+     * Handles the mouse clicking event of labelOfertAPPs
+     * @param event 
+     */
     public void handleLabelOfertAPPsMouseClick(MouseEvent event){
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/MainView.fxml"));

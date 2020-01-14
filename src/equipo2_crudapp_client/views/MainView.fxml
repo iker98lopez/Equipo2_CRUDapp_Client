@@ -209,7 +209,7 @@
                   </Button>
                </children>
             </VBox>
-            <Label id="labelOfertAPPs" fx:id="labelOfertAPPs" accessibleRole="HYPERLINK" onMouseClicked="#handleLabelOfertAPPsMouseClick" text="OfertAPPs" textFill="WHITE">
+            <Label id="labelOfertAPPs" fx:id="labelOfertAPPs" accessibleRole="HYPERLINK" text="OfertAPPs" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>

@@ -98,7 +98,7 @@
             <RowConstraints maxHeight="327.0" minHeight="10.0" prefHeight="45.0" valignment="TOP" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Label id="labelOfertAPPs" fx:id="labelOfertAPPs" onMouseClicked="#handleLabelOfertAPPsMouseClicked" text="OfertAPPs" textFill="WHITE">
+            <Label id="labelOfertAPPs" fx:id="labelOfertAPPs" text="OfertAPPs" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
