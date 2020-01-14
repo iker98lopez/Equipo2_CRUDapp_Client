@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="signupsigninapp.controllers.SignUpController">
+    <children>
+        <VBox alignment="TOP_CENTER" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #383838;">
+            <children>
+                <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@98274491-doodle-seahorse-ocean-animal-and-                             tropical-creature-vector-illustration-.jpg" />
+                    </image>
+                    <VBox.margin>
+                        <Insets top="20.0" />
+                    </VBox.margin>
+                </ImageView>
+            </children>
+            <padding>
+                <Insets top="20.0" />
+            </padding>
+        </VBox>
+        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="60.0" HBox.hgrow="ALWAYS">
+            <children>
+                <Label alignment="TOP_CENTER" text="Sign Up">
+                    <font>
+                        <Font name="Impact" size="48.0" />
+                    </font>
+                </Label>
+                <HBox alignment="CENTER" prefHeight="240.0" prefWidth="600.0" spacing="75.0">
+                    <children>
+                        <VBox alignment="CENTER_LEFT" prefHeight="205.0" prefWidth="200.0" spacing="5.0">
+                            <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="14.0" prefWidth="200.0">
+                           <children>
+                                  <Label id="labelLogin" fx:id="labelLogin" prefHeight="20.0" prefWidth="64.0" text="Login">
+                                      <font>
+                                          <Font size="14.0" />
+                                      </font>
+                                  </Label>
+                                      <Label id="labelLoginWarning" fx:id="labelLoginWarning" alignment="BASELINE_RIGHT" contentDisplay="CENTER" prefHeight="17.0" prefWidth="111.0" text="*Login is not valid" textFill="RED">
+                                          <font>
+                                              <Font size="14.0" />
+                                          </font>
+                                      </Label>
+                           </children>
+                        </HBox>
+                                <TextField id="textFieldLogin" fx:id="textFieldLogin" maxWidth="400.0" minWidth="120.0" prefWidth="200.0" promptText="Minimum 3 characters">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                    <effect>
+                                        <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
+                                    </effect>
+                                    <tooltip>
+                                        <Tooltip autoHide="true" prefWidth="350.0" text="This field must have 3-18                                              characters and can contain lower and                                             upper case letters, numbers and                                              special characters (.  -  _)" wrapText="true">
+                                            <font>
+                                                <Font size="14.0" />
+                                            </font>
+                                        </Tooltip>
+                                    </tooltip>
+                                </TextField>
+                        <HBox alignment="BOTTOM_LEFT" prefHeight="42.0" prefWidth="200.0">
+                           <children>
+                              <Label id="labelName" fx:id="labelName" prefHeight="20.0" prefWidth="64.0" text="Name">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <Label id="labelFullNameWarning" fx:id="labelFullNameWarning" alignment="BASELINE_RIGHT" contentDisplay="CENTER" prefHeight="19.0" prefWidth="114.0" text="*Name is not valid" textFill="RED">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                                <TextField id="textFieldFullName" fx:id="textFieldFullName" maxWidth="400.0" minWidth="120.0" prefWidth="200.0" promptText="Enter your full name">
+                                    <VBox.margin>
+                                        <Insets />
+                                    </VBox.margin>
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                    <effect>
+                                        <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
+                                    </effect>
+                                    <tooltip>
+                                        <Tooltip prefWidth="350.0" text="This field can contain 2-64                                              characters." wrapText="true">
+                                            <font>
+                                                <Font size="14.0" />
+                                            </font>
+                                        </Tooltip>
+                                    </tooltip>
+                                </TextField>
+                        <HBox alignment="BOTTOM_LEFT" layoutX="10.0" layoutY="70.0" prefHeight="43.0" prefWidth="200.0">
+                           <children>
+                              <Label id="labelEmail" fx:id="labelEmail" prefHeight="20.0" prefWidth="64.0" text="Email">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                                      <Label id="labelEmailWarning" fx:id="labelEmailWarning" text="*E-mail is not valid" textFill="RED">
+                                          <font>
+                                              <Font size="14.0" />
+                                          </font>
+                                      </Label>
+                           </children>
+                        </HBox>
+                                <TextField id="textFieldEmail" fx:id="textFieldEmail" maxWidth="400.0" minWidth="120.0" prefWidth="200.0" promptText="Only letters, numbers, &quot;-&quot;, &quot;_&quot;">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                    <effect>
+                                        <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
+                                    </effect>
+                                    <tooltip>
+                                        <Tooltip prefWidth="350.0" text="This field must have 8-128                                              characters that can be upper and                                              lower case letters, numbers and                                              special characters. It must have 3                                              parts: name, which can only contain                                              . - _ + as special characters but                                              they cannot be the first character                                              and cannot be written two times in a                                             row; domain, which can only contain                                              - and . as special characters and is                                             separated from the name by an @; and                                             the top-level domain, which consists                                             on a . followed by 3 lower case                                              letters." wrapText="true">
+                                            <font>
+                                                <Font size="14.0" />
+                                            </font>
+                                        </Tooltip>
+                                    </tooltip>
+                                </TextField>
+                            </children>
+                        </VBox>
+                        <VBox alignment="CENTER_LEFT" prefHeight="205.0" prefWidth="274.0" spacing="5.0">
+                            <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="28.0" prefWidth="274.0">
+                           <children>
+                              <Label id="labelPassword" fx:id="labelPassword" prefHeight="20.0" prefWidth="64.0" text="Password">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                                      <Label id="labelPasswordWarning" fx:id="labelPasswordWarning" text="*Password is not valid" textFill="RED">
+                                          <font>
+                                              <Font size="14.0" />
+                                          </font>
+                                      </Label>
+                           </children>
+                        </HBox>
+                                <HBox alignment="CENTER" prefHeight="30.0">
+                                    <children>
+                                        <StackPane>
+                                            <children>
+                                                <PasswordField id="textFieldPassword" fx:id="textFieldPassword" maxWidth="400.0" minWidth="150.0" prefWidth="200.0" promptText="Password">
+                                                    <effect>
+                                                        <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
+                                                    </effect>
+                                                    <tooltip>
+                                                        <Tooltip prefWidth="350.0" text="This field must have 5-256                                              characters that can be upper and                                              lower case letters, numbers and                                              special characters. It must have at                                              least one number and one letter                                              upper and lower case." wrapText="true">
+                                                            <font>
+                                                                <Font size="14.0" />
+                                                            </font>
+                                                        </Tooltip>
+                                                    </tooltip>
+                                                    <font>
+                                                        <Font size="14.0" />
+                                                    </font>
+                                                </PasswordField>
+                                                <TextField id="textFieldPasswordShow" fx:id="textFieldPasswordShow" maxWidth="200.0" minWidth="120.0" prefWidth="200.0" promptText="5-256 characters">
+                                                    <font>
+                                                        <Font size="14.0" />
+                                                    </font>
+                                       <tooltip>
+                                          <Tooltip prefWidth="350.0" text="This field must have 5-256                                              characters that can be upper and                                              lower case letters, numbers and                                              special characters. It must have at                                              least one number and one letter                                              upper and lower case." wrapText="true">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Tooltip>
+                                       </tooltip>
+                                       <effect>
+                                          <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
+                                       </effect>
+                                                </TextField>
+                                            </children>
+                                        </StackPane>
+                                        <CheckBox fx:id="checkBoxShowPassword" minWidth="60.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="60.0" text="Show">
+                                            <HBox.margin>
+                                                <Insets left="15.0" />
+                                            </HBox.margin>
+                                            <font>
+                                                <Font size="14.0" />
+                                            </font>
+                                        </CheckBox>
+                                    </children>
+                                    <VBox.margin>
+                                        <Insets />
+                                    </VBox.margin>
+                                </HBox>
+                        <HBox alignment="BOTTOM_LEFT" prefHeight="45.0" prefWidth="274.0">
+                           <children>
+                              <Label id="labelEmail" fx:id="labelEmail1" prefHeight="20.0" prefWidth="128.0" text="Repeat password">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                                      <Label id="labelPasswordRepeatWarning" fx:id="labelPasswordRepeatWarning" prefHeight="20.0" prefWidth="176.0" text="*Passwords do not match" textFill="RED">
+                                          <font>
+                                              <Font size="14.0" />
+                                          </font>
+                                      </Label>
+                           </children>
+                        </HBox>
+                                <PasswordField id="textFieldPasswordRepeat" fx:id="textFieldPasswordRepeat" maxWidth="200.0" minWidth="120.0" prefWidth="200.0" promptText="Passwords must match">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                    <effect>
+                                        <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
+                                    </effect>
+                                    <VBox.margin>
+                                        <Insets />
+                                    </VBox.margin>
+                           <tooltip>
+                              <Tooltip prefWidth="350.0" text="This field must have 5-256                                              characters that can be upper and                                              lower case letters, numbers and                                              special characters. It must have at                                              least one number and one letter                                              upper and lower case." wrapText="true">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Tooltip>
+                           </tooltip>
+                                </PasswordField>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER" prefHeight="6.0" prefWidth="600.0" spacing="40.0">
+                    <children>
+                        <Button id="buttonBack" fx:id="buttonBack" cancelButton="true" minWidth="-Infinity" mnemonicParsing="false" prefWidth="70.0" text="Back">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                            <effect>
+                                <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
+                            </effect>
+                        </Button>
+                        <Button id="buttonSignUp" fx:id="buttonSignUp" defaultButton="true" minWidth="-Infinity" mnemonicParsing="false" prefWidth="70.0" text="Sign Up">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                            <effect>
+                                <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
+                            </effect>
+                        </Button>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</HBox>
