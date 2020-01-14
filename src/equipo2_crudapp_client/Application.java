@@ -7,6 +7,7 @@ package equipo2_crudapp_client;
 
 import equipo2_crudapp_client.clients.UserClient;
 import equipo2_crudapp_client.controllers.MainViewController;
+import equipo2_crudapp_client.controllers.SignInController;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -30,9 +31,9 @@ public class Application extends javafx.application.Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
         
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("views/MainView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("views/SignInView.fxml"));
         Parent root = (Parent) loader.load();
-        MainViewController controller = ((MainViewController) loader.getController());
+        SignInController controller = ((SignInController) loader.getController());
         controller.setStage(primaryStage);
         controller.initStage(root);   
     }

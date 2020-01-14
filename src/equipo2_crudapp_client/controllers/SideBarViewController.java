@@ -5,8 +5,12 @@
  */
 package equipo2_crudapp_client.controllers;
 
+import equipo2_crudapp_classes.classes.User;
+import java.io.IOException;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -20,9 +24,14 @@ import javafx.stage.WindowEvent;
 public class SideBarViewController {
     
     /**
+     * Logger for the SideBarViewController
+     */
+    private static final Logger LOGGER = Logger.getLogger("equipo2_crudapp_client.controllers.SideBarViewController");
+    
+    /**
      * The user logged in the application
      */
-    protected String user;
+    protected User user;
     
     /**
      * The stage of the controller
@@ -84,6 +93,8 @@ public class SideBarViewController {
      * @param root Root to assign to the scene
      */
     public void initStage(Parent root){
+        stage = new Stage();
+        
         buttonMyOffers.setOnAction(this::handleButtonMyOffersAction);
         buttonNewOffer.setOnAction(this::handleButtonNewOfferAction);
         buttonNewSoftware.setOnAction(this::handleButtonNewSoftwareAction);
@@ -99,7 +110,8 @@ public class SideBarViewController {
      * @param event The window event
      */
     public void windowShowing(WindowEvent event){
-        labelUsername.setText(user);
+        
+       // labelUsername.setText(user.getLogin());
     }
     
     /**
@@ -131,7 +143,15 @@ public class SideBarViewController {
      * @param event The action event
      */
     public void handleButtonViewShopsAction(ActionEvent event){
-        
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/ShopsView.fxml"));
+            Parent root = (Parent) loader.load();
+            ShopsViewController controller = ((ShopsViewController) loader.getController());
+            controller.setStage(new Stage());
+            controller.initStage(root);
+        } catch (IOException ex) {
+            LOGGER.severe(ex.getMessage());
+        }
     }
     
     /**
@@ -147,7 +167,16 @@ public class SideBarViewController {
      * @param event The action event
      */
     public void handleButtonViewUserAction(ActionEvent event){
-        
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/UserView.fxml"));
+            Parent root = (Parent) loader.load();
+            UserViewController controller = ((UserViewController) loader.getController());
+            controller.setStage(new Stage());
+            controller.initStage(root);
+            stage.hide();
+        } catch (IOException ex) {
+            LOGGER.severe(ex.getMessage());
+        }
     }
     
     /**
@@ -155,7 +184,16 @@ public class SideBarViewController {
      * @param event The action event
      */
     public void handleButtonLogOutAction(ActionEvent event){
-        
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/SignInView.fxml"));
+            Parent root = (Parent) loader.load();
+            SignInController controller = ((SignInController) loader.getController());
+            controller.setStage(new Stage());
+            controller.initStage(root);
+            stage.hide();
+        } catch (IOException ex) {
+            LOGGER.severe(ex.getMessage());
+        }
     }
     
     /**
@@ -170,7 +208,7 @@ public class SideBarViewController {
      * Sets the user logged in the application
      * @param user The user logged in
      */
-    public void setUser(String user){
+    public void setUser(User user){
         this.user = user;
     }
     
