@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
@@ -11,208 +10,18 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="equipo2_crudapp_client.controllers.InsertOfferViewController">
    <children>
-      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="450.0" spacing="5.0">
-         <children>
-            <HBox alignment="CENTER_LEFT">
-               <children>
-                  <VBox>
-                     <children>
-                        <Label id="labelSoftwareName" fx:id="labelSoftwareName" text="Software name">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Label>
-                        <TextField id="textFieldSoftwareName" fx:id="textFieldSoftwareName" maxWidth="200.0" minWidth="200.0" prefHeight="20.0" prefWidth="200.0" promptText="Name">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <effect>
-                              <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
-                           </effect>
-                        </TextField>
-                        <Label id="labelSoftwareNameWarning" fx:id="labelSoftwareNameWarning" text="*This field is empty" textFill="RED">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets top="3.0" />
-                           </VBox.margin>
-                        </Label>
-                     </children>
-                  </VBox>
-                  <VBox>
-                     <children>
-                        <Label id="labelSoftwareType" fx:id="labelSoftwareType" text="Software type">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Label>
-                        <ChoiceBox id="choiceBoxSoftwareType" fx:id="choiceBoxSoftwareType" maxWidth="100.0" minWidth="100.0" prefHeight="20.0" prefWidth="100.0">
-                           <effect>
-                              <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
-                           </effect>
-                        </ChoiceBox>
-                        <Label id="labelSoftwareTypeWarning" fx:id="labelSoftwareTypeWarning" text="*Please select an option" textFill="RED">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets top="3.0" />
-                           </VBox.margin>
-                        </Label>
-                     </children>
-                     <HBox.margin>
-                        <Insets left="50.0" />
-                     </HBox.margin>
-                  </VBox>
-               </children>
-            </HBox>
-            <HBox>
-               <children>
-                  <VBox>
-                     <children>
-                        <Label id="labelParentSoftwareName" fx:id="labelParentSoftwareName" text="Parent software name">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Label>
-                        <TextField id="textFieldParentSoftware" fx:id="textFieldParentSoftware" disable="true" maxWidth="200.0" minWidth="200.0" prefHeight="20.0" prefWidth="200.0" promptText="Parent's Name">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <effect>
-                              <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
-                           </effect>
-                        </TextField>
-                        <Label id="labelParentSoftwareWarning" fx:id="labelParentSoftwareWarning" text="*This field is empty" textFill="RED">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets top="3.0" />
-                           </VBox.margin>
-                        </Label>
-                        <Label id="labelExpirationDate" fx:id="labelExpirationDate" text="Expiration date">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Label>
-                        <DatePicker id="datePickerExpirationDate" fx:id="datePickerExpirationDate" maxWidth="200.0" minWidth="200.0" onAction="#datePickerExpirationDate" prefHeight="20.0" prefWidth="200.0" promptText="DD/MM/YY">
-                           <effect>
-                              <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
-                           </effect>
-                        </DatePicker>
-                        <Label id="labelExpirationDateWarning" fx:id="labelExpirationDateWarning" text="*This field is empty" textFill="RED">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets top="3.0" />
-                           </VBox.margin>
-                        </Label>
-                     </children>
-                  </VBox>
-                  <VBox prefHeight="130.0" prefWidth="150.0">
-                     <children>
-                        <Label id="labelBasePrice" fx:id="labelBasePrice" text="Base price">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Label>
-                        <TextField id="textFieldBasePrice" fx:id="textFieldBasePrice" maxWidth="100.0" minWidth="100.0" prefHeight="20.0" prefWidth="100.0" promptText="000.00">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <effect>
-                              <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
-                           </effect>
-                        </TextField>
-                        <Label id="labelBasePriceWarning" fx:id="labelBasePriceWarning" text="*This field is empty" textFill="RED">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets top="3.0" />
-                           </VBox.margin>
-                        </Label>
-                        <Label id="labelDiscountedPrice" fx:id="labelDiscountedPrice" text="Discounted price">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Label>
-                        <TextField id="textFieldDiscountedPrice" fx:id="textFieldDiscountedPrice" maxWidth="100.0" minWidth="100.0" prefHeight="20.0" prefWidth="100.0" promptText="000.00">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <effect>
-                              <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
-                           </effect>
-                        </TextField>
-                        <Label id="labelDiscountedPriceWarning" fx:id="labelDiscountedPriceWarning" text="*This field is empty" textFill="RED">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets top="3.0" />
-                           </VBox.margin>
-                        </Label>
-                     </children>
-                     <HBox.margin>
-                        <Insets left="50.0" />
-                     </HBox.margin>
-                  </VBox>
-                  <VBox>
-                     <children>
-                        <Label id="labelDiscount" fx:id="labelDiscount" text="Discount">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Label>
-                        <HBox alignment="CENTER_LEFT">
-                           <children>
-                              <TextField id="textFieldDiscount" fx:id="textFieldDiscount" prefHeight="25.0" prefWidth="40.0" promptText="0">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                                 <effect>
-                                    <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
-                                 </effect>
-                              </TextField>
-                              <Label text="\%">
-                                 <font>
-                                    <Font name="System Bold" size="14.0" />
-                                 </font>
-                                 <HBox.margin>
-                                    <Insets left="5.0" right="5.0" />
-                                 </HBox.margin>
-                              </Label>
-                           </children>
-                        </HBox>
-                        <Label id="labelDiscountWarning" fx:id="labelDiscountWarning" text="*This field is empty" textFill="RED">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets top="3.0" />
-                           </VBox.margin>
-                        </Label>
-                     </children>
-                     <HBox.margin>
-                        <Insets left="25.0" />
-                     </HBox.margin>
-                  </VBox>
-               </children>
-            </HBox>
-         </children>
-      </VBox>
       <HBox alignment="CENTER_LEFT">
          <children>
             <VBox>
                <children>
-                  <Label id="labelShop" fx:id="labelShop" text="Shop" />
-                  <TextField id="textFieldShop" fx:id="textFieldShop" maxWidth="200.0" minWidth="200.0" prefHeight="20.0" prefWidth="200.0">
+                  <Label id="labelSoftwareName" fx:id="labelSoftwareName" text="Software name">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField id="textFieldSoftwareName" fx:id="textFieldSoftwareName" maxWidth="210.0" minWidth="210.0" prefHeight="20.0" prefWidth="210.0" promptText="Name">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -220,28 +29,38 @@
                         <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
                      </effect>
                   </TextField>
-                  <Label id="labelShopWarning" fx:id="labelShopWarning" text="*This field is empty" textFill="RED">
+                  <Label id="labelSoftwareNameWarning" fx:id="labelSoftwareNameWarning" text="*This field is empty" textFill="RED">
                      <font>
                         <Font size="14.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets top="3.0" />
+                     </VBox.margin>
                   </Label>
                </children>
             </VBox>
             <VBox>
                <children>
-                  <Label id="labelUrl" fx:id="labelUrl" text="URL" />
-                  <TextField id="textFieldUrl" fx:id="textFieldUrl" maxWidth="200.0" minWidth="200.0" prefHeight="20.0" prefWidth="200.0">
+                  <Label id="labelExpirationDate" fx:id="labelExpirationDate" text="Expiration date">
                      <font>
                         <Font size="14.0" />
                      </font>
+                  </Label>
+                  <DatePicker id="datePickerExpirationDate" fx:id="datePickerExpirationDate" maxWidth="210.0" minWidth="210.0" prefHeight="30.0" prefWidth="210.0" promptText="DD/MM/YY">
                      <effect>
                         <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
                      </effect>
-                  </TextField>
-                  <Label id="labelUrlWarning" fx:id="labelUrlWarning" text="*This field is empty" textFill="RED">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </DatePicker>
+                  <Label id="labelExpirationDateWarning" fx:id="labelExpirationDateWarning" text="*This field is empty" textFill="RED">
                      <font>
                         <Font size="14.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets top="3.0" />
+                     </VBox.margin>
                   </Label>
                </children>
                <HBox.margin>
@@ -250,6 +69,142 @@
             </VBox>
          </children>
       </HBox>
+      <VBox>
+         <children>
+            <Label id="labelShop" fx:id="labelShop" text="Shop" />
+            <TextField id="textFieldShop" fx:id="textFieldShop" maxWidth="210.0" minWidth="210.0" prefHeight="20.0" prefWidth="210.0" promptText="Shop">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <effect>
+                  <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
+               </effect>
+            </TextField>
+            <Label id="labelShopWarning" fx:id="labelShopWarning" text="*This field is empty" textFill="RED">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="3.0" />
+               </VBox.margin>
+            </Label>
+         </children>
+      </VBox>
+      <HBox spacing="40.0">
+         <children>
+            <VBox>
+               <children>
+                  <Label id="labelBasePrice" fx:id="labelBasePrice" text="Base price">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField id="textFieldBasePrice" fx:id="textFieldBasePrice" maxWidth="110.0" minWidth="110.0" prefHeight="20.0" prefWidth="110.0" promptText="000.00">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <effect>
+                        <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
+                     </effect>
+                  </TextField>
+                  <Label id="labelBasePriceWarning" fx:id="labelBasePriceWarning" text="*This field is empty" textFill="RED">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="3.0" />
+                     </VBox.margin>
+                  </Label>
+               </children>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </VBox>
+            <VBox>
+               <children>
+                  <Label id="labelDiscountedPrice" fx:id="labelDiscountedPrice" text="Discounted price">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField id="textFieldDiscountedPrice" fx:id="textFieldDiscountedPrice" maxWidth="110.0" minWidth="110.0" prefHeight="20.0" prefWidth="110.0" promptText="000.00">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <effect>
+                        <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
+                     </effect>
+                  </TextField>
+                  <Label id="labelDiscountedPriceWarning" fx:id="labelDiscountedPriceWarning" text="*This field is empty" textFill="RED">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="3.0" />
+                     </VBox.margin>
+                  </Label>
+               </children>
+            </VBox>
+            <VBox>
+               <children>
+                  <Label id="labelDiscount" fx:id="labelDiscount" text="Discount">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="CENTER_LEFT">
+                     <children>
+                        <TextField id="textFieldDiscount" fx:id="textFieldDiscount" prefHeight="25.0" prefWidth="40.0" promptText="0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <effect>
+                              <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
+                           </effect>
+                        </TextField>
+                        <Label text="\%">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="5.0" right="5.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <Label id="labelDiscountWarning" fx:id="labelDiscountWarning" text="*This field is empty" textFill="RED">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="3.0" />
+                     </VBox.margin>
+                  </Label>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <VBox>
+         <children>
+            <Label id="labelUrl" fx:id="labelUrl" text="URL" />
+            <TextField id="textFieldUrl" fx:id="textFieldUrl" maxWidth="355.0" minWidth="300.0" prefHeight="30.0" prefWidth="355.0">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <effect>
+                  <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
+               </effect>
+            </TextField>
+            <Label id="labelUrlWarning" fx:id="labelUrlWarning" text="*This field is empty" textFill="RED">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="3.0" />
+               </VBox.margin>
+            </Label>
+         </children>
+      </VBox>
       <HBox alignment="CENTER" prefHeight="200.0" prefWidth="600.0" spacing="50.0">
          <children>
             <Button id="buttonCancel" fx:id="buttonCancel" cancelButton="true" mnemonicParsing="false" text="Cancel">
