@@ -5,16 +5,29 @@
  */
 package equipo2_crudapp_client.controllers;
 
+import equipo2_crudapp_classes.classes.Software;
+import equipo2_crudapp_classes.classes.User;
+import equipo2_crudapp_client.clients.SoftwareClient;
+import equipo2_crudapp_server.entities.SoftwareType;
+import java.sql.Date;
 import java.time.LocalDate;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import javafx.beans.Observable;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Side;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -22,6 +35,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javax.ws.rs.core.GenericType;
 
 /**
  * This is the controller for the fxml view InsertSoftwareView.
@@ -32,9 +46,15 @@ public class InsertSoftwareViewController {
 
     private static final Logger LOGGER = Logger.getLogger("equipo2_crudapp_client.controllers.InsertSoftwareView");
 
+    private SoftwareClient softwareClient = new SoftwareClient();
+
+    private Set<Software> softwares;
+
     private Stage stage;
 
+    private ContextMenu entriesPopUp;
     private boolean checkedFields;
+    private User user;
 
     /**
      * Image of the new software.
@@ -144,12 +164,15 @@ public class InsertSoftwareViewController {
         Scene scene = new Scene(root);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.setTitle("Create New Software");
         stage.show();
 
+        softwares = softwareClient.findAllSoftwares(new GenericType<Set<Software>>() {});
+
         textFieldParentSoftware.setDisable(true);
         datePickerReleaseDate.setValue(LocalDate.now());
-        
+
         labelSoftwareWarning.setVisible(false);
         labelSoftwareTypeWarning.setVisible(false);
         labelPublisherWarning.setVisible(false);
@@ -158,9 +181,12 @@ public class InsertSoftwareViewController {
         labelDescriptionWarning.setVisible(false);
 
         textFieldSoftwareName.focusedProperty().addListener(this::focusChanged);
+        textFieldParentSoftware.focusedProperty().addListener(this::focusChanged);
         textAreaDescription.focusedProperty().addListener(this::focusChanged);
         textFieldPublisher.focusedProperty().addListener(this::focusChanged);
 
+        textFieldParentSoftware.textProperty().addListener(this::textChanged);
+        
         buttonCancel.setOnAction(this::handleButtonCancelAction);
         buttonAccept.setOnAction(this::handleButtonAcceptAction);
     }
@@ -188,7 +214,7 @@ public class InsertSoftwareViewController {
 
     /**
      * This method handles the action of the Button buttonCancel. It creates an
-     * alert window first to make sure that the user wants to cancel the 
+     * alert window first to make sure that the user wants to cancel the
      * creation of a new software and, if accepted, closes the window.
      *
      * @param event Event triggered.
@@ -196,7 +222,7 @@ public class InsertSoftwareViewController {
     public void handleButtonCancelAction(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to cancel the creation of a new software?");
         alert.showAndWait();
-        
+
         stage.hide();
     }
 
@@ -236,6 +262,22 @@ public class InsertSoftwareViewController {
         }
 
         if (checkedFields) {
+
+            SoftwareClient softwareClient = new SoftwareClient();
+
+            Software software = new Software();
+            software.setName(textFieldSoftwareName.getText());
+            software.setDescription(textAreaDescription.getText());
+            software.setPublisher(textFieldPublisher.getText());
+            software.setSoftwareType(SoftwareType.valueOf(choiceBoxSoftwareType.getValue().toString()));
+            software.setReleaseDate(Date.valueOf(datePickerReleaseDate.getValue()));
+
+            if (software.getSoftwareType().equals(SoftwareType.EXTENSION)) {
+                software.setParentSoftware(softwares.stream().filter(sw -> sw.getName().equals(textFieldParentSoftware.getText())).findFirst().get());
+            }
+
+            softwareClient.close();
+
             stage.hide();
         }
     }
@@ -282,7 +324,7 @@ public class InsertSoftwareViewController {
                 checkedFields = false;
             }
         }
-        
+
         if (datePickerReleaseDate.getValue().isBefore(LocalDate.now().plusDays(1))) {
             labelReleaseDateWarning.setVisible(false);
         } else {
@@ -292,6 +334,68 @@ public class InsertSoftwareViewController {
         }
     }
 
+    /**
+     * Event triggered when the text of the textFieldParentSoftware is changed. 
+     * It uses a list containing all the softwares from the database to create a 
+     * pop up menu with name suggestions.
+     * 
+     * @param observable 
+     */
+    private void textChanged(Observable observable) {
+            String enteredText = textFieldParentSoftware.getText();
+            if (enteredText == null || enteredText.isEmpty()) {
+                entriesPopUp.hide();
+            } else {
+                List<String> filteredEntries = softwares.stream()
+                        .filter(sw -> sw.getName().toLowerCase().contains(enteredText.toLowerCase()))
+                        .map(sw -> sw.getName())
+                        .collect(Collectors.toList());
+                if (!filteredEntries.isEmpty()) {
+                    fillPopUp(filteredEntries);
+                    if (!entriesPopUp.isShowing()) {
+                        entriesPopUp.show(textFieldParentSoftware, Side.BOTTOM, 0, 0);
+                    }
+                } else {
+                    entriesPopUp.hide();
+                }
+            }
+        }
+
+    /**
+     * This method receives all suggestions found and fills the pop up with them.
+     * 
+     * @param filteredEntries 
+     */
+    private void fillPopUp(List<String> filteredEntries) {
+        List<CustomMenuItem> menuItems = new LinkedList<>();
+        int maxEntries = 10;
+        int count = Math.min(filteredEntries.size(), maxEntries);
+        for (int i = 0; i < count; i++) {
+            final String result = filteredEntries.get(i);
+            Label entryLabel = new Label();
+            CustomMenuItem item = new CustomMenuItem(entryLabel, true);
+            menuItems.add(item);
+
+            item.setOnAction(event -> {
+                textFieldParentSoftware.setText(result);
+                textFieldParentSoftware.positionCaret(result.length());
+                entriesPopUp.hide();
+            });
+        }
+          
+        entriesPopUp.getItems().clear();
+        entriesPopUp.getItems().addAll(menuItems);
+    }
+    
+    /**
+     * This method sets the user.
+     * 
+     * @param user User to be set.
+     */
+    public void setUser(User user) {
+        this.user = user;
+    }
+    
     /**
      * This method sets the stage.
      *

@@ -2,7 +2,7 @@
     -fx-base: #323232;
 	-fx-color: derive(-fx-base, 10%);
     -fx-control-inner-background: #191919;
-    -fx-background-color: linear-gradient(#323232 45%, #4c4c4c 80%);
+    -fx-background-color: linear-gradient(#191919 5%, #323232 45%, #4c4c4c 70%);
     -fx-padding: 5;
 	-fx-border-color: #191919;
 	-fx-border-width: 1;
@@ -12,13 +12,13 @@
     -fx-font-size: 12pt;
     -fx-font-family: "System";
     -fx-alignment: center-left;
-	-fx-background-color: linear-gradient( #323232 55%, #191919 85%, #323232 95%);
+	-fx-background-color: #191919;
 	-fx-padding: 0 0 0 10;
 }
 
 .table-view .column-header, .table-view .filler {
     -fx-size: 35;
-    -fx-background-color: #323232;
+    -fx-background-color: #191919;
 }
 
 .table-row-cell:even {
