@@ -183,7 +183,15 @@ public class GenericSideBarController {
      * @param event The action event
      */
     public void handleButtonViewWishlistAction(ActionEvent event){
-        
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/WishListView.fxml"));
+            Parent root = (Parent) loader.load();
+            WishListViewController controller = ((WishListViewController) loader.getController());
+            controller.setStage(new Stage());
+            controller.initStage(root);
+        } catch (IOException ex) {
+            LOGGER.severe(ex.getMessage());
+        }
     }
     
     /**
