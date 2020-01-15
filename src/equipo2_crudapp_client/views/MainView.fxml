@@ -131,11 +131,6 @@
             <RowConstraints maxHeight="327.0" minHeight="10.0" prefHeight="45.0" valignment="TOP" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Label id="labelOfertapps" fx:id="labelOfertapps" text="OfertAPPs" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-            </Label>
             <Button id="buttonLogOut" fx:id="buttonLogOut" cancelButton="true" minWidth="50.0" mnemonicParsing="false" text="Log Out" GridPane.rowIndex="3">
                <cursor>
                   <Cursor fx:constant="HAND" />
@@ -214,6 +209,14 @@
                   </Button>
                </children>
             </VBox>
+            <Label id="labelOfertAPPs" fx:id="labelOfertAPPs" accessibleRole="HYPERLINK" text="OfertAPPs" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Label>
          </children>
       </GridPane>
    </children>

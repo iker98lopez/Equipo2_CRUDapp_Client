@@ -14,6 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -21,10 +22,10 @@ import javafx.stage.WindowEvent;
  * Controller for the side bar of the application
  * @author Diego Corral
  */
-public class SideBarViewController {
+public class GenericSideBarController {
     
     /**
-     * Logger for the SideBarViewController
+     * Logger for GenericSideBarController class
      */
     private static final Logger LOGGER = Logger.getLogger("equipo2_crudapp_client.controllers.SideBarViewController");
     
@@ -87,8 +88,11 @@ public class SideBarViewController {
     @FXML
     protected Button buttonLogOut;
     
+    @FXML
+    protected Label labelOfertAPPs;
+    
     /**
-     * Method that initializes the SideBarViewController stage and shows its 
+     * Method that initializes the GenericSideBarController stage and shows its 
      * view.
      * @param root Root to assign to the scene
      */
@@ -102,6 +106,7 @@ public class SideBarViewController {
         buttonViewWishlist.setOnAction(this::handleButtonViewWishlistAction);
         buttonViewUser.setOnAction(this::handleButtonViewUserAction);
         buttonLogOut.setOnAction(this::handleButtonLogOutAction);
+        labelOfertAPPs.setOnMouseClicked(this::handleLabelOfertAPPsMouseClick);
         stage.setOnShowing(this::windowShowing);
     }
     
@@ -180,6 +185,23 @@ public class SideBarViewController {
     }
     
     /**
+     * Handles the mouse clicking event of labelOfertAPPs
+     * @param event 
+     */
+    public void handleLabelOfertAPPsMouseClick(MouseEvent event){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/MainView.fxml"));
+            Parent root = (Parent) loader.load();
+            MainViewController controller = ((MainViewController) loader.getController());
+            //controller.setUser(user);
+            controller.initStage(root);
+            stage.hide();
+        } catch (IOException ex) {
+            LOGGER.severe(ex.getMessage());
+        }
+    }
+    
+    /**
      * Handles the action event of buttonLogOut
      * @param event The action event
      */
@@ -187,7 +209,7 @@ public class SideBarViewController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/SignInView.fxml"));
             Parent root = (Parent) loader.load();
-            SignInController controller = ((SignInController) loader.getController());
+            SignInViewController controller = ((SignInViewController) loader.getController());
             controller.setStage(new Stage());
             controller.initStage(root);
             stage.hide();

@@ -11,13 +11,22 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- *
+ * Controller for the user view
  * @author Diego Corral
  */
-public class UserViewController extends SideBarViewController{
+public class UserViewController extends GenericSideBarController{
     
+    /**
+     * Logger for UserViewController class
+     */
     private static final Logger LOGGER = Logger.getLogger("equipo2_crudapp_client.controllers.UserViewController");
     
+    private boolean checkedSyntax;
+    
+    /**
+     * Scene of the controller
+     */
+    private Scene scene;
     
     /**
      * This method initializes the stage and shows the window, sets the
@@ -29,10 +38,26 @@ public class UserViewController extends SideBarViewController{
     public void initStage(Parent root) {
 
         super.initStage(root);
-        Scene scene = new Scene(root);
+        scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("User");
         stage.show();
+
+    }
+    
+    /**
+     * This method checks the syntax of the field received.
+     */
+    private void syntaxCheck() {
+
+        
+    }
+    
+    /**
+     * This method checks if there's any empty field before sending SingUp
+     */
+    private void emptyFieldsCheck() {
+        final String EMPTY_WARNING = "*This field is empty";
 
     }
     

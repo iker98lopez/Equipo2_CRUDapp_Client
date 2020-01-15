@@ -23,15 +23,24 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 /**
- *
+ * Controller for the sign in view
  * @author Diego Corral
  */
-public class SignInController {
+public class SignInViewController {
     
+    /**
+     * Logger for SignInViewController class
+     */
     private static final Logger LOGGER = Logger.getLogger("equipo2_crudapp_client.controllers.SignInController");
     
+    /**
+     * Stage of the controller
+     */
     private Stage stage;
     
+    /**
+     * 
+     */
     private boolean checkedSyntax;
     
     @FXML
