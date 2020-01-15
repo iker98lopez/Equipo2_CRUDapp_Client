@@ -31,7 +31,7 @@ public class SignInViewController {
     /**
      * Logger for SignInViewController class
      */
-    private static final Logger LOGGER = Logger.getLogger("equipo2_crudapp_client.controllers.SignInController");
+    private static final Logger LOGGER = Logger.getLogger("equipo2_crudapp_client.controllers.SignInViewController");
     
     /**
      * Stage of the controller
@@ -39,7 +39,7 @@ public class SignInViewController {
     private Stage stage;
     
     /**
-     * 
+     * If true the syntax is correct, if false there's an error with the syntax
      */
     private boolean checkedSyntax;
     
@@ -63,6 +63,15 @@ public class SignInViewController {
     private Button buttonExit;
     @FXML
     private Hyperlink hyperLinkForgotPassword;
+    
+    /**
+     * This method sets the stage
+     *
+     * @param stage Stage to be set
+     */
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
     
     /**
      * This method initializes the stage and shows the window, sets the
@@ -293,15 +302,4 @@ public class SignInViewController {
             syntaxCheck();
         }
     }
-    
-    
-    /**
-     * This method sets the stage
-     *
-     * @param stage Stage to be set
-     */
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-    
 }

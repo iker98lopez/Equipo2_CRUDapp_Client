@@ -28,7 +28,7 @@
       </TableView>
       <HBox prefHeight="190.0" prefWidth="700.0">
          <children>
-            <Label id="labelShopName" fx:id="labelShopName" prefWidth="80.0" text="Shop Name:">
+            <Label id="labelShopName" fx:id="labelShopName" prefWidth="80.0" text="Shop Name:" textFill="WHITE">
                <font>
                   <Font size="14.0" />
                </font>
@@ -36,17 +36,19 @@
                   <Insets left="30.0" top="30.0" />
                </HBox.margin>
             </Label>
-            <TextField id="textFieldShopName" fx:id="textFieldShopName">
-               <HBox.margin>
-                  <Insets top="27.0" />
-               </HBox.margin>
-               <font>
-                  <Font size="14.0" />
-               </font>
-               <effect>
-                  <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
-               </effect>
-            </TextField>
+            <VBox alignment="CENTER" prefHeight="73.0" prefWidth="150.0">
+               <children>
+                  <TextField id="textFieldShopName" fx:id="textFieldShopName" prefHeight="30.0" prefWidth="133.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <effect>
+                        <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
+                     </effect>
+                  </TextField>
+                  <Label prefHeight="18.0" prefWidth="148.0" text="Label" textFill="#ea0303" />
+               </children>
+            </VBox>
             <Button id="buttonFilter" fx:id="buttonFilter" mnemonicParsing="false" text="Filter">
                <HBox.margin>
                   <Insets left="10.0" top="27.0" />

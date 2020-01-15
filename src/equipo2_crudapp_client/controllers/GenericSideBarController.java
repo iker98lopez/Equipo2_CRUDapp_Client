@@ -88,8 +88,27 @@ public class GenericSideBarController {
     @FXML
     protected Button buttonLogOut;
     
+    /**
+     * Shows the application name. If clicked sends the user to the main view
+     */
     @FXML
     protected Label labelOfertAPPs;
+    
+    /**
+     * Sets the stage
+     * @param stage The stage to set
+     */
+    public void setStage(Stage stage){
+        this.stage = stage;
+    }
+    
+    /**
+     * Sets the user logged in the application
+     * @param user The user logged in
+     */
+    public void setUser(User user){
+        this.user = user;
+    }
     
     /**
      * Method that initializes the GenericSideBarController stage and shows its 
@@ -217,22 +236,4 @@ public class GenericSideBarController {
             LOGGER.severe(ex.getMessage());
         }
     }
-    
-    /**
-     * Sets the stage
-     * @param stage The stage to set
-     */
-    public void setStage(Stage stage){
-        this.stage = stage;
-    }
-    
-    /**
-     * Sets the user logged in the application
-     * @param user The user logged in
-     */
-    public void setUser(User user){
-        this.user = user;
-    }
-    
-    
 }

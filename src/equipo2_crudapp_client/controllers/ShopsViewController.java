@@ -42,6 +42,14 @@ public class ShopsViewController{
     private Button buttonClose;
     
     /**
+     * This method sets the stage
+     * @param stage Stage to be set
+     */
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+    
+    /**
      * This method initializes the stage and shows the window, sets the
      * visibility of the components and assigns the listeners.
      * @param root Root to assign to the scene
@@ -64,13 +72,5 @@ public class ShopsViewController{
      */
     public void handleButtonCloseAction(ActionEvent event){
         stage.hide();
-    }
-    
-    /**
-     * This method sets the stage
-     * @param stage Stage to be set
-     */
-    public void setStage(Stage stage) {
-        this.stage = stage;
     }
 }

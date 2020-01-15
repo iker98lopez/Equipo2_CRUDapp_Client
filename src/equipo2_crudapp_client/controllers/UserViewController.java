@@ -21,12 +21,19 @@ public class UserViewController extends GenericSideBarController{
      */
     private static final Logger LOGGER = Logger.getLogger("equipo2_crudapp_client.controllers.UserViewController");
     
-    private boolean checkedSyntax;
-    
     /**
      * Scene of the controller
      */
     private Scene scene;
+    
+    /**
+     * This method sets the stage
+     *
+     * @param stage Stage to be set
+     */
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
     
     /**
      * This method initializes the stage and shows the window, sets the
@@ -46,28 +53,44 @@ public class UserViewController extends GenericSideBarController{
     }
     
     /**
-     * This method checks the syntax of the field received.
+     * Checks the syntax of the user's data fields.
+     * @return true if corret, otherwise false.
      */
-    private void syntaxCheck() {
-
+    private boolean syntaxCheckUserData() {
+        boolean ret = false;
         
+        return ret;
     }
     
     /**
-     * This method checks if there's any empty field before sending SingUp
+     * Checks the syntax of the forgot password fields.
+     * @return true if correct, otherwise false.
      */
-    private void emptyFieldsCheck() {
+    private boolean syntaxCheckForgotPassword(){
+        boolean ret = false;
+        
+        return ret;
+    }
+    
+    /**
+     * Checks if there's any empty field on the user's data fields.
+     * @return true if correct, otherwise false.
+     */
+    private boolean emptyFieldsCheckUserData() {
+        boolean ret = false;
         final String EMPTY_WARNING = "*This field is empty";
-
+        
+        return ret;
     }
     
     /**
-     * This method sets the stage
-     *
-     * @param stage Stage to be set
+     * Checks if there's any empty field on the forgot password fields.
+     * @return true if correct, otherwise false.
      */
-    public void setStage(Stage stage) {
-        this.stage = stage;
+    private boolean emptyFieldsCheckForgotPassword(){
+        boolean ret = false;
+        
+        return ret;
     }
     
 }
