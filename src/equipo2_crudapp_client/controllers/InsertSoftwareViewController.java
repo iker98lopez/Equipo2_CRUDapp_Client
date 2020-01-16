@@ -8,7 +8,7 @@ package equipo2_crudapp_client.controllers;
 import equipo2_crudapp_classes.classes.Software;
 import equipo2_crudapp_client.clients.SoftwareClient;
 import equipo2_crudapp_server.entities.SoftwareType;
-import java.sql.Date;
+import java.util.Date;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -50,14 +50,35 @@ import javax.ws.rs.core.GenericType;
  */
 public class InsertSoftwareViewController {
 
+    /**
+     * Logger to show error messages and exceptions.
+     */
     private static final Logger LOGGER = Logger.getLogger("equipo2_crudapp_client.controllers.InsertSoftwareView");
 
-    private SoftwareClient softwareClient = new SoftwareClient();
-
+    /**
+     * Stage of the controller InsertSoftwareViewController
+     */
     private Stage stage;
 
+    /**
+     * Instance of the client manager for the entity Software.
+     */
+    private SoftwareClient softwareClient = new SoftwareClient();
+
+    /**
+     * Set of type software to contain every software received from the server.
+     */
     private Set<Software> softwares = new HashSet<Software>();
+
+    /**
+     * Context menu to show suggestions when the user starts writing the name of
+     * the parent software.
+     */
     private ContextMenu entriesPopUp = new ContextMenu();
+
+    /**
+     * Boolean to check the validity of the text of the fields.
+     */
     private boolean checkedFields;
 
     /**
@@ -153,7 +174,7 @@ public class InsertSoftwareViewController {
 
     /**
      * Button to check the validity of the fields and, if correct, create a new
-     * software. It will prompt a message asking for confirmation before 
+     * software. It will prompt a message asking for confirmation before
      * creating the new offer and closing the window.
      */
     @FXML
@@ -175,7 +196,7 @@ public class InsertSoftwareViewController {
         stage.show();
 
         softwares = softwareClient.findAllSoftwares(new GenericType<Set<Software>>() {});
-        
+
         textFieldParentSoftware.setDisable(true);
         datePickerReleaseDate.setValue(LocalDate.now());
 
@@ -192,9 +213,9 @@ public class InsertSoftwareViewController {
         textFieldPublisher.focusedProperty().addListener(this::focusChanged);
 
         textFieldParentSoftware.textProperty().addListener(this::popUpSuggestions);
-        
+
         choiceBoxSoftwareType.valueProperty().addListener(this::valueChanged);
-        
+
         buttonCancel.setOnAction(this::handleButtonCancelAction);
         buttonAccept.setOnAction(this::handleButtonAcceptAction);
     }
@@ -207,9 +228,9 @@ public class InsertSoftwareViewController {
      * @param focused if false means out of focus.
      */
     private void focusChanged(ObservableValue observable, Boolean oldValue, Boolean focused) {
-        
+
         entriesPopUp.hide();
-        
+
         if (!focused) {
             textFieldSoftwareName.setText(textFieldSoftwareName.getText().trim());
             textFieldPublisher.setText(textFieldPublisher.getText().trim());
@@ -275,18 +296,18 @@ public class InsertSoftwareViewController {
         }
 
         if (checkedFields) {
-            
+
             Software software = new Software();
             software.setName(textFieldSoftwareName.getText());
             software.setDescription(textAreaDescription.getText());
             software.setPublisher(textFieldPublisher.getText());
             software.setSoftwareType(SoftwareType.valueOf(choiceBoxSoftwareType.getValue().toString()));
-            software.setReleaseDate(Date.valueOf(datePickerReleaseDate.getValue()));
+            software.setReleaseDate(new Date(datePickerReleaseDate.getValue().toEpochDay()));
 
             if (software.getSoftwareType().equals(SoftwareType.EXTENSION)) {
                 software.setParentSoftware(softwares.stream().filter(sw -> sw.getName().equals(textFieldParentSoftware.getText())).findFirst().get());
             }
-            
+
             softwareClient.createSoftware(software);
 
             stage.hide();
@@ -342,36 +363,37 @@ public class InsertSoftwareViewController {
     }
 
     /**
-     * Event triggered when the text of the textFieldParentSoftware is changed. 
-     * It uses a list containing all the softwares from the database to create a 
-     * pop up menu with name suggestions.
-     * 
-     * @param observable 
+     * Event triggered when the text of the textFieldSoftwareName or 
+     * textFieldShop is changed. It uses a list containing all the softwares 
+     * from the database to create a pop up menu with name suggestions.
+     *
+     * @param observable
      */
     private void popUpSuggestions(Observable observable) {
-            String enteredText = textFieldParentSoftware.getText();
-            if (enteredText == null || enteredText.isEmpty()) {
-                entriesPopUp.hide();
-            } else {
-                List<String> filteredEntries = softwares.stream()
-                        .filter(sw -> sw.getName().toLowerCase().contains(enteredText.toLowerCase()))
-                        .map(sw -> sw.getName())
-                        .collect(Collectors.toList());
-                if (!filteredEntries.isEmpty()) {
-                    fillPopUp(filteredEntries, enteredText);
-                    if (!entriesPopUp.isShowing()) {
-                        entriesPopUp.show(textFieldParentSoftware, Side.BOTTOM, 0, 0);
-                    }
-                } else {
-                    entriesPopUp.hide();
+        String enteredText = textFieldParentSoftware.getText();
+        if (enteredText == null || enteredText.isEmpty()) {
+            entriesPopUp.hide();
+        } else {
+            List<String> filteredEntries = softwares.stream()
+                    .filter(sw -> sw.getName().toLowerCase().contains(enteredText.toLowerCase()))
+                    .map(sw -> sw.getName())
+                    .collect(Collectors.toList());
+            if (!filteredEntries.isEmpty()) {
+                fillPopUp(filteredEntries, enteredText);
+                if (!entriesPopUp.isShowing()) {
+                    entriesPopUp.show(textFieldParentSoftware, Side.BOTTOM, 0, 0);
                 }
+            } else {
+                entriesPopUp.hide();
             }
         }
+    }
 
     /**
-     * This method receives all suggestions found and fills the pop up with them.
-     * 
-     * @param filteredEntries 
+     * This method receives all suggestions found and fills the pop up with
+     * them.
+     *
+     * @param filteredEntries
      */
     private void fillPopUp(List<String> filteredEntries, String enteredText) {
         List<CustomMenuItem> menuItems = new LinkedList<>();
@@ -380,16 +402,16 @@ public class InsertSoftwareViewController {
         for (int i = 0; i < count; i++) {
             final String result = filteredEntries.get(i);
             Label entryLabel = new Label();
-            
+
             int filterIndex = result.toLowerCase().indexOf(enteredText.toLowerCase());
             Text textBefore = new Text(result.substring(0, filterIndex));
             Text textAfter = new Text(result.substring(filterIndex + enteredText.length()));
-            Text textFilter = new Text(result.substring(filterIndex,  filterIndex + enteredText.length())); //instead of "filter" to keep all "case sensitive"
+            Text textFilter = new Text(result.substring(filterIndex, filterIndex + enteredText.length())); //instead of "filter" to keep all "case sensitive"
             textFilter.setFill(Color.ORANGE);
-            textFilter.setFont(Font.font("Helvetica", FontWeight.BOLD, 14));  
+            textFilter.setFont(Font.font("Helvetica", FontWeight.BOLD, 14));
             TextFlow textFlow = new TextFlow(textBefore, textFilter, textAfter);
-            
-            entryLabel.setGraphic(textFlow); 
+
+            entryLabel.setGraphic(textFlow);
             entryLabel.setPrefHeight(10);
             CustomMenuItem item = new CustomMenuItem(entryLabel, true);
             menuItems.add(item);
@@ -400,11 +422,18 @@ public class InsertSoftwareViewController {
                 entriesPopUp.hide();
             });
         }
-          
+
         entriesPopUp.getItems().clear();
         entriesPopUp.getItems().addAll(menuItems);
     }
-    
+
+    /**
+     * Event handler for the change of the value of choiceBoxSoftwareType. It
+     * disables textFieldParentSoftware when the software type is extension or
+     * enables it if not.
+     *
+     * @param observable
+     */
     private void valueChanged(Observable observable) {
         if (choiceBoxSoftwareType.getValue().equals("Extension")) {
             textFieldParentSoftware.setDisable(false);
@@ -413,7 +442,7 @@ public class InsertSoftwareViewController {
             textFieldParentSoftware.setDisable(true);
         }
     }
-    
+
     /**
      * This method sets the stage.
      *
