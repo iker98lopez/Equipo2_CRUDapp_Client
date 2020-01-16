@@ -215,8 +215,7 @@ public class InsertOfferViewController {
             software.setName("software " + i);
             softwares.add(software);
             
-            shop = new Shop();
-            shop.setName("shop " + i);
+            shop = new Shop(i, "shop" + i, "url");
             shops.add(shop);
         }
         
@@ -241,6 +240,9 @@ public class InsertOfferViewController {
         textFieldSoftwareName.textProperty().addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                
+                labelSoftwareNameWarning.setVisible(false);
+                
                 String enteredText = textFieldSoftwareName.getText();
                 if (enteredText == null || enteredText.isEmpty()) {
                     entriesPopUp.hide();
@@ -263,23 +265,53 @@ public class InsertOfferViewController {
         textFieldShop.textProperty().addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                
+                labelShopWarning.setVisible(false);
+                
                 String enteredText = textFieldShop.getText();
                 if (enteredText == null || enteredText.isEmpty()) {
                     entriesPopUp.hide();
                 } else {
-                    List<String> filteredEntries = softwares.stream()
-                            .filter(sw -> sw.getName().toLowerCase().contains(enteredText.toLowerCase()))
-                            .map(sw -> sw.getName())
+                    List<String> filteredEntries = shops.stream()
+                            .filter(shop -> shop.getName().toLowerCase().contains(enteredText.toLowerCase()))
+                            .map(shop -> shop.getName())
                             .collect(Collectors.toList());
                     if (!filteredEntries.isEmpty()) {
                         fillPopUp(filteredEntries, enteredText, textFieldShop);
                         if (!entriesPopUp.isShowing()) {
-                            entriesPopUp.show(textFieldSoftwareName, Side.BOTTOM, 0, 0);
+                            entriesPopUp.show(textFieldShop, Side.BOTTOM, 0, 0);
                         }
                     } else {
                         entriesPopUp.hide();
                     }
                 }
+            }
+        });
+        textFieldBasePrice.textProperty().addListener(new ChangeListener<String>() {
+
+            @Override
+            public void changed(ObservableValue<? extends String> observable,
+                    String oldValue, String newValue) {
+
+                labelBasePriceWarning.setVisible(false);
+            }
+        });
+        textFieldDiscountedPrice.textProperty().addListener(new ChangeListener<String>() {
+
+            @Override
+            public void changed(ObservableValue<? extends String> observable,
+                    String oldValue, String newValue) {
+
+                labelDiscountedPriceWarning.setVisible(false);
+            }
+        });
+        textFieldDiscount.textProperty().addListener(new ChangeListener<String>() {
+
+            @Override
+            public void changed(ObservableValue<? extends String> observable,
+                    String oldValue, String newValue) {
+
+                labelDiscountWarning.setVisible(false);
             }
         });
     }
@@ -291,7 +323,7 @@ public class InsertOfferViewController {
         if (!textFieldSoftwareName.isDisabled()) {
             if (softwares.stream().anyMatch(sw -> sw.getName().equalsIgnoreCase(textFieldSoftwareName.getText()))) {
                 labelSoftwareNameWarning.setVisible(false);
-            } else {
+            } else if (!textFieldSoftwareName.getText().equals("")) {
                 labelSoftwareNameWarning.setVisible(true);
                 labelSoftwareNameWarning.setText("*Software does not exist");
                 checkedFields = false;
@@ -306,14 +338,12 @@ public class InsertOfferViewController {
             checkedFields = false;
         }
 
-        if (!textFieldShop.isDisabled()) {
-            if (shops.stream().anyMatch(sw -> sw.getName().equalsIgnoreCase(textFieldShop.getText()))) {
-                labelShopWarning.setVisible(false);
-            } else {
-                labelShopWarning.setVisible(true);
-                labelShopWarning.setText("*Shop does not exist");
-                checkedFields = false;
-            }
+        if (shops.stream().anyMatch(sw -> sw.getName().equalsIgnoreCase(textFieldShop.getText()))) {
+            labelShopWarning.setVisible(false);
+        } else if (!textFieldShop.getText().equals("")){
+            labelShopWarning.setVisible(true);
+            labelShopWarning.setText("*Shop does not exist");
+            checkedFields = false;
         }
 
         if (textFieldBasePrice.getText().matches("^[0-9]{1,3}([,.][0-9]{1,2})?$")) {
@@ -403,6 +433,8 @@ public class InsertOfferViewController {
 
         if (!focused) {
             textFieldSoftwareName.setText(textFieldSoftwareName.getText().trim());
+            textFieldShop.setText(textFieldShop.getText().trim());
+            textFieldUrl.setText(textFieldUrl.getText().trim());
         }
 
         checkFields();
