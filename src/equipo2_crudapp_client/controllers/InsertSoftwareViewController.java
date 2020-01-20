@@ -7,7 +7,7 @@ package equipo2_crudapp_client.controllers;
 
 import equipo2_crudapp_classes.classes.Software;
 import equipo2_crudapp_client.clients.SoftwareClient;
-import equipo2_crudapp_server.entities.SoftwareType;
+import equipo2_crudapp_classes.enumerators.SoftwareType;
 import java.util.Date;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -17,6 +17,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javafx.beans.Observable;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -41,6 +42,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.GenericType;
 
 /**
@@ -63,7 +65,7 @@ public class InsertSoftwareViewController {
     /**
      * Instance of the client manager for the entity Software.
      */
-    private SoftwareClient softwareClient = new SoftwareClient();
+    private final SoftwareClient SOFTWARECLIENT = new SoftwareClient();
 
     /**
      * Set of type software to contain every software received from the server.
@@ -195,8 +197,12 @@ public class InsertSoftwareViewController {
         stage.setTitle("Create New Software");
         stage.show();
 
-        softwares = softwareClient.findAllSoftwares(new GenericType<Set<Software>>() {});
-
+        try{
+            softwares = SOFTWARECLIENT.findAllSoftwares(new GenericType<Set<Software>>() {});
+        } catch (NotFoundException exception) {
+            LOGGER.warning("There are no softwares to be found. " + exception.getMessage());
+        }    
+        
         textFieldParentSoftware.setDisable(true);
         datePickerReleaseDate.setValue(LocalDate.now());
 
@@ -206,6 +212,11 @@ public class InsertSoftwareViewController {
         labelParentSoftwareWarning.setVisible(false);
         labelReleaseDateWarning.setVisible(false);
         labelDescriptionWarning.setVisible(false);
+        
+        choiceBoxSoftwareType.getItems().add(SoftwareType.PROGRAM);
+        choiceBoxSoftwareType.getItems().add(SoftwareType.GAME);
+        choiceBoxSoftwareType.getItems().add(SoftwareType.EXTENSION);
+        choiceBoxSoftwareType.getSelectionModel().selectFirst();
 
         textFieldSoftwareName.focusedProperty().addListener(this::focusChanged);
         textFieldParentSoftware.focusedProperty().addListener(this::focusChanged);
@@ -218,6 +229,43 @@ public class InsertSoftwareViewController {
 
         buttonCancel.setOnAction(this::handleButtonCancelAction);
         buttonAccept.setOnAction(this::handleButtonAcceptAction);
+        
+        textFieldSoftwareName.textProperty().addListener(new ChangeListener<String>() {
+
+            @Override
+            public void changed(ObservableValue<? extends String> observable,
+                    String oldValue, String newValue) {
+
+                labelSoftwareNameWarning.setVisible(false);
+            }
+        });
+        textFieldPublisher.textProperty().addListener(new ChangeListener<String>() {
+
+            @Override
+            public void changed(ObservableValue<? extends String> observable,
+                    String oldValue, String newValue) {
+
+                labelPublisherWarning.setVisible(false);
+            }
+        });
+        textFieldParentSoftware.textProperty().addListener(new ChangeListener<String>() {
+
+            @Override
+            public void changed(ObservableValue<? extends String> observable,
+                    String oldValue, String newValue) {
+
+                labelParentSoftwareWarning.setVisible(false);
+            }
+        });
+        textAreaDescription.textProperty().addListener(new ChangeListener<String>() {
+
+            @Override
+            public void changed(ObservableValue<? extends String> observable,
+                    String oldValue, String newValue) {
+
+                labelDescriptionWarning.setVisible(false);
+            }
+        });
     }
 
     /**
@@ -308,7 +356,7 @@ public class InsertSoftwareViewController {
                 software.setParentSoftware(softwares.stream().filter(sw -> sw.getName().equals(textFieldParentSoftware.getText())).findFirst().get());
             }
 
-            softwareClient.createSoftware(software);
+            SOFTWARECLIENT.createSoftware(software);
 
             stage.hide();
         }
@@ -363,8 +411,8 @@ public class InsertSoftwareViewController {
     }
 
     /**
-     * Event triggered when the text of the textFieldSoftwareName or 
-     * textFieldShop is changed. It uses a list containing all the softwares 
+     * Event triggered when the text of the textFieldSoftwareName or
+     * textFieldShop is changed. It uses a list containing all the softwares
      * from the database to create a pop up menu with name suggestions.
      *
      * @param observable
@@ -435,7 +483,7 @@ public class InsertSoftwareViewController {
      * @param observable
      */
     private void valueChanged(Observable observable) {
-        if (choiceBoxSoftwareType.getValue().equals("Extension")) {
+        if (choiceBoxSoftwareType.getValue().equals(SoftwareType.EXTENSION)) {
             textFieldParentSoftware.setDisable(false);
         } else {
             textFieldParentSoftware.setText("");

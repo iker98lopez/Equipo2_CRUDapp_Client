@@ -5,11 +5,14 @@
  */
 package equipo2_crudapp_client.controllers;
 
+import equipo2_crudapp_classes.classes.Offer;
 import equipo2_crudapp_classes.classes.Shop;
 import equipo2_crudapp_classes.classes.Software;
+import equipo2_crudapp_client.clients.OfferClient;
 import equipo2_crudapp_client.clients.ShopClient;
 import equipo2_crudapp_client.clients.SoftwareClient;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,11 +21,14 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Side;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.DatePicker;
@@ -35,6 +41,8 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javax.ws.rs.NotFoundException;
+import javax.ws.rs.core.GenericType;
 
 /**
  * This is the controller for the fxml view InsertOfferView.
@@ -54,9 +62,14 @@ public class InsertOfferViewController {
     private Stage stage;
 
     /**
+     * Instance of the client manager for the entity Offer.
+     */
+    private final OfferClient OFFERCLIENT = new OfferClient();
+    
+    /**
      * Instance of the client manager for the entity Software.
      */
-    private SoftwareClient softwareClient = new SoftwareClient();
+    private final SoftwareClient SOFTWARECLIENT = new SoftwareClient();
 
     /**
      * Set of type software to contain every software received from the server.
@@ -66,7 +79,7 @@ public class InsertOfferViewController {
     /**
      * Instance of the client manager for the entity Shop.
      */
-    private ShopClient shopClient = new ShopClient();
+    private final ShopClient SHOPCLIENT = new ShopClient();
 
     /**
      * Set of type shop to contain every shop received from the server.
@@ -205,8 +218,12 @@ public class InsertOfferViewController {
         stage.setTitle("Create New Offer");
         stage.show();
 
-        //softwares = softwareClient.findAllSoftwares(new GenericType<Set<Software>>() {});
-        //shops = shopClient.findAllShops(new GenericType<Set<Shop>>() {};
+        try {
+            softwares = SOFTWARECLIENT.findAllSoftwares(new GenericType<Set<Software>>() {});
+            shops = SHOPCLIENT.findAllShops(new GenericType<Set<Shop>>() {});
+        } catch(NotFoundException exception) {
+            LOGGER.warning("Ther was a problem fetching information from the server. " + exception.getMessage());
+        }
         
         Software software;
         Shop shop;
@@ -229,6 +246,9 @@ public class InsertOfferViewController {
         labelDiscountWarning.setVisible(false);
         labelUrlWarning.setVisible(false);
 
+        buttonCancel.setOnAction(this::handleButtonCancelAction);
+        buttonAccept.setOnAction(this::handleButtonAcceptAction);
+        
         textFieldSoftwareName.focusedProperty().addListener(this::focusChanged);
         textFieldShop.focusedProperty().addListener(this::focusChanged);
         datePickerExpirationDate.focusedProperty().addListener(this::focusChanged);
@@ -440,6 +460,79 @@ public class InsertOfferViewController {
         checkFields();
     }
 
+    /**
+     * This method handles the action of the Button buttonCancel. It creates an
+     * alert window first to make sure that the user wants to cancel the
+     * creation of a new software and, if accepted, closes the window.
+     *
+     * @param event Event triggered.
+     */
+    public void handleButtonCancelAction(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to cancel the creation of a new offer?");
+        alert.showAndWait();
+
+        if (alert.getResult() == ButtonType.OK) {
+            stage.hide();
+        }
+    }
+
+    /**
+     * This method handles the action of the Button buttonAccept. It fires the
+     * method checkFields() first and then makes sure that there are no empty
+     * fields, then it creates the new software and closes the window.
+     *
+     * @param event Event triggered.
+     */
+    public void handleButtonAcceptAction(ActionEvent event) {
+
+        checkFields();
+
+        if (textFieldSoftwareName.getText().equals("")) {
+            checkedFields = false;
+            labelSoftwareNameWarning.setVisible(true);
+            labelSoftwareNameWarning.setText("*This field is empty");
+        }
+
+        if (textFieldShop.getText().equals("")) {
+            checkedFields = false;
+            labelShopWarning.setVisible(true);
+            labelShopWarning.setText("*This field is empty");
+        }
+
+        if (textFieldBasePrice.getText().equals("")) {
+            checkedFields = false;
+            labelBasePriceWarning.setVisible(true);
+            labelBasePriceWarning.setText("*This field is empty");
+        }
+        
+        if (textFieldDiscountedPrice.getText().equals("")) {
+            checkedFields = false;
+            labelDiscountedPriceWarning.setVisible(true);
+            labelDiscountedPriceWarning.setText("*This field is empty");
+        }
+        
+        if (textFieldDiscount.getText().equals("")) {
+            checkedFields = false;
+            labelDiscountWarning.setVisible(true);
+            labelDiscountWarning.setText("*This field is empty");
+        }
+
+        if (checkedFields) {
+            Offer offer = new Offer();
+            
+            offer.setShop(shops.stream().filter(shop -> shop.getName().equals(textFieldShop.getText())).findFirst().get());
+            offer.setExpiringDate(new Date(datePickerExpirationDate.getValue().toEpochDay()));
+            offer.setBasePrice(Double.valueOf(textFieldBasePrice.getText()));
+            offer.setDicountedPrice(Double.valueOf(textFieldDiscountedPrice.getText()));
+            offer.setDiscount(Integer.valueOf(textFieldDiscount.getText()));
+            offer.setUrl(textFieldUrl.getText());
+            
+            OFFERCLIENT.createOffer(offer);
+            
+            stage.hide();
+        }
+    }
+    
     /**
      * This method sets the stage.
      *

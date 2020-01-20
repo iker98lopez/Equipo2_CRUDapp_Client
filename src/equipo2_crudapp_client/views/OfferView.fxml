@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="equipo2_crudapp_client.controllers.OfferViewController">
    <children>
       <HBox prefHeight="211.0" prefWidth="580.0">
          <children>
@@ -29,21 +29,38 @@
                <children>
                   <HBox alignment="CENTER_LEFT">
                      <children>
-                        <TextField editable="false" prefHeight="37.0" prefWidth="284.0" text="Title">
-                           <font>
-                              <Font name="System Bold" size="24.0" />
-                           </font>
-                        </TextField>
-                        <TextField editable="false" prefHeight="50.0" prefWidth="79.0" text="000.00">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </TextField>
-                        <Label text="€">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </Label>
+                        <VBox>
+                           <children>
+                              <TextField id="textFieldSoftwareName" fx:id="textFieldSoftwareName" editable="false" prefHeight="37.0" text="Title">
+                                 <font>
+                                    <Font name="System Bold" size="24.0" />
+                                 </font>
+                              </TextField>
+                              <Label id="labelSoftwareNameWarning" fx:id="labelSoftwareNameWarning" prefHeight="20.0" prefWidth="295.0" text="* Software name is not valid" textFill="RED">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox>
+                           <children>
+                              <HBox>
+                                 <children>
+                                    <Label id="labelDiscountedPrice" fx:id="labelDiscountedPrice" text="000.00">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="€">
+                                       <font>
+                                          <Font size="24.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT">
@@ -56,7 +73,7 @@
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
-                        <TextField editable="false" prefHeight="25.0" prefWidth="55.0" text="000.00">
+                        <TextField id="textFieldBasePrice" fx:id="textFieldBasePrice" editable="false" prefHeight="25.0" prefWidth="55.0" text="000.00">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -67,6 +84,14 @@
                            </font>
                            <HBox.margin>
                               <Insets left="2.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Label id="labelBasePriceWarning" fx:id="labelBasePriceWarning" prefHeight="20.0" prefWidth="245.0" text="* Base price is not valid" textFill="RED">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="5.0" />
                            </HBox.margin>
                         </Label>
                      </children>
@@ -81,12 +106,12 @@
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
-                        <TextField editable="false" prefHeight="25.0" prefWidth="35.0" text="000">
+                        <TextField id="textFieldDiscount" fx:id="textFieldDiscount" editable="false" prefHeight="25.0" prefWidth="35.0" text="000">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </TextField>
-                        <Label prefHeight="20.0" prefWidth="22.0" text="\%">
+                        <Label text="\%">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -94,12 +119,20 @@
                               <Insets left="2.0" />
                            </HBox.margin>
                         </Label>
-                        <ToggleButton mnemonicParsing="false" prefWidth="70.0" text="Edit">
+                        <Label id="labelDiscountWarning" fx:id="labelDiscountWarning" prefHeight="20.0" prefWidth="195.0" text="* Discount is not valid" textFill="RED">
                            <font>
                               <Font size="14.0" />
                            </font>
                            <HBox.margin>
-                              <Insets left="190.0" />
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </Label>
+                        <ToggleButton id="toggleButtonEdit" fx:id="toggleButtonEdit" maxWidth="70.0" minWidth="70.0" mnemonicParsing="false" prefWidth="70.0" text="Edit">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets />
                            </HBox.margin>
                         </ToggleButton>
                      </children>
@@ -114,12 +147,15 @@
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
-                        <TextField editable="false" prefHeight="25.0" prefWidth="280.0" text="Login">
+                        <Label id="labelUsername" fx:id="labelUsername" prefHeight="20.0" prefWidth="275.0" text="Username">
                            <font>
                               <Font size="14.0" />
                            </font>
-                        </TextField>
-                        <Button mnemonicParsing="false" prefWidth="70.0" text="Delete" textFill="RED">
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Button id="buttonDelete" fx:id="buttonDelete" maxWidth="70.0" minWidth="70.0" mnemonicParsing="false" prefWidth="70.0" text="Delete" textFill="RED">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -134,12 +170,12 @@
                         <Insets top="10.0" />
                      </VBox.margin>
                      <children>
-                        <TextField editable="false" prefHeight="25.0" prefWidth="317.0" style="-fx-text-fill: blue;" text="hhtps://urloftheoffer.com">
+                        <TextField id="textFieldUrl" fx:id="textFieldUrl" editable="false" maxWidth="315.0" minWidth="315.0" prefHeight="25.0" prefWidth="315.0" style="-fx-text-fill: blue;" text="hhtps://urloftheoffer.com">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </TextField>
-                        <Button id="buttonReport" fx:id="buttonReport" mnemonicParsing="false" prefWidth="70.0" text="Report">
+                        <Button id="buttonReport" fx:id="buttonReport" maxWidth="70.0" minWidth="70.0" mnemonicParsing="false" prefWidth="70.0" text="Report">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -156,6 +192,14 @@
             </VBox>
          </children>
       </HBox>
+      <Label id="labelUrlWarning" fx:id="labelUrlWarning" prefWidth="483.0" text="* URL is not valid" textFill="RED">
+         <font>
+            <Font size="14.0" />
+         </font>
+         <padding>
+            <Insets left="185.0" />
+         </padding>
+      </Label>
       <VBox prefHeight="170.0" prefWidth="580.0">
          <padding>
             <Insets top="5.0" />
@@ -171,7 +215,7 @@
                   <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
                </effect>
             </ListView>
-            <Button mnemonicParsing="false" text="Comment">
+            <Button id="buttonComment" fx:id="buttonComment" mnemonicParsing="false" text="Comment">
                <VBox.margin>
                   <Insets left="255.0" top="10.0" />
                </VBox.margin>
