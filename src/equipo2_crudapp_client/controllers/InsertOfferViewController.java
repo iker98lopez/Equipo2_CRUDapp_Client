@@ -222,18 +222,7 @@ public class InsertOfferViewController {
             softwares = SOFTWARECLIENT.findAllSoftwares(new GenericType<Set<Software>>() {});
             shops = SHOPCLIENT.findAllShops(new GenericType<Set<Shop>>() {});
         } catch(NotFoundException exception) {
-            LOGGER.warning("Ther was a problem fetching information from the server. " + exception.getMessage());
-        }
-        
-        Software software;
-        Shop shop;
-        for (int i = 0; i < 10; i++) {
-            software = new Software();
-            software.setName("software " + i);
-            softwares.add(software);
-            
-            shop = new Shop(i, "shop" + i, "url");
-            shops.add(shop);
+            LOGGER.warning("There was a problem fetching information from the server. " + exception.getMessage());
         }
         
         datePickerExpirationDate.setValue(LocalDate.now());

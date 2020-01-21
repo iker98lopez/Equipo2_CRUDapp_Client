@@ -46,7 +46,7 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <DatePicker id="datePickerExpirationDate" fx:id="datePickerExpirationDate" maxWidth="210.0" minWidth="210.0" prefHeight="30.0" prefWidth="210.0" promptText="DD/MM/YY">
+                  <DatePicker id="datePickerExpirationDate" fx:id="datePickerExpirationDate" maxWidth="210.0" minWidth="210.0" prefHeight="30.0" prefWidth="210.0" promptText="DD/MM/YYYY">
                      <effect>
                         <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
                      </effect>

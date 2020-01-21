@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
@@ -10,6 +11,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -17,21 +19,30 @@
    <children>
       <HBox prefHeight="211.0" prefWidth="580.0">
          <children>
-            <ImageView id="imageViewSoftwareImage" fx:id="imageViewSoftwareImage" fitHeight="200.0" fitWidth="165.0" pickOnBounds="true">
-               <image>
-                  <Image url="@Placeholder.png" />
-               </image>
-               <effect>
-                  <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
-               </effect>
-            </ImageView>
+            <VBox spacing="24.0">
+               <children>
+                  <ImageView id="imageViewSoftwareImage" fx:id="imageViewSoftwareImage" fitHeight="200.0" fitWidth="165.0" pickOnBounds="true">
+                     <image>
+                        <Image url="@Placeholder.png" />
+                     </image>
+                     <effect>
+                        <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
+                     </effect>
+                  </ImageView>
+                  <Label text="Comments">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
             <VBox prefHeight="211.0" prefWidth="415.0">
                <children>
                   <HBox alignment="CENTER_LEFT">
                      <children>
                         <VBox>
                            <children>
-                              <TextField id="textFieldSoftwareName" fx:id="textFieldSoftwareName" editable="false" prefHeight="37.0" text="Title">
+                              <TextField id="textFieldSoftwareName" fx:id="textFieldSoftwareName" editable="false" prefHeight="51.0" prefWidth="295.0" text="Title">
                                  <font>
                                     <Font name="System Bold" size="24.0" />
                                  </font>
@@ -62,10 +73,35 @@
                            </children>
                         </VBox>
                      </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox>
+                     <children>
+                        <Label text="Shop:">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <TextField id="textFieldShop" fx:id="textFieldShop" editable="false" prefHeight="22.0" prefWidth="160.0" promptText="Shop name" text="Shop name">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TextField>
+                        <Label id="labelShopWarning" fx:id="labelShopWarning" text="* Shop does not exist" textFill="RED">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
                   </HBox>
                   <HBox alignment="CENTER_LEFT">
                      <VBox.margin>
-                        <Insets top="10.0" />
+                        <Insets />
                      </VBox.margin>
                      <children>
                         <Label text="Base Price:">
@@ -73,7 +109,7 @@
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
-                        <TextField id="textFieldBasePrice" fx:id="textFieldBasePrice" editable="false" prefHeight="25.0" prefWidth="55.0" text="000.00">
+                        <TextField id="textFieldBasePrice" fx:id="textFieldBasePrice" editable="false" prefHeight="30.0" prefWidth="59.0" promptText="000.00" text="000.00">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -86,7 +122,7 @@
                               <Insets left="2.0" />
                            </HBox.margin>
                         </Label>
-                        <Label id="labelBasePriceWarning" fx:id="labelBasePriceWarning" prefHeight="20.0" prefWidth="245.0" text="* Base price is not valid" textFill="RED">
+                        <Label id="labelBasePriceWarning" fx:id="labelBasePriceWarning" text="* Base price is not valid" textFill="RED">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -98,15 +134,15 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT">
                      <VBox.margin>
-                        <Insets top="10.0" />
+                        <Insets bottom="5.0" />
                      </VBox.margin>
                      <children>
-                        <Label prefHeight="20.0" prefWidth="67.0" style="-fx-strikethrough: true;" text="Discount:">
+                        <Label style="-fx-strikethrough: true;" text="Discount:">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
-                        <TextField id="textFieldDiscount" fx:id="textFieldDiscount" editable="false" prefHeight="25.0" prefWidth="35.0" text="000">
+                        <TextField id="textFieldDiscount" fx:id="textFieldDiscount" editable="false" prefHeight="25.0" prefWidth="35.0" promptText="000" text="000">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -119,7 +155,7 @@
                               <Insets left="2.0" />
                            </HBox.margin>
                         </Label>
-                        <Label id="labelDiscountWarning" fx:id="labelDiscountWarning" prefHeight="20.0" prefWidth="195.0" text="* Discount is not valid" textFill="RED">
+                        <Label id="labelDiscountWarning" fx:id="labelDiscountWarning" text="* Discount is not valid" textFill="RED">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -127,27 +163,62 @@
                               <Insets left="5.0" />
                            </HBox.margin>
                         </Label>
+                        <Button id="buttonReport" fx:id="buttonReport" maxWidth="70.0" minWidth="70.0" mnemonicParsing="false" prefWidth="70.0" text="Report">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="65.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label text="Expiration date:">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <StackPane alignment="CENTER_LEFT">
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                           <children>
+                              <DatePicker id="datePickerExpirationDate" fx:id="datePickerExpirationDate" promptText="DD/MM/YYYY" />
+                              <Label id="labelExpirationDate" fx:id="labelExpirationDate" text="DD/MM/YYYY">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </StackPane>
                         <ToggleButton id="toggleButtonEdit" fx:id="toggleButtonEdit" maxWidth="70.0" minWidth="70.0" mnemonicParsing="false" prefWidth="70.0" text="Edit">
                            <font>
                               <Font size="14.0" />
                            </font>
                            <HBox.margin>
-                              <Insets />
+                              <Insets left="40.0" />
                            </HBox.margin>
                         </ToggleButton>
                      </children>
                   </HBox>
+                  <Label id="labelExpirationDateWarning" fx:id="labelExpirationDateWarning" text="* Expiration date is not valid" textFill="RED">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
                   <HBox alignment="CENTER_LEFT">
                      <VBox.margin>
-                        <Insets top="10.0" />
+                        <Insets bottom="5.0" />
                      </VBox.margin>
                      <children>
-                        <Label prefHeight="20.0" prefWidth="36.0" text="User:">
+                        <Label text="User:">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
                         </Label>
-                        <Label id="labelUsername" fx:id="labelUsername" prefHeight="20.0" prefWidth="275.0" text="Username">
+                        <Label id="labelUsername" fx:id="labelUsername" prefWidth="277.0" text="Username">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -165,23 +236,16 @@
                         </Button>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER_LEFT">
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
-                     <children>
-                        <TextField id="textFieldUrl" fx:id="textFieldUrl" editable="false" maxWidth="315.0" minWidth="315.0" prefHeight="25.0" prefWidth="315.0" style="-fx-text-fill: blue;" text="hhtps://urloftheoffer.com">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </TextField>
-                        <Button id="buttonReport" fx:id="buttonReport" maxWidth="70.0" minWidth="70.0" mnemonicParsing="false" prefWidth="70.0" text="Report">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Button>
-                     </children>
-                  </HBox>
+                  <TextField id="textFieldUrl" fx:id="textFieldUrl" editable="false" maxWidth="315.0" minWidth="300.0" prefHeight="30.0" prefWidth="300.0" promptText="hhtps://urloftheoffer.com" style="-fx-text-fill: blue;" text="hhtps://urloftheoffer.com">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
+                  <Label id="labelUrlWarning" fx:id="labelUrlWarning" text="* URL is not valid" textFill="RED">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
                </children>
                <padding>
                   <Insets left="15.0" right="15.0" />
@@ -192,24 +256,11 @@
             </VBox>
          </children>
       </HBox>
-      <Label id="labelUrlWarning" fx:id="labelUrlWarning" prefWidth="483.0" text="* URL is not valid" textFill="RED">
-         <font>
-            <Font size="14.0" />
-         </font>
-         <padding>
-            <Insets left="185.0" />
-         </padding>
-      </Label>
       <VBox prefHeight="170.0" prefWidth="580.0">
          <padding>
             <Insets top="5.0" />
          </padding>
          <children>
-            <Label text="COMMENTS">
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Label>
             <ListView id="listViewComments" fx:id="listViewComments" prefHeight="106.0" prefWidth="580.0">
                <effect>
                   <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />

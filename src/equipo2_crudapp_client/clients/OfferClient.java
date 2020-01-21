@@ -26,14 +26,14 @@ public class OfferClient {
 
     private WebTarget webTarget;
     private Client client;
-    private static final String BASE_URI = "http://localhost:8080/Equipo2_CRUDapp_Server/webresources";
+    private static final String BASE_URI = "http://localhost:14188/Equipo2_CRUDapp_Server/webresources";
 
     public OfferClient() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
         webTarget = client.target(BASE_URI).path("offer");
     }
 
-    public void removeOffer(String id) throws ClientErrorException {
+    public void deleteOffer(Integer id) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("{0}", new Object[]{id})).request().delete();
     }
 
