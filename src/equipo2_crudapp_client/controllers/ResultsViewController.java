@@ -23,32 +23,69 @@ import javafx.stage.Stage;
  */
 public class ResultsViewController {
     private static final Logger LOGGER = Logger.getLogger("equipo2_crudapp_client.controllers.ResultsViewController");
-    
-    private Stage stage;
+    /**
+     * Scene of the controller
+     */
     private Scene scene;
-    
+    /**
+     * TextField that gets a text introduced by user to search
+     */
     @FXML
     private TextField textFieldSearchBar;
+    
+    /**
+     * Button that launches the search 
+     */ 
     @FXML
     private Button buttonSearch;
+    /**
+     * RadioButton that filters by name of Software
+     */
     @FXML
     private RadioButton radioButtonName;
+    /**
+     * RadioButton that filters by publisher of Software
+     */
     @FXML
     private RadioButton radioButtonPublisher;
+    /**
+     * RadioButton that filters by number of offers of Software
+     */
     @FXML
     private RadioButton radioButtonNumOfOffers;
+    /**
+     * RadioButton that filters by release date of Software
+     */
     @FXML
     private RadioButton radioButtonReleaseDate;
+    /**
+     * CheckBox that filters by programs
+     */
     @FXML
     private CheckBox checkBoxProgram;
+    /**
+     * CheckBox that filters by extensions
+     */
     @FXML
     private CheckBox checkBoxExtension;
+    /**
+     * CheckBox that filters by games
+     */
     @FXML
     private CheckBox checkBoxGame;
+    /**
+     * RadioButton that filters by ascending order
+     */
     @FXML
     private RadioButton radioButtonAscending;
+    /**
+     * RadioButton that filters by descending order
+     */
     @FXML
     private RadioButton radioButtonDescending;
+    /**
+     * ListView that shows all matched results
+     */
     @FXML
     private ListView listViewResults;
     /**
@@ -59,21 +96,12 @@ public class ResultsViewController {
      */
     public void initStage(Parent root) {
 
-        stage = new Stage();
+        Stage stage = new Stage(); 
         scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("Results");
         
         stage.show();
         
-    }
-    
-    /**
-     * This method sets the stage
-     *
-     * @param stage Stage to be set
-     */
-    public void setStage(Stage stage) {
-        this.stage = stage;
     }
 }
