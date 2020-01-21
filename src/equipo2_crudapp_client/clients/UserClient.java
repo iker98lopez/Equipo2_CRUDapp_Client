@@ -5,6 +5,9 @@
  */
 package equipo2_crudapp_client.clients;
 
+import equipo2_crudapp_classes.exceptions.EmailAlreadyInUseException;
+import equipo2_crudapp_classes.exceptions.ServerException;
+import equipo2_crudapp_classes.exceptions.UserAlreadyExistsException;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
@@ -52,7 +55,7 @@ public class UserClient {
         webTarget.path(java.text.MessageFormat.format("{0}", new Object[]{id})).request().delete();
     }
 
-    public void createUser(Object requestEntity) throws ClientErrorException {
+    public void createUser(Object requestEntity) throws ClientErrorException, ServerException, EmailAlreadyInUseException, UserAlreadyExistsException {
         webTarget.request(javax.ws.rs.core.MediaType.APPLICATION_XML).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_XML));
     }
 
