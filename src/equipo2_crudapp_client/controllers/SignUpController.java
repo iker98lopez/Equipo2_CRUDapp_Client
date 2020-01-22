@@ -32,7 +32,7 @@ import javax.ws.rs.ClientErrorException;
  */
 public class SignUpController {
 
-    private static final Logger LOGGER = Logger.getLogger("signupsigninapp.controllers.SignUpController");
+    private static final Logger LOGGER = Logger.getLogger("equipo2_crudapp_client.controllers.SignUpController");
     private static final UserClient CLIENT = new UserClient();
     
     /**

@@ -5,7 +5,12 @@
  */
 package equipo2_crudapp_client.controllers;
 
+import equipo2_crudapp_classes.classes.User;
+import equipo2_crudapp_classes.classes.Wish;
+import equipo2_crudapp_client.clients.WishClient;
+import java.util.Set;
 import java.util.logging.Logger;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -16,6 +21,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javax.ws.rs.core.GenericType;
 
 /**
  *
@@ -28,6 +34,18 @@ public class WishListViewController {
      */
     private Stage stage;
     
+    /**
+     * Client to make petitions
+     */
+    private static final WishClient CLIENT = new WishClient();
+    /**
+     * The user that is logged
+     */
+    private User user;
+    
+    /**
+     * Logger to output messages to the console
+     */
     private static final Logger LOGGER = Logger.getLogger("equipo2_crudapp_client.controllers.WishListViewController");
     /**
      * Scene of the controller
@@ -78,6 +96,8 @@ public class WishListViewController {
         stage.setScene(scene);
         stage.setTitle("WishList");
         
+        buttonFilter.setOnAction(this::handleButtonFilterAction);
+        
         stage.show();
         
     }
@@ -89,5 +109,22 @@ public class WishListViewController {
      */
     public void setStage(Stage stage) {
         this.stage = stage;
+    }
+    
+    /**
+     * Method that filters by name in the wishlist
+     * @param event
+     */
+    public void handleButtonFilterAction (ActionEvent event) {
+        
+    }
+    
+    public void setTableData() {
+       GenericType<Set<Wish>> wishes;
+       // wishes = CLIENT.findAllWishes(wishes);
+    }
+    
+    public void setUser() {
+        
     }
 }
