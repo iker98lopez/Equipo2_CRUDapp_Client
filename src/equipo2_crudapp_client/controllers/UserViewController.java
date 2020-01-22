@@ -5,10 +5,23 @@
  */
 package equipo2_crudapp_client.controllers;
 
+import equipo2_crudapp_classes.classes.Offer;
+import equipo2_crudapp_classes.classes.Shop;
+import equipo2_crudapp_classes.classes.User;
+import java.util.Optional;
 import java.util.logging.Logger;
+import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 
 /**
  * Controller for the user view
@@ -19,7 +32,8 @@ public class UserViewController extends GenericSideBarController{
     /**
      * Logger for UserViewController class
      */
-    private static final Logger LOGGER = Logger.getLogger("equipo2_crudapp_client.controllers.UserViewController");
+    private static final Logger LOGGER = Logger
+            .getLogger("equipo2_crudapp_client.controllers.UserViewController");
     
     /**
      * Scene of the controller
@@ -27,13 +41,50 @@ public class UserViewController extends GenericSideBarController{
     private Scene scene;
     
     /**
-     * This method sets the stage
-     *
-     * @param stage Stage to be set
+     * User logged in the application
      */
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
+    private User user = new User();
+    
+    /**
+     * True if the edit toggle button is pressed, otherwise false
+     */
+    private boolean toggleButtonEditIsPressed;
+    
+    @FXML
+    private TextField textFieldLogin;
+    
+    @FXML
+    private TextField textFieldName;
+    
+    @FXML
+    private TextField textFieldEmail;
+    
+    @FXML
+    private ToggleButton toggleButtonEdit;
+    
+    @FXML
+    private PasswordField passwordFieldNewPassword;
+    
+    @FXML
+    private PasswordField passwordFieldRepeatPassword;
+    
+    @FXML
+    private Button buttonChangePassword;
+    
+    @FXML
+    private Label labelLoginNotValid;
+    
+    @FXML
+    private Label labelNameNotValid;
+    
+    @FXML
+    private Label labelEmailNotValid;
+    
+    @FXML
+    private Label labelNewPasswordNotValid;
+    
+    @FXML
+    private Label labelRepeatPasswordNotValid;
     
     /**
      * This method initializes the stage and shows the window, sets the
@@ -49,15 +100,166 @@ public class UserViewController extends GenericSideBarController{
         stage.setScene(scene);
         stage.setTitle("User");
         stage.show();
+        
+        // Initialize elements of the view
+        toggleButtonEditIsPressed = false;
+        labelLoginNotValid.setVisible(false);
+        labelNameNotValid.setVisible(false);
+        labelEmailNotValid.setVisible(false);
+        labelNewPasswordNotValid.setVisible(false);
+        labelRepeatPasswordNotValid.setVisible(false);
+        
+        /*TODO*/
+        user.setLogin("Juan");
+        user.setFullName("Juan Perez");
+        user.setEmail("juan@example.com");
+        
+        textFieldLogin.setText(user.getLogin());
+        textFieldName.setText(user.getFullName());
+        textFieldEmail.setText(user.getEmail());
+        
+        // Set handlers
+        toggleButtonEdit.setOnAction(this::handleToggleButtonEditAction);
+        textFieldLogin.textProperty().addListener(this::handleTextChangeLogin);
+        textFieldName.textProperty().addListener(this::handleTextChangeName);
+        textFieldEmail.textProperty().addListener(this::handleTextChangeEmail);
+        passwordFieldNewPassword.textProperty()
+                .addListener(this::handleTextChangeNewPassword);
+        passwordFieldRepeatPassword.textProperty()
+                .addListener(this::handleTextChangeRepeatPassword);
+    }
+    
+    private void handleToggleButtonEditAction(ActionEvent event){
+        if(!toggleButtonEditIsPressed){
+            textFieldLogin.setDisable(false);
+            textFieldName.setDisable(false);
+            textFieldEmail.setDisable(false);
+            
+            toggleButtonEditIsPressed = true;
+        } else{
+            if(userDataIsModified()) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION
+                        , "Do you want to save the changes?"
+                        , ButtonType.NO, ButtonType.YES
+                        , ButtonType.CANCEL);
+                Button yesButton = (Button) alert.getDialogPane()
+                        .lookupButton(ButtonType.YES);
+                yesButton.setId("yesButton");
+                Button noButton = (Button) alert.getDialogPane()
+                        .lookupButton(ButtonType.NO);
+                noButton.setId("noButton");
+                Button cancelButton = (Button) alert.getDialogPane()
+                        .lookupButton(ButtonType.CANCEL);
+                cancelButton.setId("cancelButton");
+                Optional<ButtonType> result = alert.showAndWait();
 
+                if(result.isPresent() && result.get()==ButtonType.YES) {
+                    if(userDataSyntaxIsCorrect()){
+                        textFieldLogin.setDisable(true);
+                        textFieldName.setDisable(true);
+                        textFieldEmail.setDisable(true);
+
+                        toggleButtonEditIsPressed = false;
+                    } else {
+                        toggleButtonEdit.setSelected(true);
+                        toggleButtonEditIsPressed = true;
+                    }
+                } else if(result.isPresent() && result.get()==ButtonType.NO) {
+                    textFieldLogin.setText(user.getLogin());
+                    textFieldName.setText(user.getFullName());
+                    textFieldEmail.setText(user.getEmail());
+
+                    textFieldLogin.setDisable(true);
+                    textFieldName.setDisable(true);
+                    textFieldEmail.setDisable(true);
+
+                    labelLoginNotValid.setVisible(false);
+                    labelNameNotValid.setVisible(false);
+                    labelEmailNotValid.setVisible(false);
+                    
+                    toggleButtonEditIsPressed = false;
+                } else {
+                    toggleButtonEdit.setSelected(true);
+                    toggleButtonEditIsPressed = true;
+                }
+            } else {
+                textFieldLogin.setDisable(true);
+                textFieldName.setDisable(true);
+                textFieldEmail.setDisable(true);
+                toggleButtonEditIsPressed = false;
+            }
+        }
+    }
+    
+    private void handleTextChangeLogin(ObservableValue observable
+            , String oldValue
+            , String newValue){
+        labelLoginNotValid.setVisible(false);
+    }
+    
+    private void handleTextChangeName(ObservableValue observable
+            , String oldValue
+            , String newValue){
+        labelNameNotValid.setVisible(false);
+    }
+    
+    private void handleTextChangeEmail(ObservableValue observable
+            , String oldValue
+            , String newValue){
+        labelEmailNotValid.setVisible(false);
+    }
+    
+    private void handleTextChangeNewPassword(ObservableValue observable
+            , String oldValue
+            , String newValue){
+        labelNewPasswordNotValid.setVisible(false);
+    }
+    
+    private void handleTextChangeRepeatPassword(ObservableValue observable
+            , String oldValue
+            , String newValue){
+        labelRepeatPasswordNotValid.setVisible(false);
     }
     
     /**
      * Checks the syntax of the user's data fields.
      * @return true if corret, otherwise false.
      */
-    private boolean syntaxCheckUserData() {
-        boolean ret = false;
+    private boolean userDataSyntaxIsCorrect() {
+        boolean ret = true;
+        final String NECESSARY_CHARS = "[a-zA-Z0-9\\.\\-\\*]+";
+        
+        // Validation of the login field
+        if (textFieldLogin.getText().length() >= 3
+                && textFieldLogin.getText().length() < 18
+                && textFieldLogin.getText().matches(NECESSARY_CHARS)) {
+
+            ret = true;
+        } else {
+            labelLoginNotValid.setVisible(true); 
+            ret = false;
+        }
+
+        // Validation of the name field
+        if (textFieldName.getText().length() >= 3
+                && textFieldName.getText().length() < 64) {
+
+            ret = true;
+        } else {
+            labelNameNotValid.setVisible(true);
+            ret = false;
+        }
+        
+        // Validation of the email field
+        if (textFieldEmail.getText().length() >= 10
+                && textFieldEmail.getText().length() < 128
+                && textFieldEmail.getText().
+                        matches("^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$")) {
+            ret = true;
+        } else {
+            labelEmailNotValid.setVisible(true);
+            ret = false;
+        }
         
         return ret;
     }
@@ -66,31 +268,25 @@ public class UserViewController extends GenericSideBarController{
      * Checks the syntax of the forgot password fields.
      * @return true if correct, otherwise false.
      */
-    private boolean syntaxCheckForgotPassword(){
+    private boolean changePasswordSyntaxIsCorrect(){
         boolean ret = false;
         
         return ret;
     }
     
     /**
-     * Checks if there's any empty field on the user's data fields.
-     * @return true if correct, otherwise false.
+     * Checks if the data of the user has been modified
+     * @return true if modified, otherwise false
      */
-    private boolean emptyFieldsCheckUserData() {
+    private boolean userDataIsModified(){
         boolean ret = false;
-        final String EMPTY_WARNING = "*This field is empty";
+        
+        if(!textFieldLogin.getText().equalsIgnoreCase(user.getLogin()) 
+                || !textFieldName.getText().equalsIgnoreCase(user.getFullName())
+                || !textFieldEmail.getText().equalsIgnoreCase(user.getEmail())) {
+            ret = true;
+        }
         
         return ret;
     }
-    
-    /**
-     * Checks if there's any empty field on the forgot password fields.
-     * @return true if correct, otherwise false.
-     */
-    private boolean emptyFieldsCheckForgotPassword(){
-        boolean ret = false;
-        
-        return ret;
-    }
-    
 }
