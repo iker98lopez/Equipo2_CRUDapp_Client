@@ -8,6 +8,7 @@ package equipo2_crudapp_client.clients;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
 
 /**
  * Jersey REST client generated for REST resource:ShopREST [shop]<br>
@@ -25,7 +26,7 @@ public class ShopClient {
 
     private WebTarget webTarget;
     private Client client;
-    private static final String BASE_URI = "http://localhost:8080/Equipo2_CRUDapp_Server/webresources";
+    private static final String BASE_URI = "http://localhost:14188/Equipo2_CRUDapp_Server/webresources";
 
     public ShopClient() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
@@ -50,7 +51,7 @@ public class ShopClient {
         webTarget.request(javax.ws.rs.core.MediaType.APPLICATION_XML).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_XML));
     }
 
-    public <T> T findAllShops(Class<T> responseType) throws ClientErrorException {
+    public <T> T findAllShops(GenericType<T> responseType) throws ClientErrorException {
         WebTarget resource = webTarget;
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
