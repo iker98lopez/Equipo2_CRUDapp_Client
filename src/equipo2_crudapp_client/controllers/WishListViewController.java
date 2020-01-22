@@ -24,20 +24,39 @@ import javafx.stage.Stage;
 public class WishListViewController {
     
     private static final Logger LOGGER = Logger.getLogger("equipo2_crudapp_client.controllers.WishListViewController");
-    
-    private Stage stage;
+    /**
+     * Scene of the controller
+     */
     private Scene scene;
     
+    /**
+     * Table that contains wishes
+     */
     @FXML
     private TableView tableViewWishList;
+    /**
+     * TableColumn that shows softwares
+     */
     @FXML
     private TableColumn tableColumnSoftware;
+    /**
+     * TableColumn that shows minimun prices to be notified
+     */
     @FXML
     private TableColumn tableColumnMinPrice;
+    /**
+     * TextField that recieves a text for search
+     */
     @FXML 
     private TextField textFieldFilter;
+    /**
+     * CheckBox that makes the WishList table editable
+     */
     @FXML
     private CheckBox checkBoxEdit;
+    /**
+     * Button that starts searching for wishes by name
+     */
     @FXML
     private Button buttonFilter;
     
@@ -49,21 +68,12 @@ public class WishListViewController {
      */
     public void initStage(Parent root) {
 
-        stage = new Stage();
+        Stage stage = new Stage();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("WishList");
         
         stage.show();
         
-    }
-    
-    /**
-     * This method sets the stage
-     *
-     * @param stage Stage to be set
-     */
-    public void setStage(Stage stage) {
-        this.stage = stage;
     }
 }
