@@ -14,6 +14,7 @@ import equipo2_crudapp_client.clients.OfferClient;
 import equipo2_crudapp_client.clients.ShopClient;
 import equipo2_crudapp_client.clients.SoftwareClient;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -362,7 +363,7 @@ public class OfferViewController {
                                 textFieldUrl.setEditable(false);
 
                                 datePickerExpirationDate.setVisible(false);
-                                //labelExpirationDate.setText(datePickerExpirationDate.getValue());
+                                labelExpirationDate.setText(datePickerExpirationDate.getValue().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                                 labelExpirationDate.setVisible(true);
                             } else {
                                 Alert alertSyntax = new Alert(Alert.AlertType.ERROR, "Some fields are not valid. Please correct them before saving.");
