@@ -33,12 +33,7 @@ import javax.ws.rs.core.GenericType;
  *
  * @author Adrián García
  */
-public class WishListViewController {
-    
-    /**
-     * Stage of the controller
-     */
-    private Stage stage;
+public class WishListViewController extends GenericSideBarController {
     
     /**
      * Client to make petitions
@@ -58,6 +53,7 @@ public class WishListViewController {
      * Logger to output messages to the console
      */
     private static final Logger LOGGER = Logger.getLogger("equipo2_crudapp_client.controllers.WishListViewController");
+   
     /**
      * Scene of the controller
      */
@@ -100,10 +96,10 @@ public class WishListViewController {
      *
      * @param root Root to assign to the scene
      */
+    @Override
     public void initStage(Parent root) {
-        
+        super.initStage(root);
         scene = new Scene(root);
-        stage = new Stage();
         stage.setScene(scene);
         stage.setTitle("WishList");
         stage.show();

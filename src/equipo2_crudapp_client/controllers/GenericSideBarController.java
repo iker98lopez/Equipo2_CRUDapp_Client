@@ -213,6 +213,7 @@ public class GenericSideBarController {
             WishListViewController controller = ((WishListViewController) loader.getController());
             controller.setStage(new Stage());
             controller.initStage(root);
+            stage.hide();
         } catch (IOException ex) {
             LOGGER.severe(ex.getMessage());
         }
