@@ -22,6 +22,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import equipo2_crudapp_client.clients.UserClient;
+import java.sql.Date;
+import java.time.LocalDate;
 import javax.ws.rs.ClientErrorException;
 
 /**
@@ -216,12 +218,10 @@ public class SignUpController {
             
             if (checkedSyntax) {
                 String login = textFieldLogin.getText();
-                String password = new String(CipheringManager.cipherText(textFieldPassword.getText()));
+                String password = CipheringManager.cipherText(textFieldPassword.getText());
                 String email = textFieldEmail.getText();
                 String fullName = textFieldFullName.getText();
-                User user = new User(login, password, email, fullName);
-                user.setPrivilege(UserPrivilege.USER);
-                user.setStatus(UserStatus.ENABLED);
+                User user = new User(login, password, fullName, email);
 
                 try {
                     USERCLIENT.createUser(user);
