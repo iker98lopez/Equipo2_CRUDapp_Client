@@ -1,10 +1,9 @@
 package equipo2_crudapp_client.controllers;
 
+import equipo2_crudapp_ciphering.CipheringManager;
 import equipo2_crudapp_classes.classes.User;
-import equipo2_crudapp_classes.exceptions.EmailAlreadyInUseException;
-import equipo2_crudapp_classes.exceptions.ServerException;
-import equipo2_crudapp_classes.exceptions.UserAlreadyExistsException;
-import java.awt.event.KeyEvent;
+import equipo2_crudapp_classes.enumerators.UserPrivilege;
+import equipo2_crudapp_classes.enumerators.UserStatus;
 import javafx.event.ActionEvent;
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -33,7 +32,7 @@ import javax.ws.rs.ClientErrorException;
 public class SignUpController {
 
     private static final Logger LOGGER = Logger.getLogger("signupsigninapp.controllers.SignUpController");
-    private static final UserClient CLIENT = new UserClient();
+    private static final UserClient USERCLIENT = new UserClient();
     
     /**
      * Stage of the controller
@@ -217,34 +216,36 @@ public class SignUpController {
             
             if (checkedSyntax) {
                 String login = textFieldLogin.getText();
-                String password = textFieldPassword.getText();
+                String password = new String(CipheringManager.cipherText(textFieldPassword.getText()));
                 String email = textFieldEmail.getText();
                 String fullName = textFieldFullName.getText();
                 User user = new User(login, password, email, fullName);
+                user.setPrivilege(UserPrivilege.USER);
+                user.setStatus(UserStatus.ENABLED);
 
                 try {
-                    CLIENT.createUser(user);
+                    USERCLIENT.createUser(user);
 
                     Alert alert = new Alert(Alert.AlertType.INFORMATION, "User sign up completed successfully", ButtonType.OK);
                     alert.showAndWait();
 
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/signupsigninapp/views/SignInView.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/SignInView.fxml"));
                     Parent root = (Parent) loader.load();
                     SignInViewController controller = ((SignInViewController) loader.getController());
                     controller.setStage(new Stage());
                     controller.initStage(root);
                     stage.hide();
-                } catch (ServerException ex) {
+                } /*catch (ServerException ex) {
                     Alert alert = new Alert(Alert.AlertType.ERROR, "There was an error connecting to the server.\nPlease try again later.", ButtonType.OK);
                     alert.showAndWait();
 
                     LOGGER.info("There was an error from client side.");
-                } catch (ClientErrorException ex) {
+                } */catch (ClientErrorException ex) {
                     Alert alert = new Alert(Alert.AlertType.ERROR, "There was an error on Client side.\nPlease try again later.", ButtonType.OK);
                     alert.showAndWait();
 
                     LOGGER.info("There was an error from server side.");
-                }catch (EmailAlreadyInUseException ex) {
+                }/*catch (EmailAlreadyInUseException ex) {
                     Alert alert = new Alert(Alert.AlertType.ERROR, "The E-mail is already in use.\nPlease try again.", ButtonType.OK);
                     alert.showAndWait();
 
@@ -262,7 +263,7 @@ public class SignUpController {
 
                     textFieldLogin.setText("");
                     LOGGER.info("User already exists.");
-                }
+                }*/
                 catch (IOException ex) {
                     Alert alert = new Alert(Alert.AlertType.ERROR, "There was an error opening the Sign In window.", ButtonType.OK);
                     alert.showAndWait();
@@ -409,7 +410,6 @@ public class SignUpController {
     private void focusChanged(ObservableValue observable, Boolean oldValue, Boolean newValue) {
         if (!newValue) {
             syntaxCheck();
-            
         }
 
     }

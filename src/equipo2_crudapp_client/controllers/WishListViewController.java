@@ -23,6 +23,11 @@ import javafx.stage.Stage;
  */
 public class WishListViewController {
     
+    /**
+     * Stage of the controller
+     */
+    private Stage stage;
+    
     private static final Logger LOGGER = Logger.getLogger("equipo2_crudapp_client.controllers.WishListViewController");
     /**
      * Scene of the controller
@@ -75,5 +80,14 @@ public class WishListViewController {
         
         stage.show();
         
+    }
+    
+    /**
+     * This method sets the stage
+     *
+     * @param stage Stage to be setted
+     */
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 }
