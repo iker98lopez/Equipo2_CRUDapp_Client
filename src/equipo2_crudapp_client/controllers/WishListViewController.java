@@ -5,11 +5,15 @@
  */
 package equipo2_crudapp_client.controllers;
 
+import equipo2_crudapp_classes.classes.Shop;
+import equipo2_crudapp_classes.classes.Software;
 import equipo2_crudapp_classes.classes.User;
 import equipo2_crudapp_classes.classes.Wish;
 import equipo2_crudapp_client.clients.WishClient;
 import java.util.Set;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -19,8 +23,10 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.GenericType;
 
 /**
@@ -38,6 +44,11 @@ public class WishListViewController {
      * Client to make petitions
      */
     private static final WishClient CLIENT = new WishClient();
+    
+    /**
+     * Set of wished used to recieve the wishes 
+     */
+    private Set<Wish> wishes;
     /**
      * The user that is logged
      */
@@ -90,16 +101,14 @@ public class WishListViewController {
      * @param root Root to assign to the scene
      */
     public void initStage(Parent root) {
-
-        Stage stage = new Stage();
+        
         scene = new Scene(root);
+        stage = new Stage();
         stage.setScene(scene);
         stage.setTitle("WishList");
-        
-        buttonFilter.setOnAction(this::handleButtonFilterAction);
-        
         stage.show();
         
+        buttonFilter.setOnAction(this::handleButtonFilterAction);     
     }
     
     /**
@@ -120,8 +129,38 @@ public class WishListViewController {
     }
     
     public void setTableData() {
-       GenericType<Set<Wish>> wishes;
-       // wishes = CLIENT.findAllWishes(wishes);
+        
+        // wishes = user.getWishList();
+        Wish w = new Wish();
+        Software s = new Software();
+        s.setName("s1");
+        w.setSoftware(s);
+        w.setMinPrice(1.0);
+        
+        Wish w2 = new Wish();
+        Software s2 = new Software();
+        s.setName("s2");
+        w.setSoftware(s2);
+        w.setMinPrice(2.0);
+        
+        Wish w3 = new Wish();
+        Software s3 = new Software();
+        s.setName("s3");
+        w.setSoftware(s3);
+        w.setMinPrice(3.0);
+        
+        wishes.add(w);
+        wishes.add(w2);
+        wishes.add(w3);
+        
+        tableColumnSoftware.setCellValueFactory(new PropertyValueFactory("software.name"));
+        tableColumnMinPrice.setCellFactory(new PropertyValueFactory("minPrice"));
+        
+        ObservableList<Wish> observableWishes = FXCollections.observableArrayList();
+        observableWishes.addAll(wishes);
+        tableViewWishList.setItems(observableWishes);
+        
+        
     }
     
     public void setUser() {
