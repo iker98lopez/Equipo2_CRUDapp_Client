@@ -143,7 +143,15 @@ public class GenericSideBarController {
      * @param event The action event
      */
     public void handleButtonMyOffersAction(ActionEvent event){
-        
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/MyOffersView.fxml"));
+            Parent root = (Parent) loader.load();
+            MyOffersViewController controller = ((MyOffersViewController) loader.getController());
+            controller.setStage(new Stage());
+            controller.initStage(root);
+        } catch (IOException ex) {
+            LOGGER.severe(ex.getMessage());
+        }
     }
     
     /**
@@ -151,7 +159,15 @@ public class GenericSideBarController {
      * @param event The action event
      */
     public void handleButtonNewOfferAction(ActionEvent event){
-        
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/InsertOfferView.fxml"));
+            Parent root = (Parent) loader.load();
+            InsertOfferViewController controller = ((InsertOfferViewController) loader.getController());
+            controller.setStage(new Stage());
+            controller.initStage(root);
+        } catch (IOException ex) {
+            LOGGER.severe(ex.getMessage());
+        }
     }
     
     /**
@@ -159,7 +175,15 @@ public class GenericSideBarController {
      * @param event The action event
      */
     public void handleButtonNewSoftwareAction(ActionEvent event){
-        
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/InsertSoftwareView.fxml"));
+            Parent root = (Parent) loader.load();
+            InsertSoftwareViewController controller = ((InsertSoftwareViewController) loader.getController());
+            controller.setStage(new Stage());
+            controller.initStage(root);
+        } catch (IOException ex) {
+            LOGGER.severe(ex.getMessage());
+        }
     }
     
     /**

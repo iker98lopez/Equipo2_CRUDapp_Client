@@ -23,22 +23,47 @@ import javafx.stage.Stage;
  */
 public class SoftwareViewController {
     private static final Logger LOGGER = Logger.getLogger("equipo2_crudapp_client.controllers.SoftwareViewController");
-    
+    /**
+     * Stage of the controller
+     */
     private Stage stage;
+    /**
+     * Scene of the controller
+     */
     private Scene scene;
-    
+    /**
+     * The image of the Software
+     */
     @FXML
     private ImageView imageView;
+    /**
+     * The title of the Sotware
+     */
     @FXML
     private Label labelTitle;
+    /**
+     * The publisher of the Software
+     */
     @FXML
     private Label labelPublisher;
+    /**
+     * The date of release of the Software
+     */
     @FXML
     private Label labelDate;
+    /**
+     * The desceription of the Software
+     */
     @FXML
     private TextArea textAreaDescription;
+    /**
+     * ListView containing all the offers for the Software
+     */
     @FXML
     private ListView listViewOffer;
+    /**
+     * ListView containing all the offers for the Software
+     */
     @FXML
     private ListView listViewExtensions;
     /**

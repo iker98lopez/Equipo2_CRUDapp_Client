@@ -8,6 +8,7 @@ package equipo2_crudapp_client.clients;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
 
 /**
  * Jersey REST client generated for REST resource:OfferREST [offer]<br>
@@ -25,14 +26,14 @@ public class OfferClient {
 
     private WebTarget webTarget;
     private Client client;
-    private static final String BASE_URI = "http://localhost:8080/Equipo2_CRUDapp_Server/webresources";
+    private static final String BASE_URI = "http://localhost:14188/Equipo2_CRUDapp_Server/webresources";
 
     public OfferClient() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
         webTarget = client.target(BASE_URI).path("offer");
     }
 
-    public void removeOffer(String id) throws ClientErrorException {
+    public void deleteOffer(Integer id) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("{0}", new Object[]{id})).request().delete();
     }
 
@@ -50,7 +51,7 @@ public class OfferClient {
         webTarget.path(java.text.MessageFormat.format("{0}", new Object[]{id})).request(javax.ws.rs.core.MediaType.APPLICATION_XML).put(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_XML));
     }
 
-    public <T> T findAllOffers(Class<T> responseType) throws ClientErrorException {
+    public <T> T findAllOffers(GenericType<T> responseType) throws ClientErrorException {
         WebTarget resource = webTarget;
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }

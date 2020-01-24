@@ -1,10 +1,7 @@
 package equipo2_crudapp_client.controllers;
 
+import equipo2_crudapp_ciphering.ClientCipher;
 import equipo2_crudapp_classes.classes.User;
-import equipo2_crudapp_classes.exceptions.EmailAlreadyInUseException;
-import equipo2_crudapp_classes.exceptions.ServerException;
-import equipo2_crudapp_classes.exceptions.UserAlreadyExistsException;
-import java.awt.event.KeyEvent;
 import javafx.event.ActionEvent;
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -22,53 +19,99 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-/*import signupsigninapp.client.ClientFactory;
-import signupsigninapp.client.ClientInterface;
-import signupsigninapp.controllers.SignInViewController;*/
+import equipo2_crudapp_client.clients.UserClient;
+import javax.ws.rs.ClientErrorException;
 
 /**
  * This class controls the SignUpView
  *
  * @author Adrián García
  */
-public class SignUpController {
+public class SignUpViewController {
 
     private static final Logger LOGGER = Logger.getLogger("signupsigninapp.controllers.SignUpController");
-    // private static final ClientInterface CLIENT = ClientFactory.getClientDesktop();
-
+    private static final UserClient USERCLIENT = new UserClient();
+    
+    /**
+     * Stage of the controller
+     */
     private Stage stage;
     /**
      * Modification Adrián García 14/11/2019
      */
     private Scene scene;
+    /**
+     * Attribute that represents if there's and error on user input
+     */
     private boolean checkedSyntax;
-
+    /**
+     * Label that shows when there's an error on Login field
+     */
     @FXML
     private Label labelLoginWarning;
+    /**
+     * TextField where users input their username
+     */
     @FXML
     private TextField textFieldLogin;
+    /**
+     * Label that shows when there's an error on Password field
+     */
     @FXML
     private Label labelPasswordWarning;
+    /**
+     * Field where users input their password
+     */
     @FXML
     private PasswordField textFieldPassword;
+    /**
+     * Field used to input password when "Show password" is selected
+     */
     @FXML
     private TextField textFieldPasswordShow;
+    /**
+     * Label that shows when there's an error on Password Repeat field
+     */
     @FXML
     private Label labelPasswordRepeatWarning;
+    /**
+     * Field to confirm the password introduced by repeating it
+     */
     @FXML
     private PasswordField textFieldPasswordRepeat;
+    /**
+     * Checkbox to alternate between make password readable or not
+     */
     @FXML
     private CheckBox checkBoxShowPassword;
+    /**
+     * Button that goes backward to SignIn
+     */
     @FXML
     private Button buttonBack;
+    /**
+     * Button that sends all information to server to complete the sign up
+     */
     @FXML
     private Button buttonSignUp;
+    /**
+     * Label that shows when there's an error on Full Name field
+     */
     @FXML
     private Label labelFullNameWarning;
+    /**
+     * Field where users input their full name
+     */
     @FXML
     private TextField textFieldFullName;
+    /**
+     * Label that shows when there's an error on Email field
+     */
     @FXML
     private Label labelEmailWarning;
+    /**
+     * Field where users input their email
+     */
     @FXML
     private TextField textFieldEmail;
     
@@ -76,7 +119,7 @@ public class SignUpController {
     /**
      * Default constructor for SignUpController
      */
-    public SignUpController() {
+    public SignUpViewController() {
     }
     
     
@@ -171,19 +214,18 @@ public class SignUpController {
             
             if (checkedSyntax) {
                 String login = textFieldLogin.getText();
-                String password = textFieldPassword.getText();
+                String password = ClientCipher.cipherText(textFieldPassword.getText());
                 String email = textFieldEmail.getText();
                 String fullName = textFieldFullName.getText();
-                // User user = new User(login, password, email, fullName);
-                User user = new User();
+                User user = new User(login, password, fullName, email);
 
                 try {
-                    //CLIENT.signUp(user);
+                    USERCLIENT.createUser(user);
 
                     Alert alert = new Alert(Alert.AlertType.INFORMATION, "User sign up completed successfully", ButtonType.OK);
                     alert.showAndWait();
 
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/signupsigninapp/views/SignInView.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/SignInView.fxml"));
                     Parent root = (Parent) loader.load();
                     SignInViewController controller = ((SignInViewController) loader.getController());
                     controller.setStage(new Stage());
@@ -193,8 +235,13 @@ public class SignUpController {
                     Alert alert = new Alert(Alert.AlertType.ERROR, "There was an error connecting to the server.\nPlease try again later.", ButtonType.OK);
                     alert.showAndWait();
 
+                    LOGGER.info("There was an error from client side.");
+                } */catch (ClientErrorException ex) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "There was an error on Client side.\nPlease try again later.", ButtonType.OK);
+                    alert.showAndWait();
+
                     LOGGER.info("There was an error from server side.");
-                } catch (EmailAlreadyInUseException ex) {
+                }/*catch (EmailAlreadyInUseException ex) {
                     Alert alert = new Alert(Alert.AlertType.ERROR, "The E-mail is already in use.\nPlease try again.", ButtonType.OK);
                     alert.showAndWait();
 
@@ -359,7 +406,6 @@ public class SignUpController {
     private void focusChanged(ObservableValue observable, Boolean oldValue, Boolean newValue) {
         if (!newValue) {
             syntaxCheck();
-            
         }
 
     }
