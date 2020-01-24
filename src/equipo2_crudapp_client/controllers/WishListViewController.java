@@ -10,10 +10,8 @@ import equipo2_crudapp_classes.classes.Software;
 import equipo2_crudapp_classes.classes.User;
 import equipo2_crudapp_classes.classes.Wish;
 import equipo2_crudapp_client.clients.WishClient;
-import java.util.AbstractSet;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.logging.Logger;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -111,6 +109,8 @@ public class WishListViewController extends GenericSideBarController {
         stage.show();
 
         buttonFilter.setOnAction(this::handleButtonFilterAction);
+        checkBoxEdit.setOnAction(this::handleCheckBoxEditAction);
+        
         setTableData();
     }
 
@@ -122,7 +122,12 @@ public class WishListViewController extends GenericSideBarController {
     public void setStage(Stage stage) {
         this.stage = stage;
     }
-
+    /**
+     * Method that allows to edit the table
+     */
+    public void handleCheckBoxEditAction(ActionEvent event) {
+        
+    }
     /**
      * Method that filters by name in the wishlist
      *
@@ -132,6 +137,9 @@ public class WishListViewController extends GenericSideBarController {
 
     }
 
+    /**
+     * Method that populates tableView with user wishes
+     */
     public void setTableData() {
 
         // wishes = user.getWishList();          
