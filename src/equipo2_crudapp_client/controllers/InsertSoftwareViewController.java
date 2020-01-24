@@ -8,7 +8,7 @@ package equipo2_crudapp_client.controllers;
 import equipo2_crudapp_classes.classes.Software;
 import equipo2_crudapp_classes.classes.User;
 import equipo2_crudapp_client.clients.SoftwareClient;
-import equipo2_crudapp_server.entities.SoftwareType;
+import equipo2_crudapp_classes.enumerators.SoftwareType;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.LinkedList;

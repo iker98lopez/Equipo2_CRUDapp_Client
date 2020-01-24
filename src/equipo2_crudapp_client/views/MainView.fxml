@@ -43,7 +43,7 @@
                   </HBox>
                </children>
             </VBox>
-            <HBox nodeOrientation="LEFT_TO_RIGHT">
+            <HBox nodeOrientation="LEFT_TO_RIGHT" VBox.vgrow="ALWAYS">
                <children>
                   <VBox HBox.hgrow="ALWAYS">
                      <children>
@@ -62,7 +62,7 @@
                               <Insets top="25.0" />
                            </VBox.margin>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="151.0" prefWidth="404.0">
+                        <HBox alignment="CENTER" prefHeight="151.0" prefWidth="404.0" VBox.vgrow="ALWAYS">
                            <children>
                               <ListView id="listViewGiveaways" fx:id="listViewGiveaways" prefHeight="144.0" prefWidth="349.0" HBox.hgrow="ALWAYS">
                                  <HBox.margin>
@@ -86,7 +86,7 @@
                               <Insets top="25.0" />
                            </VBox.margin>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="150.0" prefWidth="404.0">
+                        <HBox alignment="CENTER" prefHeight="150.0" prefWidth="404.0" VBox.vgrow="ALWAYS">
                            <children>
                               <ListView id="listViewExpiringSoon" fx:id="listViewExpiringSoon" prefHeight="150.0" prefWidth="354.0" HBox.hgrow="ALWAYS">
                                  <HBox.margin>
@@ -94,6 +94,9 @@
                                  </HBox.margin>
                               </ListView>
                            </children>
+                           <VBox.margin>
+                              <Insets bottom="50.0" />
+                           </VBox.margin>
                         </HBox>
                      </children>
                   </VBox>
@@ -111,7 +114,10 @@
                               </Label>
                            </children>
                         </HBox>
-                        <ListView id="listViewMostDiscounted" fx:id="listViewMostDiscounted" prefHeight="400.0" prefWidth="166.0" />
+                        <ListView id="listViewMostDiscounted" fx:id="listViewMostDiscounted" prefHeight="400.0" prefWidth="166.0" VBox.vgrow="ALWAYS">
+                           <VBox.margin>
+                              <Insets bottom="50.0" />
+                           </VBox.margin></ListView>
                      </children>
                      <HBox.margin>
                         <Insets left="20.0" right="10.0" />
