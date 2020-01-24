@@ -105,7 +105,14 @@ public class ResultsViewController extends GenericSideBarController{
         
     }
     
-    
+     /**
+     * This method sets the stage
+     *
+     * @param stage Stage to be setted
+     */
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
     
     
     
