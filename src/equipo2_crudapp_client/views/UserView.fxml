@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.image.ImageView?>
@@ -17,113 +18,140 @@
 
 <HBox alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="RIGHT_TO_LEFT" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="equipo2_crudapp_client.controllers.UserViewController">
    <children>
-      <VBox alignment="TOP_RIGHT" HBox.hgrow="ALWAYS">
+      <VBox alignment="TOP_CENTER" nodeOrientation="LEFT_TO_RIGHT" HBox.hgrow="ALWAYS">
          <HBox.margin>
             <Insets />
          </HBox.margin>
          <children>
-            <HBox>
+            <VBox alignment="CENTER" prefHeight="398.0" prefWidth="600.0">
                <children>
-                  <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                  <ImageView id="imageViewUser" fx:id="imageViewUser" fitHeight="143.0" fitWidth="114.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </ImageView>
+                  <Label id="labelLoginNotValid" fx:id="labelLoginNotValid" nodeOrientation="LEFT_TO_RIGHT" prefHeight="18.0" prefWidth="150.0" text="*Login not valid" textFill="RED">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <HBox alignment="CENTER">
                      <children>
-                        <ToggleButton id="toggleButtonEdit" fx:id="toggleButtonEdit" mnemonicParsing="false" prefHeight="49.0" prefWidth="62.0" text="Edit">
-                           <HBox.margin>
-                              <Insets left="40.0" top="20.0" />
-                           </HBox.margin>
-                        </ToggleButton>
+                        <Label id="labelLogin" fx:id="labelLogin" alignment="CENTER_RIGHT" prefWidth="50.0" text="Login: ">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <TextField id="textFieldLogin" fx:id="textFieldLogin" alignment="TOP_LEFT" disable="true" prefHeight="27.0" prefWidth="190.0" />
                      </children>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
+                     <VBox.margin>
+                        <Insets bottom="20.0" left="20.0" right="35.0" />
+                     </VBox.margin>
                   </HBox>
-                  <VBox>
+                  <Label id="labelNameNotValid" fx:id="labelNameNotValid" prefHeight="18.0" prefWidth="154.0" text="*Name not valid" textFill="RED" />
+                  <HBox alignment="CENTER">
                      <children>
-                        <ImageView id="imageViewUser" fx:id="imageViewUser" fitHeight="181.0" fitWidth="144.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
-                           <VBox.margin>
-                              <Insets right="30.0" />
-                           </VBox.margin>
-                        </ImageView>
+                        <Label id="labelName" fx:id="labelName" alignment="CENTER_RIGHT" prefWidth="50.0" text="Name: ">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <TextField id="textFieldName" fx:id="textFieldName" alignment="TOP_LEFT" disable="true" prefHeight="27.0" prefWidth="190.0" />
                      </children>
-                  </VBox>
+                     <VBox.margin>
+                        <Insets bottom="20.0" left="20.0" right="35.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <Label id="labelEmailNotValid" fx:id="labelEmailNotValid" prefHeight="18.0" prefWidth="152.0" text="*Email not valid" textFill="RED" />
+                  <HBox alignment="CENTER">
+                     <children>
+                        <Label id="labelEmail" fx:id="labelEmail" alignment="TOP_RIGHT" prefWidth="50.0" text="Email: ">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <TextField id="textFieldEmail" fx:id="textFieldEmail" alignment="TOP_LEFT" disable="true" prefHeight="27.0" prefWidth="190.0" />
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="20.0" left="20.0" right="35.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <ToggleButton id="toggleButtonEdit" fx:id="toggleButtonEdit" mnemonicParsing="false" prefHeight="32.0" prefWidth="62.0" text="Edit">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </ToggleButton>
+               </children>
+            </VBox>
+            <VBox prefHeight="18.0" prefWidth="600.0">
+               <children>
+                  <Label id="labelChangePassword" fx:id="labelChangePassword" prefHeight="18.0" prefWidth="590.0" text="Change Password" VBox.vgrow="ALWAYS">
+                     <padding>
+                        <Insets left="5.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </VBox>
+            <Separator prefHeight="9.0" prefWidth="600.0" />
+            <VBox alignment="CENTER" prefHeight="130.0" prefWidth="600.0">
+               <children>
+                  <Label id="labelNewPasswordNotValid" fx:id="labelNewPasswordNotValid" prefHeight="18.0" prefWidth="147.0" text="*Password not valid" textFill="RED" />
+                  <HBox alignment="CENTER">
+                     <children>
+                        <Label id="labelNewPassword" fx:id="labelNewPassword" alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="116.0" text="New Password: ">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Label>
+                        <PasswordField id="passwordFieldNewPassword" fx:id="passwordFieldNewPassword" prefHeight="27.0" prefWidth="190.0">
+                           <HBox.margin>
+                              <Insets right="80.0" />
+                           </HBox.margin>
+                        </PasswordField>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+                  <Label id="labelRepeatPasswordNotValid" fx:id="labelRepeatPasswordNotValid" prefHeight="18.0" prefWidth="150.0" text="*Passwords do not match" textFill="RED" />
+                  <HBox alignment="CENTER">
+                     <children>
+                        <Label id="labelRepeatPassword" fx:id="labelRepeatPassword" alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="116.0" text="Repeat Password: ">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Label>
+                        <PasswordField id="passwordFieldRepeatPassword" fx:id="passwordFieldRepeatPassword" prefHeight="27.0" prefWidth="190.0">
+                           <HBox.margin>
+                              <Insets right="80.0" />
+                           </HBox.margin>
+                        </PasswordField>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="44.0" prefWidth="600.0">
+                     <children>
+                        <Button id="buttonChangePassword" fx:id="buttonChangePassword" mnemonicParsing="false" text="Change Password">
+                           <HBox.margin>
+                              <Insets top="10.0" />
+                           </HBox.margin></Button>
+                     </children>
+                  </HBox>
                </children>
                <VBox.margin>
-                  <Insets top="20.0" />
+                  <Insets />
                </VBox.margin>
-            </HBox>
-            <HBox alignment="TOP_CENTER" prefHeight="214.0" prefWidth="599.0">
-               <children>
-                  <VBox alignment="CENTER">
-                     <children>
-                        <HBox alignment="TOP_RIGHT">
-                           <children>
-                              <TextField id="textFieldLogin" fx:id="textFieldLogin" alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="190.0" />
-                              <Label id="labelLogin" fx:id="labelLogin" alignment="CENTER_RIGHT" prefWidth="50.0" text="Login: ">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                           <VBox.margin>
-                              <Insets bottom="20.0" left="20.0" right="35.0" top="50.0" />
-                           </VBox.margin>
-                        </HBox>
-                        <HBox alignment="TOP_RIGHT">
-                           <children>
-                              <TextField id="textFieldName" fx:id="textFieldName" alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="190.0" />
-                              <Label id="labelName" fx:id="labelName" alignment="CENTER_RIGHT" prefWidth="50.0" text="Name: ">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                           <VBox.margin>
-                              <Insets bottom="20.0" left="20.0" right="35.0" />
-                           </VBox.margin>
-                        </HBox>
-                        <HBox alignment="TOP_RIGHT">
-                           <children>
-                              <TextField id="textFieldEmail" fx:id="textFieldEmail" alignment="CENTER_RIGHT" prefHeight="27.0" prefWidth="190.0" />
-                              <Label id="labelEmail" fx:id="labelEmail" alignment="TOP_RIGHT" prefWidth="50.0" text="Email: ">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                           <VBox.margin>
-                              <Insets bottom="20.0" left="20.0" right="35.0" />
-                           </VBox.margin>
-                        </HBox>
-                        <Button id="buttonSaveChanges" fx:id="buttonSaveChanges" mnemonicParsing="false" prefHeight="26.0" prefWidth="113.0" text="Save Changes" />
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
-            <HBox alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT" prefHeight="104.0" prefWidth="599.0">
-               <children>
-                  <Label id="labelNewPassword" fx:id="labelNewPassword" text="New Password:">
-                     <HBox.margin>
-                        <Insets right="10.0" />
-                     </HBox.margin>
-                  </Label>
-                  <PasswordField id="textFieldNewPassword" fx:id="textFieldNewPassword" alignment="CENTER_RIGHT" />
-                  <Label id="labelRepeatNewPassword" fx:id="labelRepeatNewPassword" text="Repeat New Password:">
-                     <HBox.margin>
-                        <Insets left="20.0" right="10.0" />
-                     </HBox.margin>
-                  </Label>
-                  <PasswordField id="textFieldRepeatNewPassword" fx:id="textFieldRepeatNewPassword" alignment="CENTER_RIGHT">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </PasswordField>
-               </children>
-            </HBox>
-            <HBox alignment="CENTER">
-               <children>
-                  <Button id="buttonChangePassword" fx:id="buttonChangePassword" mnemonicParsing="false" text="Change Password" />
-               </children>
-            </HBox>
-         </children></VBox>
+            </VBox>
+         </children>
+      </VBox>
       <GridPane alignment="CENTER" prefHeight="600.0" prefWidth="200.0" style="-fx-background-color: #383838;">
          <columnConstraints>
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
@@ -139,9 +167,6 @@
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
             </Label>
             <Button id="buttonLogOut" fx:id="buttonLogOut" cancelButton="true" minWidth="50.0" mnemonicParsing="false" text="Log Out" GridPane.rowIndex="3">
                <cursor>
