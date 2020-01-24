@@ -5,14 +5,17 @@
  */
 package equipo2_crudapp_client.controllers;
 
+import java.io.IOException;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 /**
  * Controller for the main view of the application
@@ -82,7 +85,16 @@ public class MainViewController extends GenericSideBarController{
     }
     
     public void handleButtonSearchAction(ActionEvent event){
-        
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/ResultsView.fxml"));
+            Parent root = (Parent) loader.load();
+            ResultsViewController controller = ((ResultsViewController) loader.getController());
+            controller.setStage(new Stage());
+            controller.initStage(root);
+            stage.hide();
+        } catch (IOException ex) {
+            LOGGER.severe(ex.getMessage());
+        }
         
     }
     
