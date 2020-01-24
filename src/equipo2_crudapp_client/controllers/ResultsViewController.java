@@ -21,12 +21,13 @@ import javafx.stage.Stage;
  *
  * @author Adrián García
  */
-public class ResultsViewController {
+public class ResultsViewController extends GenericSideBarController{
     private static final Logger LOGGER = Logger.getLogger("equipo2_crudapp_client.controllers.ResultsViewController");
     /**
      * Scene of the controller
      */
     private Scene scene;
+   
     /**
      * TextField that gets a text introduced by user to search
      */
@@ -94,14 +95,18 @@ public class ResultsViewController {
      *
      * @param root Root to assign to the scene
      */
+    @Override
     public void initStage(Parent root) {
-
-        Stage stage = new Stage(); 
+        super.initStage(root);
         scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("Results");
-        
         stage.show();
         
     }
+    
+    
+    
+    
+    
 }
