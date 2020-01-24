@@ -5,8 +5,6 @@
  */
 package equipo2_crudapp_client.controllers;
 
-import equipo2_crudapp_classes.classes.User;
-import equipo2_crudapp_client.clients.UserClient;
 import java.io.IOException;
 import java.util.logging.Logger;
 import javafx.beans.value.ObservableValue;
@@ -23,7 +21,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import javax.ws.rs.core.GenericType;
 
 /**
  * Controller for the sign in view
@@ -207,7 +204,7 @@ public class SignInViewController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/SignUpView.fxml"));
             Parent root = (Parent) loader.load();
-            SignUpController controller = ((SignUpController) loader.getController());
+            SignUpViewController controller = ((SignUpViewController) loader.getController());
             controller.initStage(root);
             stage.hide();
         } catch (IOException ex) {

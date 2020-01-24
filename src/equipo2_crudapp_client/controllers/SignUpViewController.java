@@ -1,9 +1,7 @@
 package equipo2_crudapp_client.controllers;
 
-import equipo2_crudapp_ciphering.CipheringManager;
+import equipo2_crudapp_ciphering.ClientCipher;
 import equipo2_crudapp_classes.classes.User;
-import equipo2_crudapp_classes.enumerators.UserPrivilege;
-import equipo2_crudapp_classes.enumerators.UserStatus;
 import javafx.event.ActionEvent;
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -22,8 +20,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import equipo2_crudapp_client.clients.UserClient;
-import java.sql.Date;
-import java.time.LocalDate;
 import javax.ws.rs.ClientErrorException;
 
 /**
@@ -31,7 +27,7 @@ import javax.ws.rs.ClientErrorException;
  *
  * @author Adrián García
  */
-public class SignUpController {
+public class SignUpViewController {
 
     private static final Logger LOGGER = Logger.getLogger("signupsigninapp.controllers.SignUpController");
     private static final UserClient USERCLIENT = new UserClient();
@@ -123,7 +119,7 @@ public class SignUpController {
     /**
      * Default constructor for SignUpController
      */
-    public SignUpController() {
+    public SignUpViewController() {
     }
     
     
@@ -218,7 +214,7 @@ public class SignUpController {
             
             if (checkedSyntax) {
                 String login = textFieldLogin.getText();
-                String password = CipheringManager.cipherText(textFieldPassword.getText());
+                String password = ClientCipher.cipherText(textFieldPassword.getText());
                 String email = textFieldEmail.getText();
                 String fullName = textFieldFullName.getText();
                 User user = new User(login, password, fullName, email);
