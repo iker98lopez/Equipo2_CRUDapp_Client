@@ -26,10 +26,13 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import javafx.util.converter.DoubleStringConverter;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.GenericType;
 
@@ -79,6 +82,11 @@ public class WishListViewController extends GenericSideBarController {
     @FXML
     private TableColumn tableColumnMinPrice;
     /**
+     * TableColumn that shows a control to erase software from wishlist
+     */
+    @FXML
+    private TableColumn tableColumnDelete;
+    /**
      * TextField that recieves a text for search
      */
     @FXML
@@ -93,6 +101,11 @@ public class WishListViewController extends GenericSideBarController {
      */
     @FXML
     private Button buttonFilter;
+    /**
+     * Button that cancels the changes to the table
+     */
+    @FXML 
+    private Button buttonCancel;
 
     /**
      * This method initializes the stage and shows the window, sets the
@@ -107,10 +120,13 @@ public class WishListViewController extends GenericSideBarController {
         stage.setScene(scene);
         stage.setTitle("WishList");
         stage.show();
-
+        
+        buttonCancel.setDisable(true);
+        
+        buttonCancel.setOnAction(this::handleButtonCancelAction);
         buttonFilter.setOnAction(this::handleButtonFilterAction);
         checkBoxEdit.setOnAction(this::handleCheckBoxEditAction);
-        
+
         setTableData();
     }
 
@@ -122,12 +138,30 @@ public class WishListViewController extends GenericSideBarController {
     public void setStage(Stage stage) {
         this.stage = stage;
     }
+    
+    /**
+     * Method that cancels table edit and discard the changes
+     */
+    public void handleButtonCancelAction (ActionEvent event) {
+        checkBoxEdit.setSelected(false);
+        handleCheckBoxEditAction(event);
+       
+    }
     /**
      * Method that allows to edit the table
      */
     public void handleCheckBoxEditAction(ActionEvent event) {
-        
+        if (checkBoxEdit.isSelected()) {
+            tableViewWishList.setEditable(true);
+            buttonCancel.setDisable(false);
+            
+        } else {
+            tableViewWishList.setEditable(false);
+            buttonCancel.setDisable(true);
+            
+        }
     }
+
     /**
      * Method that filters by name in the wishlist
      *
@@ -146,7 +180,10 @@ public class WishListViewController extends GenericSideBarController {
         wishes.add(new Wish(3, new Software("s3"), 3.0));
         wishes.add(new Wish(2, new Software("s2"), 2.0));
         wishes.add(new Wish(1, new Software("s1"), 1.0));
+        //Column checkbox
+        tableColumnDelete.setCellFactory(CheckBoxTableCell.forTableColumn(tableColumnDelete) );
 
+        //Column software name
         tableColumnSoftware.setCellValueFactory(new Callback<
         CellDataFeatures<Wish, String>, ObservableValue<String>>() {
             @Override
@@ -155,14 +192,19 @@ public class WishListViewController extends GenericSideBarController {
                 return data.getValue().getSoftware().getNameProperty();
             }
         });
+        //Column minimum price
+        tableColumnMinPrice.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter())); 
         tableColumnMinPrice.setCellValueFactory(new PropertyValueFactory("minPrice"));
-
+        
         ObservableList<Wish> observableWishes = FXCollections.observableArrayList();
         observableWishes.addAll(wishes);
         tableViewWishList.setItems(observableWishes);
 
     }
 
+    /**
+     * Method to set the active user
+     */
     public void setUser() {
 
     }
