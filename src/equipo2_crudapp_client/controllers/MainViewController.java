@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -5,9 +6,12 @@
  */
 package equipo2_crudapp_client.controllers;
 
+import equipo2_crudapp_classes.classes.Offer;
 import equipo2_crudapp_client.clients.OfferClient;
 import equipo2_crudapp_client.clients.ShopClient;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,6 +22,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javax.ws.rs.core.GenericType;
 
 /**
  * Controller for the main view of the application
@@ -35,6 +40,11 @@ public class MainViewController extends GenericSideBarController {
      * Client for the communication with the server
      */
     private static final OfferClient CLIENT = new OfferClient();
+    
+    /**
+     * Contains all the offers
+     */
+    private Set<Offer> offers = new HashSet<>();
     
     /**
      * Search text for filtering the offers
@@ -88,6 +98,7 @@ public class MainViewController extends GenericSideBarController {
         stage.setScene(scene);
         stage.setTitle("Home");
         stage.show();
+        loadData();
         
         buttonSearch.setOnAction(this::handleButtonSearchAction);
         
@@ -113,23 +124,30 @@ public class MainViewController extends GenericSideBarController {
     }
     
     /**
+     * Loads all the offers from the server
+     */
+    private void loadData() {
+        offers = CLIENT.findAllOffers(new GenericType<Set<Offer>>() {});
+    }
+    
+    /**
      * Load in a list all the free offers
      */
-    private void loadFreeOffers() {
+    private void setFreeOffers() {
         
     }
     
     /**
      * Load in a list the most discounted offers
      */
-    private void loadMostDiscountedOffers() {
+    private void setMostDiscountedOffers() {
         
     }
     
     /**
      * Load in a list the offers that expire soon
      */
-    private void loadExpiringSoonOffers() {
+    private void setExpiringSoonOffers() {
         
     }
     
