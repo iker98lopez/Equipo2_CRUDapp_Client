@@ -47,7 +47,7 @@
                                     <Font name="System Bold" size="24.0" />
                                  </font>
                               </TextField>
-                              <Label id="labelSoftwareNameWarning" fx:id="labelSoftwareNameWarning" prefHeight="20.0" prefWidth="295.0" text="* Software name is not valid" textFill="RED">
+                              <Label id="labelSoftwareNameWarning" fx:id="labelSoftwareNameWarning" prefHeight="20.0" prefWidth="295.0" text="* Software name is not valid" textFill="RED" visible="false">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
@@ -89,7 +89,7 @@
                               <Font size="14.0" />
                            </font>
                         </TextField>
-                        <Label id="labelShopWarning" fx:id="labelShopWarning" text="* Shop does not exist" textFill="RED">
+                        <Label id="labelShopWarning" fx:id="labelShopWarning" text="* Shop does not exist" textFill="RED" visible="false">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -122,7 +122,7 @@
                               <Insets left="2.0" />
                            </HBox.margin>
                         </Label>
-                        <Label id="labelBasePriceWarning" fx:id="labelBasePriceWarning" text="* Base price is not valid" textFill="RED">
+                        <Label id="labelBasePriceWarning" fx:id="labelBasePriceWarning" text="* Base price is not valid" textFill="RED" visible="false">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -155,7 +155,7 @@
                               <Insets left="2.0" />
                            </HBox.margin>
                         </Label>
-                        <Label id="labelDiscountWarning" fx:id="labelDiscountWarning" text="* Discount is not valid" textFill="RED">
+                        <Label id="labelDiscountWarning" fx:id="labelDiscountWarning" text="* Discount is not valid" textFill="RED" visible="false">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -203,7 +203,7 @@
                         </ToggleButton>
                      </children>
                   </HBox>
-                  <Label id="labelExpirationDateWarning" fx:id="labelExpirationDateWarning" text="* Expiration date is not valid" textFill="RED">
+                  <Label id="labelExpirationDateWarning" fx:id="labelExpirationDateWarning" text="* Expiration date is not valid" textFill="RED" visible="false">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -241,7 +241,7 @@
                         <Font size="14.0" />
                      </font>
                   </TextField>
-                  <Label id="labelUrlWarning" fx:id="labelUrlWarning" text="* URL is not valid" textFill="RED">
+                  <Label id="labelUrlWarning" fx:id="labelUrlWarning" text="* URL is not valid" textFill="RED" visible="false">
                      <font>
                         <Font size="14.0" />
                      </font>
