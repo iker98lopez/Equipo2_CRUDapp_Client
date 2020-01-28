@@ -5,22 +5,32 @@
  */
 package equipo2_crudapp_client.controllers;
 
+import equipo2_crudapp_ciphering.ClientCipher;
+import equipo2_crudapp_classes.classes.User;
+import equipo2_crudapp_classes.enumerators.UserStatus;
+import equipo2_crudapp_client.clients.UserClient;
+import equipo2_crudapp_client.clients.UserClientOld;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.logging.Logger;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
+import javax.ws.rs.InternalServerErrorException;
+import javax.ws.rs.NotFoundException;
+import javax.xml.bind.DatatypeConverter;
 
 /**
  * Controller for the sign in view
@@ -42,6 +52,8 @@ public class SignInViewController {
      * If true the syntax is correct, if false there's an error with the syntax
      */
     private boolean checkedSyntax;
+    
+    private static final UserClient USERCLIENT = new UserClient();
     
     @FXML
     private Label labelLoginWarning;
@@ -94,6 +106,7 @@ public class SignInViewController {
         buttonSignIn.setOnAction(this::handleButtonSignInAction);
         hyperLinkSignUp.setOnAction(this::handleHyperlinkSignUpAction);
         buttonExit.setOnAction(this::handleButtonExitAction);
+        hyperLinkForgotPassword.setOnAction(this::handleHyperlinkForgotPassword);
 
         textFieldLogin.focusedProperty().addListener(this::focusChanged);
         textFieldPassword.focusedProperty().addListener(this::focusChanged);
@@ -124,6 +137,30 @@ public class SignInViewController {
             checkedSyntax = false;
             labelPasswordWarning.setVisible(true);
             labelPasswordWarning.setText("*This field is empty");
+        }
+        
+        if (checkedSyntax) {
+            User user = new User();
+            String login = textFieldLogin.getText();
+            String password = DatatypeConverter.printHexBinary(ClientCipher.cipherText(textFieldPassword.getText().getBytes()));
+            
+            try {
+                user = USERCLIENT.findUser(user.getClass(), "5");
+                LOGGER.info(user.getFullName());
+            } catch (NotFoundException exception) {
+                LOGGER.info("Login is not correct.");
+            }
+            
+            try {
+                user = USERCLIENT.checkUserPassword(user.getClass(), login, password);
+                LOGGER.info(user.getFullName());
+            } catch (NotFoundException exception) {
+                LOGGER.info("Password is not correct.");
+            }
+            
+            if (user.getStatus() == UserStatus.DISABLED) {
+                LOGGER.info("User is disabled");
+            }
         }
         
         /*if (checkedSyntax) {
@@ -233,7 +270,23 @@ public class SignInViewController {
     }
     
     public void handleHyperlinkForgotPassword(ActionEvent event){
+        TextInputDialog textInputDialog = new TextInputDialog();
+        textInputDialog.setTitle("Password recovery");
+        textInputDialog.setHeaderText(null);
+        textInputDialog.setContentText("Please enter your account's e-mail:");
+        Optional<String> result = textInputDialog.showAndWait();
         
+        if (result.isPresent()){
+            String email = textInputDialog.getEditor().getText();
+            
+            try {
+                USERCLIENT.findUserByEmail(User.class, email);
+            } catch (NotFoundException | InternalServerErrorException exception) {
+                LOGGER.warning("There is no user with email: " + email + ". " + exception.getMessage());
+            }
+            
+            USERCLIENT.getRecoveryCode(email);
+        }
     }
     
     /**

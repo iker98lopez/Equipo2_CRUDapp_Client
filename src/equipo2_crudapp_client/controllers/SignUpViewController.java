@@ -22,7 +22,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import equipo2_crudapp_client.clients.UserClient;
+import equipo2_crudapp_client.clients.UserClientOld;
 import javax.ws.rs.ClientErrorException;
 import javax.xml.bind.DatatypeConverter;
 
@@ -34,7 +34,7 @@ import javax.xml.bind.DatatypeConverter;
 public class SignUpViewController {
 
     private static final Logger LOGGER = Logger.getLogger("equipo2_crudapp_client.controllers.SignUpController");
-    private static final UserClient CLIENT = new UserClient();
+    private static final UserClientOld CLIENT = new UserClientOld();
     
     /**
      * Stage of the controller
