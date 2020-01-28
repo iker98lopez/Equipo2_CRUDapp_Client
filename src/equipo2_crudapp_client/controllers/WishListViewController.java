@@ -10,6 +10,7 @@ import equipo2_crudapp_classes.classes.Software;
 import equipo2_crudapp_classes.classes.User;
 import equipo2_crudapp_classes.classes.Wish;
 import equipo2_crudapp_client.clients.WishClient;
+import equipo2_crudapp_client.table_classes.TableSoftware;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -29,10 +30,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.converter.DoubleStringConverter;
+import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.GenericType;
 
@@ -176,10 +177,23 @@ public class WishListViewController extends GenericSideBarController {
      */
     public void setTableData() {
 
-        // wishes = user.getWishList();          
-        wishes.add(new Wish(3, new Software("s3"), 3.0));
-        wishes.add(new Wish(2, new Software("s2"), 2.0));
-        wishes.add(new Wish(1, new Software("s1"), 1.0));
+       /* try {
+            wishes = user.getWishList();            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
+       Wish w1 = new Wish();
+       Wish w2 = new Wish();
+       Software s1 = new Software();
+       Software s2 = new Software();
+       s1.setName("s1");
+       s2.setName("s2");
+       w1.setSoftware(s1);
+       w1.setMinPrice(1.0);
+       w2.setMinPrice(2.0);
+       w2.setSoftware(s2);
+       wishes.add(w1);
+       wishes.add(w2);
         //Column checkbox
         tableColumnDelete.setCellFactory(CheckBoxTableCell.forTableColumn(tableColumnDelete) );
 
@@ -189,7 +203,8 @@ public class WishListViewController extends GenericSideBarController {
             @Override
             public ObservableValue<String> call(
                     CellDataFeatures<Wish, String> data) {
-                return data.getValue().getSoftware().getNameProperty();
+                TableSoftware software = new TableSoftware(data.getValue().getSoftware().getName());
+                return software.getNameProperty();
             }
         });
         //Column minimum price
