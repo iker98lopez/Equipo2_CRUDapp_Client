@@ -26,7 +26,7 @@ public class WishClient {
 
     private WebTarget webTarget;
     private Client client;
-    private static final String BASE_URI = "http://localhost:8080/Equipo2_CRUDapp_Server/webresources";
+    private static final String BASE_URI = "http://localhost:14188/Equipo2_CRUDapp_Server/webresources";
 
     public WishClient() {
         client = javax.ws.rs.client.ClientBuilder.newClient();

@@ -259,15 +259,6 @@ public class OfferViewController {
         stage.setTitle("See Offer");
         stage.show();
 
-        try {
-            softwares = SOFTWARECLIENT.findAllSoftwares(new GenericType<Set<Software>>() {
-            });
-            shops = SHOPCLIENT.findAllShops(new GenericType<Set<Shop>>() {
-            });
-        } catch (NotFoundException exception) {
-            LOGGER.warning("There was a problem fetching information from the server. " + exception.getMessage());
-        }
-
         datePickerExpirationDate.setVisible(false);
 
         labelSoftwareNameWarning.setVisible(false);
@@ -444,6 +435,15 @@ public class OfferViewController {
                 labelUrlWarning.setVisible(false);
             }
         });
+        
+        try {
+            softwares = SOFTWARECLIENT.findAllSoftwares(new GenericType<Set<Software>>() {
+            });
+            shops = SHOPCLIENT.findAllShops(new GenericType<Set<Shop>>() {
+            });
+        } catch (NotFoundException exception) {
+            LOGGER.warning("There was a problem fetching information from the server. " + exception.getMessage());
+        }
     }
 
     /**

@@ -1,10 +1,10 @@
 package equipo2_crudapp_client.controllers;
 
+import equipo2_crudapp_ciphering.ClientCipher;
 import equipo2_crudapp_classes.classes.User;
 import equipo2_crudapp_classes.exceptions.EmailAlreadyInUseException;
 import equipo2_crudapp_classes.exceptions.ServerException;
 import equipo2_crudapp_classes.exceptions.UserAlreadyExistsException;
-import java.awt.event.KeyEvent;
 import javafx.event.ActionEvent;
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -24,6 +24,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import equipo2_crudapp_client.clients.UserClient;
 import javax.ws.rs.ClientErrorException;
+import javax.xml.bind.DatatypeConverter;
 
 /**
  * This class controls the SignUpView
@@ -217,10 +218,10 @@ public class SignUpViewController {
             
             if (checkedSyntax) {
                 String login = textFieldLogin.getText();
-                String password = textFieldPassword.getText();
+                String password = DatatypeConverter.printHexBinary(ClientCipher.cipherText(textFieldPassword.getText().getBytes()));
                 String email = textFieldEmail.getText();
                 String fullName = textFieldFullName.getText();
-                User user = new User(login, password, email, fullName);
+                User user = new User(login, password, fullName, email);
 
                 try {
                     CLIENT.createUser(user);
@@ -228,7 +229,7 @@ public class SignUpViewController {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION, "User sign up completed successfully", ButtonType.OK);
                     alert.showAndWait();
 
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/signupsigninapp/views/SignInView.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/SignInView.fxml"));
                     Parent root = (Parent) loader.load();
                     SignInViewController controller = ((SignInViewController) loader.getController());
                     controller.setStage(new Stage());

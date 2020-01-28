@@ -5,7 +5,6 @@
  */
 package equipo2_crudapp_client.controllers;
 
-import equipo2_crudapp_classes.classes.Shop;
 import equipo2_crudapp_classes.classes.Software;
 import equipo2_crudapp_classes.classes.User;
 import equipo2_crudapp_classes.classes.Wish;
@@ -110,7 +109,7 @@ public class WishListViewController extends GenericSideBarController {
 
         buttonFilter.setOnAction(this::handleButtonFilterAction);
         checkBoxEdit.setOnAction(this::handleCheckBoxEditAction);
-        
+
         setTableData();
     }
 
@@ -122,12 +121,14 @@ public class WishListViewController extends GenericSideBarController {
     public void setStage(Stage stage) {
         this.stage = stage;
     }
+
     /**
      * Method that allows to edit the table
      */
     public void handleCheckBoxEditAction(ActionEvent event) {
-        
+
     }
+
     /**
      * Method that filters by name in the wishlist
      *
@@ -141,7 +142,7 @@ public class WishListViewController extends GenericSideBarController {
      * Method that populates tableView with user wishes
      */
     public void setTableData() {
-
+        /*
         // wishes = user.getWishList();          
         wishes.add(new Wish(3, new Software("s3"), 3.0));
         wishes.add(new Wish(2, new Software("s2"), 2.0));
@@ -160,10 +161,11 @@ public class WishListViewController extends GenericSideBarController {
         ObservableList<Wish> observableWishes = FXCollections.observableArrayList();
         observableWishes.addAll(wishes);
         tableViewWishList.setItems(observableWishes);
-
+         */
     }
 
     public void setUser() {
 
     }
+
 }

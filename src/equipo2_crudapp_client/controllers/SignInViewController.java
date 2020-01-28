@@ -200,15 +200,15 @@ public class SignInViewController {
      */
     public void handleHyperlinkSignUpAction(ActionEvent event) {
 
-        /*try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/signupsigninapp/views/SignUpView.fxml"));
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/SignUpView.fxml"));
             Parent root = (Parent) loader.load();
-            SignUpController controller = ((SignUpController) loader.getController());
+            SignUpViewController controller = ((SignUpViewController) loader.getController());
             controller.initStage(root);
             stage.hide();
         } catch (IOException ex) {
             LOGGER.warning("There was an error trying to open SignUpView");
-        }*/
+        }
     }
     
     /**
