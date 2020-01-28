@@ -134,7 +134,7 @@
                               <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
                            </effect>
                         </Button>
-                        <Hyperlink id="HyperlinkForgotPassword" fx:id="HyperlinkForgotPassword" alignment="CENTER" prefHeight="23.0" prefWidth="185.0" text="I forgot my password">
+                        <Hyperlink id="HyperlinkForgotPassword" fx:id="hyperlinkForgotPassword" alignment="CENTER" prefHeight="23.0" prefWidth="185.0" text="I forgot my password">
                            <VBox.margin>
                               <Insets top="10.0" />
                            </VBox.margin>

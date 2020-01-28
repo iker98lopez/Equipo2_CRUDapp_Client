@@ -5,8 +5,6 @@
  */
 package equipo2_crudapp_client.controllers;
 
-import equipo2_crudapp_classes.classes.Offer;
-import equipo2_crudapp_classes.classes.Shop;
 import equipo2_crudapp_classes.classes.User;
 import java.util.Optional;
 import java.util.logging.Logger;

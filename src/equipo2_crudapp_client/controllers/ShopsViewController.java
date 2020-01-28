@@ -6,12 +6,11 @@
 package equipo2_crudapp_client.controllers;
 
 import equipo2_crudapp_classes.classes.Shop;
-import equipo2_crudapp_classes.classes.Software;
-import equipo2_crudapp_classes.classes.Wish;
+import equipo2_crudapp_client.clients.ShopClient;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.logging.Logger;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,7 +23,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Callback;
+import javax.ws.rs.core.GenericType;
 
 /**
  * Controller for the shops list view
@@ -36,6 +35,11 @@ public class ShopsViewController{
      * Logger for ShopsViewController class
      */
     private static final Logger LOGGER = Logger.getLogger("equipo2_crudapp_client.controllers.ShopsViewController");
+    
+    /**
+     * Client for the communication with the server
+     */
+    private static final ShopClient CLIENT = new ShopClient();
     
     /**
      * Stage of the controller
@@ -57,7 +61,7 @@ public class ShopsViewController{
      * TableView of shops
      */
     @FXML
-    private TableView tableViewShops;
+    private TableView tableViewShop;
     
     /**
      * Table column that shows the shop's name
@@ -80,7 +84,7 @@ public class ShopsViewController{
     /**
      * Set of shops
      */
-    private Set<Shop> shops = new HashSet<Shop>();
+    private Set<Shop> shops = new HashSet<>();
     
     /**
      * This method sets the stage
@@ -90,7 +94,7 @@ public class ShopsViewController{
         this.stage = stage;
     }
     
-    /**
+    /** 
      * This method initializes the stage and shows the window, sets the
      * visibility of the components and assigns the listeners.
      * @param root Root to assign to the scene
@@ -106,6 +110,8 @@ public class ShopsViewController{
         
         buttonClose.setOnAction(this::handleButtonCloseAction);
         
+        loadData();
+        
         setTableData();
     }
     
@@ -113,29 +119,27 @@ public class ShopsViewController{
      * Handles the action of the close button. Closes the application
      * @param event the action event
      */
-    public void handleButtonCloseAction(ActionEvent event){
+    private void handleButtonCloseAction(ActionEvent event){
         stage.hide();
+    }
+    
+    private void loadData() {
+        
+        shops = CLIENT.findAllShops(new GenericType<Set<Shop>>() {});
     }
     
     /**
      * Method that populates tableView with shops
      */
-    public void setTableData() {
-
-        // wishes = user.getWishList();          
-        /*shops.add(new Wish(3, new Software("s3"), 3.0));
-        shops.add(new Wish(2, new Software("s2"), 2.0));
-        shops.add(new Wish(1, new Software("s1"), 1.0));*/
-        shops.add(new Shop(1, "Steam", "www.steam.com"));
-        shops.add(new Shop(2, "Epic Games", "www.epicgames.com"));
+    private void setTableData() {
 
         tableColumnName.setCellValueFactory(new PropertyValueFactory("name"));
         tableColumnUrl.setCellValueFactory(new PropertyValueFactory("url"));
-        tableColumnImage.setCellValueFactory(new PropertyValueFactory("image"));
+        // tableColumnImage.setCellValueFactory(new PropertyValueFactory("image"));
 
         ObservableList<Shop> observableShops = FXCollections.observableArrayList();
         observableShops.addAll(shops);
-        tableViewShops.setItems(observableShops);
+        tableViewShop.setItems(observableShops);
 
     }
 }

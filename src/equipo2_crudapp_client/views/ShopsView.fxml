@@ -15,7 +15,7 @@
    <children>
       <TableView id="tableViewShop" fx:id="tableViewShop" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" tableMenuButtonVisible="true">
         <columns>
-          <TableColumn id="tableColumnImage" fx:id="tableColumnImage" minWidth="100.0" prefWidth="178.3999878168106" text="Image" />
+          <!--<TableColumn id="tableColumnImage" fx:id="tableColumnImage" minWidth="100.0" prefWidth="178.3999878168106" text="Image" />-->
           <TableColumn id="tableColumnName" fx:id="tableColumnName" minWidth="100.0" prefWidth="416.0000305175781" text="Name" />
             <TableColumn id="tableColumnUrl" fx:id="tableColumnUrl" minWidth="89.60003662109375" prefWidth="89.60003662109375" text="Url" />
         </columns>

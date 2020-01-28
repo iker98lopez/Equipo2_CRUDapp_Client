@@ -43,26 +43,65 @@ public class SignInViewController {
      */
     private boolean checkedSyntax;
     
+    /**
+     * 
+     */
     @FXML
     private Label labelLoginWarning;
+    
+    /**
+     * 
+     */
     @FXML
     private TextField textFieldLogin;
+    
+    /**
+     * 
+     */
     @FXML
     private Label labelPasswordWarning;
+    
+    /**
+     * 
+     */
     @FXML
     private PasswordField textFieldPassword;
+    
+    /**
+     * 
+     */
     @FXML
     private TextField textFieldPasswordShow;
+    
+    /**
+     * 
+     */
     @FXML
     private CheckBox checkBoxShowPassword;
+    
+    /**
+     * 
+     */
     @FXML
     private Button buttonSignIn;
+    
+    /**
+     * 
+     */
     @FXML
     private Hyperlink hyperLinkSignUp;
+    
+    /**
+     * 
+     */
     @FXML
     private Button buttonExit;
+    
+    /**
+     * Opens 
+     */
     @FXML
-    private Hyperlink hyperLinkForgotPassword;
+    private Hyperlink hyperlinkForgotPassword;
     
     /**
      * This method sets the stage
@@ -94,6 +133,7 @@ public class SignInViewController {
         buttonSignIn.setOnAction(this::handleButtonSignInAction);
         hyperLinkSignUp.setOnAction(this::handleHyperlinkSignUpAction);
         buttonExit.setOnAction(this::handleButtonExitAction);
+        hyperlinkForgotPassword.setOnAction(this::handleHyperlinkForgotPassword);
 
         textFieldLogin.focusedProperty().addListener(this::focusChanged);
         textFieldPassword.focusedProperty().addListener(this::focusChanged);
@@ -233,7 +273,15 @@ public class SignInViewController {
     }
     
     public void handleHyperlinkForgotPassword(ActionEvent event){
-        
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/ForgotPasswordView.fxml"));
+            Parent root = (Parent) loader.load();
+            ForgotPasswordController controller = ((ForgotPasswordController) loader.getController());
+            controller.setStage(new Stage());
+            controller.initStage(root);
+        } catch (IOException ex) {
+            LOGGER.severe(ex.getMessage());
+        }
     }
     
     /**

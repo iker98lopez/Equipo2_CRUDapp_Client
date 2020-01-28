@@ -5,6 +5,8 @@
  */
 package equipo2_crudapp_client.controllers;
 
+import equipo2_crudapp_client.clients.OfferClient;
+import equipo2_crudapp_client.clients.ShopClient;
 import java.io.IOException;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
@@ -21,21 +23,28 @@ import javafx.stage.Stage;
  * Controller for the main view of the application
  * @author Diego Corral
  */
-public class MainViewController extends GenericSideBarController{
+public class MainViewController extends GenericSideBarController {
     
     /**
      * Logger of MainViewController
      */
-    private static final Logger LOGGER = Logger.getLogger("equipo2_crudapp_client.controllers.MainViewController");
+    private static final Logger LOGGER = Logger.
+            getLogger("equipo2_crudapp_client.controllers.MainViewController");
     
     /**
-     * 
+     * Client for the communication with the server
+     */
+    private static final OfferClient CLIENT = new OfferClient();
+    
+    /**
+     * Search text for filtering the offers
      */
     @FXML
     private TextField textFieldSearch;
     
     /**
-     * 
+     * Opens the results view. Filters the results using the values introduced 
+     * by the user
      */
     @FXML
     private Button buttonSearch; 
@@ -84,6 +93,11 @@ public class MainViewController extends GenericSideBarController{
         
     }
     
+    /**
+     * Handles the action of the search button. Opens the results view for 
+     * filtering the offers
+     * @param event 
+     */
     public void handleButtonSearchAction(ActionEvent event){
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/ResultsView.fxml"));
@@ -98,15 +112,41 @@ public class MainViewController extends GenericSideBarController{
         
     }
     
+    /**
+     * Load in a list all the free offers
+     */
+    private void loadFreeOffers() {
+        
+    }
+    
+    /**
+     * Load in a list the most discounted offers
+     */
+    private void loadMostDiscountedOffers() {
+        
+    }
+    
+    /**
+     * Load in a list the offers that expire soon
+     */
+    private void loadExpiringSoonOffers() {
+        
+    }
+    
+    /**
+     * Validates that the text introduced in the search text field are correct
+     * @param text Text to validate
+     * @return True if valid, otherwise false
+     */
     private boolean syntaxCheck(String text){
         
-        boolean isValid = false;
+        boolean ret = false;
         
-        if(text.equals("")){
-            
+        if(text.equals("") && text.length() > 3 && text.length() < 128){
+            ret = true;
         }
         
-        return isValid;
+        return ret;
     }
     
 }
