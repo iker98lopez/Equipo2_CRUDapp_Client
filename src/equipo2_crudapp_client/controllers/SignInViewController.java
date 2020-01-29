@@ -8,10 +8,13 @@ package equipo2_crudapp_client.controllers;
 import equipo2_crudapp_ciphering.ClientCipher;
 import equipo2_crudapp_classes.classes.User;
 import equipo2_crudapp_classes.enumerators.UserStatus;
+import equipo2_crudapp_classes.exceptions.IncorrectPasswordException;
+import equipo2_crudapp_classes.exceptions.UserDisabledException;
+import equipo2_crudapp_classes.exceptions.UserNotFoundException;
 import equipo2_crudapp_client.clients.UserClient;
-import equipo2_crudapp_client.clients.UserClientOld;
 import java.io.IOException;
 import java.util.Optional;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -19,6 +22,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
@@ -140,26 +144,56 @@ public class SignInViewController {
         }
         
         if (checkedSyntax) {
-            User user = new User();
-            String login = textFieldLogin.getText();
-            String password = DatatypeConverter.printHexBinary(ClientCipher.cipherText(textFieldPassword.getText().getBytes()));
-            
             try {
-                user = USERCLIENT.findUser(user.getClass(), "5");
-                LOGGER.info(user.getFullName());
-            } catch (NotFoundException exception) {
-                LOGGER.info("Login is not correct.");
-            }
-            
-            try {
-                user = USERCLIENT.checkUserPassword(user.getClass(), login, password);
-                LOGGER.info(user.getFullName());
-            } catch (NotFoundException exception) {
-                LOGGER.info("Password is not correct.");
-            }
-            
-            if (user.getStatus() == UserStatus.DISABLED) {
-                LOGGER.info("User is disabled");
+                User user = new User();
+                String login = textFieldLogin.getText();
+                String password = DatatypeConverter.printHexBinary(ClientCipher.cipherText(textFieldPassword.getText().getBytes()));
+
+                try {
+                    user = USERCLIENT.findUserByLogin(user.getClass(), login);
+                } catch (NotFoundException exception) {
+                    throw new UserNotFoundException(exception.getMessage());
+                }
+
+                try {
+                    user = USERCLIENT.checkUserPassword(user.getClass(), login, password);
+                } catch (NotFoundException exception) {
+                    throw new IncorrectPasswordException(exception.getMessage());
+                }
+
+                if (user.getStatus() == UserStatus.DISABLED) {
+                    throw new UserDisabledException();
+                } else {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/MainView.fxml"));
+                    Parent root = (Parent) loader.load();
+                    MainViewController controller = ((MainViewController) loader.getController());
+                    controller.setUser(user);
+                    controller.initStage(root);
+                    stage.hide();
+                }
+            } catch (UserNotFoundException exception) {
+                Alert alert = new Alert(Alert.AlertType.WARNING, "User does not exist.", ButtonType.OK);
+                alert.showAndWait();
+                
+                textFieldLogin.setText("");
+                textFieldPassword.setText("");
+                textFieldPasswordShow.setText("");
+            } catch (IncorrectPasswordException exception) {
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Password is not correct.", ButtonType.OK);
+                alert.showAndWait();
+                
+                textFieldLogin.setText("");
+                textFieldPassword.setText("");
+                textFieldPasswordShow.setText("");
+            } catch (UserDisabledException exception) {
+                Alert alert = new Alert(Alert.AlertType.WARNING, "User has been disabled.", ButtonType.OK);
+                alert.showAndWait();
+                
+                textFieldLogin.setText("");
+                textFieldPassword.setText("");
+                textFieldPasswordShow.setText("");
+            } catch (IOException exception) {
+                LOGGER.warning("There was an error opening the window. " + exception.getMessage());
             }
         }
         
@@ -214,19 +248,7 @@ public class SignInViewController {
             } catch (IOException ex) {
                 LOGGER.warning("There was an error trying to open LogOutView");
             }
-        }*/
-        
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/MainView.fxml"));
-            Parent root = (Parent) loader.load();
-            MainViewController controller = ((MainViewController) loader.getController());
-            //controller.setUser(user);
-            controller.initStage(root);
-            stage.hide();
-        } catch (IOException ex) {
-            LOGGER.severe(ex.getMessage());
-        }
-        
+        }*/        
     }
     
     /**
