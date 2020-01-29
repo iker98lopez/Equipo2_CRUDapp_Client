@@ -5,6 +5,7 @@ import equipo2_crudapp_classes.classes.User;
 import equipo2_crudapp_classes.exceptions.EmailAlreadyInUseException;
 import equipo2_crudapp_classes.exceptions.ServerException;
 import equipo2_crudapp_classes.exceptions.UserAlreadyExistsException;
+import equipo2_crudapp_client.clients.UserClient;
 import javafx.event.ActionEvent;
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -34,7 +35,7 @@ import javax.xml.bind.DatatypeConverter;
 public class SignUpViewController {
 
     private static final Logger LOGGER = Logger.getLogger("equipo2_crudapp_client.controllers.SignUpController");
-    private static final UserClientOld CLIENT = new UserClientOld();
+    private static final UserClient CLIENT = new UserClient();
     
     /**
      * Stage of the controller
@@ -235,17 +236,17 @@ public class SignUpViewController {
                     controller.setStage(new Stage());
                     controller.initStage(root);
                     stage.hide();
-                } catch (ServerException ex) {
+                } /*catch (ServerException ex) {
                     Alert alert = new Alert(Alert.AlertType.ERROR, "There was an error connecting to the server.\nPlease try again later.", ButtonType.OK);
                     alert.showAndWait();
 
                     LOGGER.info("There was an error from client side.");
-                } catch (ClientErrorException ex) {
+                } */catch (ClientErrorException ex) {
                     Alert alert = new Alert(Alert.AlertType.ERROR, "There was an error on Client side.\nPlease try again later.", ButtonType.OK);
                     alert.showAndWait();
 
                     LOGGER.info("There was an error from server side.");
-                }catch (EmailAlreadyInUseException ex) {
+                }/*catch (EmailAlreadyInUseException ex) {
                     Alert alert = new Alert(Alert.AlertType.ERROR, "The E-mail is already in use.\nPlease try again.", ButtonType.OK);
                     alert.showAndWait();
 
@@ -263,7 +264,7 @@ public class SignUpViewController {
 
                     textFieldLogin.setText("");
                     LOGGER.info("User already exists.");
-                }
+                }*/
                 catch (IOException ex) {
                     Alert alert = new Alert(Alert.AlertType.ERROR, "There was an error opening the Sign In window.", ButtonType.OK);
                     alert.showAndWait();

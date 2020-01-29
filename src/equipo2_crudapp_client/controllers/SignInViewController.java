@@ -8,10 +8,13 @@ package equipo2_crudapp_client.controllers;
 import equipo2_crudapp_ciphering.ClientCipher;
 import equipo2_crudapp_classes.classes.User;
 import equipo2_crudapp_classes.enumerators.UserStatus;
+import equipo2_crudapp_classes.exceptions.IncorrectPasswordException;
+import equipo2_crudapp_classes.exceptions.UserDisabledException;
+import equipo2_crudapp_classes.exceptions.UserNotFoundException;
 import equipo2_crudapp_client.clients.UserClient;
-import equipo2_crudapp_client.clients.UserClientOld;
 import java.io.IOException;
 import java.util.Optional;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -19,6 +22,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
@@ -113,7 +117,7 @@ public class SignInViewController {
      * Opens 
      */
     @FXML
-    private Hyperlink hyperlinkForgotPassword;
+    private Hyperlink hyperLinkForgotPassword;
     
     /**
      * This method sets the stage
@@ -145,7 +149,7 @@ public class SignInViewController {
         buttonSignIn.setOnAction(this::handleButtonSignInAction);
         hyperLinkSignUp.setOnAction(this::handleHyperlinkSignUpAction);
         buttonExit.setOnAction(this::handleButtonExitAction);
-        hyperlinkForgotPassword.setOnAction(this::handleHyperlinkForgotPassword);
+        hyperLinkForgotPassword.setOnAction(this::handleHyperlinkForgotPassword);
 
         textFieldLogin.focusedProperty().addListener(this::focusChanged);
         textFieldPassword.focusedProperty().addListener(this::focusChanged);
@@ -179,93 +183,59 @@ public class SignInViewController {
         }
         
         if (checkedSyntax) {
-            User user = new User();
-            String login = textFieldLogin.getText();
-            String password = DatatypeConverter.printHexBinary(ClientCipher.cipherText(textFieldPassword.getText().getBytes()));
-            
             try {
-                user = USERCLIENT.findUser(user.getClass(), "5");
-                LOGGER.info(user.getFullName());
-            } catch (NotFoundException exception) {
-                LOGGER.info("Login is not correct.");
-            }
-            
-            try {
-                user = USERCLIENT.checkUserPassword(user.getClass(), login, password);
-                LOGGER.info(user.getFullName());
-            } catch (NotFoundException exception) {
-                LOGGER.info("Password is not correct.");
-            }
-            
-            if (user.getStatus() == UserStatus.DISABLED) {
-                LOGGER.info("User is disabled");
-            }
-        }
-        
-        /*if (checkedSyntax) {
-            User user = new User(textFieldLogin.getText().trim(), textFieldPassword.getText().trim());
-            try {
-                user = CLIENT.signIn(user);
+                User user = new User();
+                String login = textFieldLogin.getText();
+                String password = DatatypeConverter.printHexBinary(ClientCipher.cipherText(textFieldPassword.getText().getBytes()));
 
-                FXMLLoader loader;
-                Parent root;
-                loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/MainView.fxml"));
-                root = (Parent) loader.load();
-                MainViewController controller = ((MainViewController) loader.getController());
-                controller.setUser(user);
-                controller.initStage(root);
-                stage.hide();
-                
-            } catch (ServerException ex) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "There was an error connecting to the server.\nPlease try again later.", ButtonType.OK);
+                try {
+                    user = USERCLIENT.findUserByLogin(user.getClass(), login);
+                } catch (NotFoundException exception) {
+                    throw new UserNotFoundException(exception.getMessage());
+                }
+
+                try {
+                    user = USERCLIENT.checkUserPassword(user.getClass(), login, password);
+                } catch (NotFoundException exception) {
+                    throw new IncorrectPasswordException(exception.getMessage());
+                }
+
+                if (user.getStatus() == UserStatus.DISABLED) {
+                    throw new UserDisabledException();
+                } else {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/MainView.fxml"));
+                    Parent root = (Parent) loader.load();
+                    MainViewController controller = ((MainViewController) loader.getController());
+                    controller.setUser(user);
+                    controller.initStage(root);
+                    stage.hide();
+                }
+            } catch (UserNotFoundException exception) {
+                Alert alert = new Alert(Alert.AlertType.WARNING, "User does not exist.", ButtonType.OK);
                 alert.showAndWait();
                 
+                textFieldLogin.setText("");
                 textFieldPassword.setText("");
                 textFieldPasswordShow.setText("");
-                LOGGER.warning("There was an error connecting to the server.");
-            } catch (UserDisabledException ex) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "The user trying to log in has been disabled.", ButtonType.OK);
+            } catch (IncorrectPasswordException exception) {
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Password is not correct.", ButtonType.OK);
                 alert.showAndWait();
                 
-                labelLoginWarning.setVisible(true);
-                
+                textFieldLogin.setText("");
                 textFieldPassword.setText("");
                 textFieldPasswordShow.setText("");
-                LOGGER.warning("The user has been disabled.");
-            } catch (IncorrectUserException ex) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "The user is not correct.\nPlease try again.", ButtonType.OK);
+            } catch (UserDisabledException exception) {
+                Alert alert = new Alert(Alert.AlertType.WARNING, "User has been disabled.", ButtonType.OK);
                 alert.showAndWait();
                 
-                labelLoginWarning.setVisible(true);
-                
+                textFieldLogin.setText("");
                 textFieldPassword.setText("");
                 textFieldPasswordShow.setText("");
-                LOGGER.warning("The user is not correct.");
-            } catch (IncorrectPasswordException ex) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "The password is not correct.\nPlease try again.", ButtonType.OK);
-                alert.showAndWait();
-                
-                labelPasswordWarning.setVisible(true);
-                
-                textFieldPassword.setText("");
-                textFieldPasswordShow.setText("");
-                LOGGER.warning("The password is not correct.");
-            } catch (IOException ex) {
-                LOGGER.warning("There was an error trying to open LogOutView");
+            } catch (IOException exception) {
+                LOGGER.warning("There was an error opening the window. " + exception.getMessage());
             }
-        }*/
-        
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/MainView.fxml"));
-            Parent root = (Parent) loader.load();
-            MainViewController controller = ((MainViewController) loader.getController());
-            //controller.setUser(user);
-            controller.initStage(root);
-            stage.hide();
-        } catch (IOException ex) {
-            LOGGER.severe(ex.getMessage());
         }
-        
+             
     }
     
     /**
