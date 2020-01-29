@@ -161,7 +161,7 @@ public class SignInViewController {
                     throw new IncorrectPasswordException(exception.getMessage());
                 }
 
-                if (user.getStatus() == UserStatus.DISABLED) {
+                if (user != null && user.getStatus() == UserStatus.DISABLED) {
                     throw new UserDisabledException();
                 } else {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/MainView.fxml"));
@@ -172,6 +172,7 @@ public class SignInViewController {
                     stage.hide();
                 }
             } catch (UserNotFoundException exception) {
+                LOGGER.warning("User does not exist. " + exception.getMessage());
                 Alert alert = new Alert(Alert.AlertType.WARNING, "User does not exist.", ButtonType.OK);
                 alert.showAndWait();
                 
@@ -179,6 +180,7 @@ public class SignInViewController {
                 textFieldPassword.setText("");
                 textFieldPasswordShow.setText("");
             } catch (IncorrectPasswordException exception) {
+                LOGGER.warning("Password is not correct. " + exception.getMessage());
                 Alert alert = new Alert(Alert.AlertType.WARNING, "Password is not correct.", ButtonType.OK);
                 alert.showAndWait();
                 
@@ -186,6 +188,8 @@ public class SignInViewController {
                 textFieldPassword.setText("");
                 textFieldPasswordShow.setText("");
             } catch (UserDisabledException exception) {
+                LOGGER.warning("User has been disabled. " + exception.getMessage());
+                
                 Alert alert = new Alert(Alert.AlertType.WARNING, "User has been disabled.", ButtonType.OK);
                 alert.showAndWait();
                 
