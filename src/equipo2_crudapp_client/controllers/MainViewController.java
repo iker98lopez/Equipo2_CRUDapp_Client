@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -134,7 +136,9 @@ public class MainViewController extends GenericSideBarController {
      * Load in a list all the free offers
      */
     private void setFreeOffers() {
-        
+        ObservableList<String> items = FXCollections.observableArrayList (
+            "A", "B", "C", "D");
+        listViewGiveaways.setItems(items);
     }
     
     /**
