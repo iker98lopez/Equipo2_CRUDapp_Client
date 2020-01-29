@@ -18,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -82,6 +83,12 @@ public class ShopsViewController{
     private TableColumn tableColumnUrl;
     
     /**
+     * Warning. Shown when the filter is not valid
+     */
+    @FXML
+    private Label labelFilterNotValid;
+    
+    /**
      * Set of shops
      */
     private Set<Shop> shops = new HashSet<>();
@@ -109,6 +116,7 @@ public class ShopsViewController{
         stage.show();
         
         buttonClose.setOnAction(this::handleButtonCloseAction);
+        labelFilterNotValid.setVisible(false);
         
         loadData();
         
@@ -123,6 +131,9 @@ public class ShopsViewController{
         stage.hide();
     }
     
+    /**
+     * Loads all the shops from the server
+     */
     private void loadData() {
         
         shops = CLIENT.findAllShops(new GenericType<Set<Shop>>() {});
@@ -135,7 +146,7 @@ public class ShopsViewController{
 
         tableColumnName.setCellValueFactory(new PropertyValueFactory("name"));
         tableColumnUrl.setCellValueFactory(new PropertyValueFactory("url"));
-        // tableColumnImage.setCellValueFactory(new PropertyValueFactory("image"));
+        tableColumnImage.setCellValueFactory(new PropertyValueFactory("image"));
 
         ObservableList<Shop> observableShops = FXCollections.observableArrayList();
         observableShops.addAll(shops);

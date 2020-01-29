@@ -145,7 +145,7 @@ public class SignInViewController {
         buttonSignIn.setOnAction(this::handleButtonSignInAction);
         hyperLinkSignUp.setOnAction(this::handleHyperlinkSignUpAction);
         buttonExit.setOnAction(this::handleButtonExitAction);
-        hyperLinkForgotPassword.setOnAction(this::handleHyperlinkForgotPassword);
+        hyperlinkForgotPassword.setOnAction(this::handleHyperlinkForgotPassword);
 
         textFieldLogin.focusedProperty().addListener(this::focusChanged);
         textFieldPassword.focusedProperty().addListener(this::focusChanged);
