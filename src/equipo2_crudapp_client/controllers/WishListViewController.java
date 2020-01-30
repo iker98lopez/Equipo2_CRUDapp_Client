@@ -11,9 +11,16 @@ import equipo2_crudapp_classes.classes.User;
 import equipo2_crudapp_classes.classes.Wish;
 import equipo2_crudapp_client.clients.WishClient;
 import equipo2_crudapp_client.table_classes.TableSoftware;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -45,6 +52,10 @@ import javax.ws.rs.core.GenericType;
  */
 public class WishListViewController extends GenericSideBarController {
 
+    /**
+     * List of wishes that will be deleted
+     */
+    private Map<Wish, BooleanProperty> checkedRows;
     /**
      * Client to make petitions
      */
@@ -105,10 +116,10 @@ public class WishListViewController extends GenericSideBarController {
     @FXML
     private Button buttonFilter;
     /**
-     * Button that cancels the changes to the table
+     * Button that deletes selected wishes
      */
-    @FXML 
-    private Button buttonCancel;
+    @FXML
+    private Button buttonDelete;
 
     /**
      * This method initializes the stage and shows the window, sets the
@@ -123,10 +134,10 @@ public class WishListViewController extends GenericSideBarController {
         stage.setScene(scene);
         stage.setTitle("WishList");
         stage.show();
-        
-        buttonCancel.setDisable(true);
-        
-        buttonCancel.setOnAction(this::handleButtonCancelAction);
+
+        buttonDelete.setDisable(true);
+
+        buttonDelete.setOnAction(this::handleButtonDeleteAction);
         buttonFilter.setOnAction(this::handleButtonFilterAction);
         checkBoxEdit.setOnAction(this::handleCheckBoxEditAction);
 
@@ -141,27 +152,40 @@ public class WishListViewController extends GenericSideBarController {
     public void setStage(Stage stage) {
         this.stage = stage;
     }
-    
+
     /**
-     * Method that cancels table edit and discard the changes
+     * Method that deletes selected wishes from wishList
      */
-    public void handleButtonCancelAction (ActionEvent event) {
-        checkBoxEdit.setSelected(false);
-        handleCheckBoxEditAction(event);
-       
+    public void handleButtonDeleteAction(ActionEvent event) {
+        List<Wish> checkedItems = checkedRows.entrySet().stream()
+                .filter(e -> e.getValue().get())
+                .map(Entry::getKey)
+                .collect(Collectors.toList());
+        
+        for (int i = 0; i < checkedItems.size(); i++) {
+            if (wishes.contains(checkedItems.get(i))) {
+                try {
+                    CLIENT.removeWish("" + checkedItems.get(i).getId());
+                } catch (ClientErrorException clientErrorException) {
+                    clientErrorException.printStackTrace();
+                }
+            }
+        }
+        setTableData();
     }
+
     /**
      * Method that allows to edit the table
      */
     public void handleCheckBoxEditAction(ActionEvent event) {
         if (checkBoxEdit.isSelected()) {
             tableViewWishList.setEditable(true);
-            buttonCancel.setDisable(false);
-            
+            buttonDelete.setDisable(false);
+
         } else {
             tableViewWishList.setEditable(false);
-            buttonCancel.setDisable(true);
-            
+            buttonDelete.setDisable(true);
+
         }
     }
 
@@ -171,35 +195,49 @@ public class WishListViewController extends GenericSideBarController {
      * @param event
      */
     public void handleButtonFilterAction(ActionEvent event) {
-
+        
     }
 
     /**
      * Method that populates tableView with user wishes
      */
     public void setTableData() {
-
-        try {
-            wishes = user.getWishList();            
+        /*try {
+        wishes = user.getWishList();
         } catch (Exception e) {
-            e.printStackTrace();
-        }
-       /*Wish w1 = new Wish();
-       Wish w2 = new Wish();
-       Software s1 = new Software();
-       Software s2 = new Software();
-       s1.setName("s1");
-       s2.setName("s2");
-       w1.setSoftware(s1);
-       w1.setMinPrice(1.0);
-       w2.setMinPrice(2.0);
-       w2.setSoftware(s2);
-       wishes.add(w1);
-       wishes.add(w2);*/
-       
+        e.printStackTrace();
+        }*/
+        checkedRows = new HashMap<>();
+        
+        Wish w1 = new Wish();
+        Wish w2 = new Wish();
+        Software s1 = new Software();
+        Software s2 = new Software();
+        s1.setName("s1");
+        s2.setName("s2");
+        w1.setSoftware(s1);
+        w1.setMinPrice(1.0);
+        w2.setMinPrice(2.0);
+        w2.setSoftware(s2);
+        wishes.add(w1);
+        wishes.add(w2);
         //Column checkbox
-        tableColumnDelete.setCellFactory(CheckBoxTableCell.forTableColumn(tableColumnDelete));
+        tableColumnDelete.setCellFactory(CheckBoxTableCell.forTableColumn(
+            //This lambda ables to know wich element is selected to delete
+                i-> checkedRows.computeIfAbsent(((Wish) tableViewWishList.getItems()
+                        .get(i)), p -> new SimpleBooleanProperty())));
+                
 
+        /* Possible method to access a row item when table checkbox is selected
+        
+        ((CheckBoxTableCell) tableColumnDelete.getCellFactory()).setSelectedStateCallback(new Callback<Integer, ObservableValue<Boolean>>() {
+            @Override
+            public ObservableValue<Boolean> call(Integer index) {
+                newWishes.add((Wish)(tableViewWishList.getItems().get(index)));
+                return ?;
+            }
+        });
+         */
         //Column software name
         tableColumnSoftware.setCellValueFactory(new Callback<
         CellDataFeatures<Wish, String>, ObservableValue<String>>() {
@@ -211,25 +249,25 @@ public class WishListViewController extends GenericSideBarController {
             }
         });
         //Column minimum price
-        tableColumnMinPrice.setCellFactory(TextFieldTableCell.<Wish, Double>forTableColumn(new DoubleStringConverter())); 
+        tableColumnMinPrice.setCellFactory(TextFieldTableCell.<Wish, Double>forTableColumn(new DoubleStringConverter()));
         tableColumnMinPrice.setCellValueFactory(new PropertyValueFactory("minPrice"));
-        
+
         ObservableList<Wish> observableWishes = FXCollections.observableArrayList();
         observableWishes.addAll(wishes);
         tableViewWishList.setItems(observableWishes);
-        
+
         //Save minimum price changes
         tableColumnMinPrice.setOnEditCommit(
-        new EventHandler<CellEditEvent<Wish, Double>>() {
+                new EventHandler<CellEditEvent<Wish, Double>>() {
             @Override
             public void handle(CellEditEvent<Wish, Double> t) {
                 Wish wish = ((Wish) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                 Double newPrice = t.getNewValue();
                 wish.setMinPrice(newPrice);
-                CLIENT.modifyWish(wish, ""+wish.getId());
+                CLIENT.modifyWish(wish, "" + wish.getId());
             }
         }
-);
+        );
 
     }
 
