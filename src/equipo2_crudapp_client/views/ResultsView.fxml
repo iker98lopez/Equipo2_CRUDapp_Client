@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="RIGHT_TO_LEFT" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<HBox alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="RIGHT_TO_LEFT" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="equipo2_crudapp_client.controllers.ResultsViewController">
    <children>
       <VBox alignment="TOP_CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="600.0" prefWidth="600.0" spacing="30.0" HBox.hgrow="ALWAYS">
          <children>
@@ -29,7 +29,7 @@
             </Label>
             <HBox alignment="CENTER" prefHeight="25.0" prefWidth="600.0">
                <children>
-                  <TextField id="textFieldSearchBar" fx:id="textFieldSearchBar" alignment="TOP_LEFT" prefHeight="25.0" prefWidth="279.0" text="Search bar...">
+                  <TextField id="textFieldSearchBar" fx:id="textFieldSearchBar" alignment="TOP_LEFT" prefHeight="25.0" prefWidth="279.0" promptText="Search bar...">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -78,17 +78,17 @@
                               <Insets left="83.0" />
                            </VBox.margin>
                         </Label>
-                        <CheckBox id="checkBoxProgram" fx:id="checkBoxProgram" mnemonicParsing="false" prefWidth="81.0" text="Program">
+                        <CheckBox id="checkBoxProgram" fx:id="checkBoxProgram" mnemonicParsing="false" prefHeight="17.0" prefWidth="71.0" text="Program">
                            <VBox.margin>
                               <Insets left="60.0" />
                            </VBox.margin>
                         </CheckBox>
-                        <CheckBox id="checkBoxExtension" fx:id="checkBoxExtension" layoutX="70.0" layoutY="37.0" mnemonicParsing="false" prefWidth="81.0" text="Extension">
+                        <CheckBox id="checkBoxExtension" fx:id="checkBoxExtension" layoutX="70.0" layoutY="37.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="76.0" text="Extension">
                            <VBox.margin>
                               <Insets left="60.0" />
                            </VBox.margin>
                         </CheckBox>
-                        <CheckBox id="checkBoxGame" fx:id="checkBoxGame" layoutX="10.0" layoutY="64.0" mnemonicParsing="false" prefWidth="81.0" text="Game">
+                        <CheckBox id="checkBoxGame" fx:id="checkBoxGame" layoutX="10.0" layoutY="64.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="54.0" text="Game">
                            <VBox.margin>
                               <Insets left="60.0" />
                            </VBox.margin>

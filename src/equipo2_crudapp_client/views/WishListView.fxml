@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="equipo2_crudapp_client.controllers.WishListViewController">
+<HBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="equipo2_crudapp_client.controllers.WishListViewController">
    <children>
       <HBox HBox.hgrow="ALWAYS">
          <children>
@@ -124,8 +124,9 @@
                <children>
                   <TableView id="tableViewWishList" fx:id="tableViewWishList" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
                     <columns>
-                      <TableColumn id="tableColumnSoftware" fx:id="tableColumnSoftware" editable="false" minWidth="100.0" prefWidth="178.3999878168106" text="Software" />
-                      <TableColumn id="tableColumnMinPrice" fx:id="tableColumnMinPrice" minWidth="100.0" prefWidth="416.0000305175781" text="Minimum price" />
+                        <TableColumn id="tableColumnDelete" fx:id="tableColumnDelete" maxWidth="-Infinity" minWidth="44.0" prefWidth="44.0" text="Delete" />
+                      <TableColumn id="tableColumnSoftware" fx:id="tableColumnSoftware" editable="false" minWidth="420.0" prefWidth="420.0" text="Software" />
+                      <TableColumn id="tableColumnMinPrice" fx:id="tableColumnMinPrice" minWidth="230.0" prefWidth="230.0" text="Minimum price" />
                     </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -171,7 +172,7 @@
                               <Insets bottom="40.0" left="50.0" />
                            </HBox.margin>
                         </CheckBox>
-                        <Button fx:id="buttonClose" alignment="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="67.0" text="Close">
+                        <Button id="buttonCancel" fx:id="buttonCancel" alignment="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="67.0" text="Cancel">
                            <font>
                               <Font size="14.0" />
                            </font>

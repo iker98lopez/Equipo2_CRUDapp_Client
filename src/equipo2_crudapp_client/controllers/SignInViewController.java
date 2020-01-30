@@ -171,7 +171,11 @@ public class SignInViewController {
                     controller.initStage(root);
                     stage.hide();
                 }
-            } catch (UserNotFoundException exception) {
+            } catch (InternalServerErrorException exception) {
+                LOGGER.warning("There was an error trying to connect to the server. " + exception.getMessage());
+                Alert alert = new Alert(Alert.AlertType.WARNING, "There was an error trying to connect to the server.\nPlease try again later.", ButtonType.OK);
+                alert.showAndWait();
+            }catch (UserNotFoundException exception) {
                 LOGGER.warning("User does not exist. " + exception.getMessage());
                 Alert alert = new Alert(Alert.AlertType.WARNING, "User does not exist.", ButtonType.OK);
                 alert.showAndWait();
