@@ -5,11 +5,14 @@
  */
 package equipo2_crudapp_client.controllers;
 
+import equipo2_crudapp_client.clients.UserClient;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
@@ -30,6 +33,16 @@ public class ForgotPasswordController {
      * Scene of the controller
      */
     private Scene scene;
+    
+    /**
+     * Client for the communication with the server
+     */
+    private static final UserClient USER_CLIENT = new UserClient();
+    
+    /**
+     * The recovery code sent to the user's email account
+     */
+    private String recoveryCode;
     
     /**
      * Goes to the next step. In this case to the introduction of the code sent 
@@ -117,6 +130,12 @@ public class ForgotPasswordController {
      */
     private void handleButtonEmailNextAction(ActionEvent event) {
         if(emailSyntaxIsCorrect()) {
+            
+            recoveryCode = USER_CLIENT.getRecoveryCode(textFieldEmail.getText());
+            
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "We've sent a "
+                    + "recuperation code to your email account", ButtonType.OK);
+            alert.showAndWait();
             
             // Send email with recuperation code
             textFieldEmail.setDisable(true);
