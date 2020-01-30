@@ -13,6 +13,8 @@ import equipo2_crudapp_client.clients.SoftwareClient;
 import java.net.URL;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -40,7 +42,8 @@ import javax.ws.rs.core.GenericType;
  *
  * @author Adrián García
  */
-public class ResultsViewController extends GenericSideBarController implements Initializable{
+public class ResultsViewController extends GenericSideBarController implements Initializable {
+
     private ObservableList<Software> results = null;
     private static final SoftwareClient SOFTWARE_CLIENT = new SoftwareClient();
     private static final Logger LOGGER = Logger.getLogger("equipo2_crudapp_client.controllers.ResultsViewController");
@@ -48,7 +51,7 @@ public class ResultsViewController extends GenericSideBarController implements I
      * Scene of the controller
      */
     private Scene scene;
-    
+
     /**
      * Text to search passed from MainView
      */
@@ -58,10 +61,10 @@ public class ResultsViewController extends GenericSideBarController implements I
      */
     @FXML
     private TextField textFieldSearchBar;
-    
+
     /**
-     * Button that launches the search 
-     */ 
+     * Button that launches the search
+     */
     @FXML
     private Button buttonSearch;
     /**
@@ -114,6 +117,7 @@ public class ResultsViewController extends GenericSideBarController implements I
      */
     @FXML
     private ListView listViewResults;
+
     /**
      * This method initializes the stage and shows the window, sets the
      * visibility of the components and assigns the listeners.
@@ -127,37 +131,41 @@ public class ResultsViewController extends GenericSideBarController implements I
         stage.setScene(scene);
         stage.setTitle("Results");
         stage.show();
-        
+
         buttonSearch.setOnAction(this::handleButtonSearchAction);
     }
+
     /**
      * Method that returns an observable list with filtered results
      */
-    private ObservableList<Software> getResultsData () {
-        
+    private ObservableList<Software> getResultsData() {
+        ObservableList<Software> data = FXCollections.observableArrayList();
         try {
             if (textFieldSearchBar.getText() != null || textFieldSearchBar.getText() != "") {
-                results = SOFTWARE_CLIENT.findSoftwaresByName(new GenericType<ObservableList<Software>>() {
+                data = SOFTWARE_CLIENT.findSoftwaresByName(new GenericType<ObservableList<Software>>() {
                 }, searchText);
-                
-              
+
+            } else {
+                data = SOFTWARE_CLIENT.findAllSoftwares(new GenericType<ObservableList<Software>>() {
+                });
             }
         } catch (ClientErrorException clientErrorException) {
-           
+            clientErrorException.printStackTrace();
         }
-       return results;
+        return data;
     }
+
     /**
      * Method that populates the results ListView
      */
-    private void printResultsOnList() {
-        ObservableList<Software> data = FXCollections.observableArrayList();
+    private void printResultsOnList(ObservableList<Software> data) {
+
         List<Offer> offers = new ArrayList<>();
         Software sp = new Software();
-        data.add(new Software(1, "s1", "p", "d", Date.from(Instant.EPOCH), SoftwareType.GAME,offers, sp));
-        data.add(new Software(1, "s2", "p", "d", Date.from(Instant.EPOCH), SoftwareType.GAME,offers, sp));
-        data.add(new Software(1, "s3", "p", "d", Date.from(Instant.EPOCH), SoftwareType.GAME,offers, sp));
-        listViewResults.setItems(data);
+        data.add(new Software(1, "s1", "p", "d", Date.from(Instant.EPOCH), SoftwareType.GAME, offers, sp));
+        data.add(new Software(1, "s2", "p", "d", Date.from(Instant.EPOCH), SoftwareType.GAME, offers, sp));
+        data.add(new Software(1, "s3", "p", "d", Date.from(Instant.EPOCH), SoftwareType.GAME, offers, sp));
+        listViewResults.setItems(results);
         listViewResults.setCellFactory(new Callback<ListView<Software>, ListCell<Software>>() {
             @Override
             public ListCell<Software> call(ListView<Software> listView) {
@@ -165,14 +173,31 @@ public class ResultsViewController extends GenericSideBarController implements I
             }
         });
     }
+
     /**
      * Method that searches Software based on filters applied
      */
     public void handleButtonSearchAction(ActionEvent event) {
-    
+        if (textFieldSearchBar.getText() != null || textFieldSearchBar.getText() != "") {
+            ObservableList<Software> filteredSoftwares = results;
+
+            filteredSoftwares.removeIf(s -> !s.getName().toLowerCase().contains(textFieldSearchBar.getText().toLowerCase()));
+                
+            if (!checkBoxProgram.isSelected()) {
+                filteredSoftwares.removeIf(s -> s.getSoftwareType().equals(SoftwareType.PROGRAM));
+            }
+            if (!checkBoxExtension.isSelected()) {
+                filteredSoftwares.removeIf(s -> s.getSoftwareType().equals(SoftwareType.EXTENSION));
+            }
+            if (!checkBoxGame.isSelected()) {
+                filteredSoftwares.removeIf(s -> s.getSoftwareType().equals(SoftwareType.GAME));
+            }
+
+            printResultsOnList(filteredSoftwares);
+        }
     }
-    
-     /**
+
+    /**
      * This method sets the stage
      *
      * @param stage Stage to be setted
@@ -180,25 +205,31 @@ public class ResultsViewController extends GenericSideBarController implements I
     public void setStage(Stage stage) {
         this.stage = stage;
     }
-    
+
     /**
      * Method that sets active user
      */
     public void setUser(User user) {
-        
-    }
-    
-    /**
-     * Method that sets searchText from MainView
-     * @param searchText 
-     */
-    public void setSearchText(String searchText) {
-        
+
     }
 
+    /**
+     * Method that sets searchText from MainView
+     *
+     * @param searchText
+     */
+    public void setSearchText(String searchText) {
+
+    }
+    /**
+     * This methods loads the data
+     * @param location
+     * @param resources 
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        printResultsOnList();
+        results = getResultsData();
+        printResultsOnList(results);
     }
-    
+
 }

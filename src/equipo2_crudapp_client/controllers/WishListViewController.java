@@ -9,8 +9,10 @@ import equipo2_crudapp_classes.classes.Shop;
 import equipo2_crudapp_classes.classes.Software;
 import equipo2_crudapp_classes.classes.User;
 import equipo2_crudapp_classes.classes.Wish;
+import equipo2_crudapp_classes.enumerators.SoftwareType;
 import equipo2_crudapp_client.clients.WishClient;
 import equipo2_crudapp_client.table_classes.TableSoftware;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -140,8 +142,27 @@ public class WishListViewController extends GenericSideBarController {
         buttonDelete.setOnAction(this::handleButtonDeleteAction);
         buttonFilter.setOnAction(this::handleButtonFilterAction);
         checkBoxEdit.setOnAction(this::handleCheckBoxEditAction);
-
-        setTableData();
+        
+        /*try {
+        wishes = user.getWishList();
+        } catch (Exception e) {
+        e.printStackTrace();
+        }*/
+        Wish w1 = new Wish();
+        Wish w2 = new Wish();
+        Software s1 = new Software();
+        Software s2 = new Software();
+        s1.setName("s1");
+        s2.setName("s2");
+        w1.setSoftware(s1);
+        w1.setMinPrice(1.0);
+        w2.setMinPrice(2.0);
+        w2.setSoftware(s2);
+        wishes.add(w1);
+        wishes.add(w2);
+        ObservableList<Wish> observableWishes = FXCollections.observableArrayList();
+        observableWishes.addAll(wishes);
+        setTableData(observableWishes);
     }
 
     /**
@@ -161,7 +182,7 @@ public class WishListViewController extends GenericSideBarController {
                 .filter(e -> e.getValue().get())
                 .map(Entry::getKey)
                 .collect(Collectors.toList());
-        
+
         for (int i = 0; i < checkedItems.size(); i++) {
             if (wishes.contains(checkedItems.get(i))) {
                 try {
@@ -171,7 +192,9 @@ public class WishListViewController extends GenericSideBarController {
                 }
             }
         }
-        setTableData();
+        ObservableList<Wish> observableWishes = FXCollections.observableArrayList();
+        observableWishes.addAll(wishes);
+        setTableData(observableWishes);
     }
 
     /**
@@ -195,38 +218,27 @@ public class WishListViewController extends GenericSideBarController {
      * @param event
      */
     public void handleButtonFilterAction(ActionEvent event) {
-        
+        if (textFieldFilter.getText() != null || textFieldFilter.getText() != "") {
+            ObservableList<Wish> filteredWishes = FXCollections.observableArrayList();
+            filteredWishes.addAll(wishes);
+            //Filter results
+            filteredWishes.removeIf(w -> !w.getSoftware().getName().toLowerCase().contains(textFieldFilter.getText().toLowerCase()));
+            setTableData(filteredWishes);
+        }
     }
 
     /**
      * Method that populates tableView with user wishes
      */
-    public void setTableData() {
-        /*try {
-        wishes = user.getWishList();
-        } catch (Exception e) {
-        e.printStackTrace();
-        }*/
+    private void setTableData(ObservableList<Wish> data) {
         checkedRows = new HashMap<>();
         
-        Wish w1 = new Wish();
-        Wish w2 = new Wish();
-        Software s1 = new Software();
-        Software s2 = new Software();
-        s1.setName("s1");
-        s2.setName("s2");
-        w1.setSoftware(s1);
-        w1.setMinPrice(1.0);
-        w2.setMinPrice(2.0);
-        w2.setSoftware(s2);
-        wishes.add(w1);
-        wishes.add(w2);
         //Column checkbox
         tableColumnDelete.setCellFactory(CheckBoxTableCell.forTableColumn(
-            //This lambda ables to know wich element is selected to delete
-                i-> checkedRows.computeIfAbsent(((Wish) tableViewWishList.getItems()
+                //This lambda ables to know wich element is selected to delete
+                i -> checkedRows.computeIfAbsent(((Wish) tableViewWishList.getItems()
                         .get(i)), p -> new SimpleBooleanProperty())));
-                
+
 
         /* Possible method to access a row item when table checkbox is selected
         
@@ -253,7 +265,7 @@ public class WishListViewController extends GenericSideBarController {
         tableColumnMinPrice.setCellValueFactory(new PropertyValueFactory("minPrice"));
 
         ObservableList<Wish> observableWishes = FXCollections.observableArrayList();
-        observableWishes.addAll(wishes);
+        observableWishes.addAll(data);
         tableViewWishList.setItems(observableWishes);
 
         //Save minimum price changes
