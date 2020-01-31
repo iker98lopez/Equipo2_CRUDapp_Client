@@ -382,7 +382,7 @@ public class InsertOfferViewController {
         }
 
         if (textFieldUrl.getText().length() >= 3
-                && textFieldUrl.getText().length() < 18
+                && textFieldUrl.getText().length() < 128
                 && textFieldUrl.getText().matches("[a-zA-Z0-9\\.\\*\\_\\/\\=\\?\\-\\(\\)\\'\\|\\@\\#\\$\\&]+")) {
 
             labelUrlWarning.setVisible(false);

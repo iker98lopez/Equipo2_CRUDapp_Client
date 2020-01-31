@@ -376,8 +376,8 @@ public class InsertSoftwareViewController {
         checkedFields = true;
 
         if (textFieldSoftwareName.getText().length() >= 3
-                && textFieldSoftwareName.getText().length() < 18
-                && textFieldSoftwareName.getText().matches("[a-zA-Z0-9\\.\\-\\*\\_]+")) {
+                && textFieldSoftwareName.getText().length() < 32
+                && textFieldSoftwareName.getText().matches("[a-zA-Z0-9\\.\\-\\*\\_\\s]+")) {
 
             labelSoftwareNameWarning.setVisible(false);
         } else if (!textFieldSoftwareName.getText().equals("")) {
@@ -387,8 +387,8 @@ public class InsertSoftwareViewController {
         }
 
         if (textFieldPublisher.getText().length() >= 3
-                && textFieldPublisher.getText().length() < 18
-                && textFieldPublisher.getText().matches("[a-zA-Z0-9\\.\\-\\*\\_]+")) {
+                && textFieldPublisher.getText().length() < 24
+                && textFieldPublisher.getText().matches("[a-zA-Z0-9\\.\\-\\*\\_\\s]+")) {
 
             labelPublisherWarning.setVisible(false);
         } else if (!textFieldPublisher.getText().equals("")) {
