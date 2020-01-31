@@ -141,7 +141,6 @@ public class ResultsViewController extends GenericSideBarController {
         //results = getResultsData();
         results = FXCollections.observableArrayList();
         printResultsOnList(results);
-        listViewResults.getItems().clear();
     }
 
     /**
@@ -245,6 +244,7 @@ public class ResultsViewController extends GenericSideBarController {
                     FXCollections.sort(results, comparator.reversed());
                 }
             }
+            listViewResults.getItems().clear();
             printResultsOnList(filteredSoftwares);
     }
 
