@@ -112,6 +112,7 @@ public class MainViewController extends GenericSideBarController {
         
     }
     
+    
     /**
      * Handles the action of the search button. Opens the results view for 
      * filtering the offers
@@ -155,7 +156,7 @@ public class MainViewController extends GenericSideBarController {
      */
     private void setFreeOffers() {
         ObservableList<String> items = FXCollections.observableArrayList (
-            "A", "B", "C", "D");
+            "OfferExample1", "OfferExample2", "OfferExample3", "OfferExample4");
         listViewGiveaways.setItems(items);
     }
     
@@ -164,7 +165,7 @@ public class MainViewController extends GenericSideBarController {
      */
     private void setMostDiscountedOffers() {
         ObservableList<String> items = FXCollections.observableArrayList (
-            "A", "B", "C", "D");
+            "OfferExample1", "OfferExample2", "OfferExample3", "OfferExample4");
         listViewMostDiscounted.setItems(items);
     }
     
@@ -172,8 +173,9 @@ public class MainViewController extends GenericSideBarController {
      * Load in a list the offers that expire soon
      */
     private void setExpiringSoonOffers() {
+        
         ObservableList<String> items = FXCollections.observableArrayList (
-            "A", "B", "C", "D");
+            "OfferExample1", "OfferExample2", "OfferExample3", "OfferExample4");
         listViewExpiringSoon.setItems(items);
     }
     
