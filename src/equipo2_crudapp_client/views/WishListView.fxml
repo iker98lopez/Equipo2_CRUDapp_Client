@@ -172,7 +172,7 @@
                               <Insets bottom="40.0" left="50.0" />
                            </HBox.margin>
                         </CheckBox>
-                        <Button id="buttonCancel" fx:id="buttonCancel" alignment="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="67.0" text="Cancel">
+                        <Button id="buttonDelete" fx:id="buttonDelete" alignment="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="67.0" text="Delete">
                            <font>
                               <Font size="14.0" />
                            </font>
