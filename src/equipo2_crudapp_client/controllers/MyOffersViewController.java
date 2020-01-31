@@ -172,7 +172,8 @@ public class MyOffersViewController {
         offers = user.getOffers();
 
         try {
-            softwares = SOFTWARECLIENT.findAllSoftwares(new GenericType<Set<Software>>() {});
+            softwares = SOFTWARECLIENT.findAllSoftwares(new GenericType<Set<Software>>() {
+            });
         } catch (NotFoundException exception) {
             LOGGER.warning("There are no softwares to be found. " + exception.getMessage());
         }
@@ -180,7 +181,7 @@ public class MyOffersViewController {
         buttonApplyFilter.setOnAction(this::handleButtonApplyFilterAction);
         buttonClearFilters.setOnAction(this::handleButtonClearFiltersAction);
         buttonClose.setOnAction(this::handleButtonCloseAction);
-        
+
         ObservableList<Offer> observableOffers = FXCollections.observableArrayList();
         observableOffers.addAll(offers);
         setTableData(observableOffers);
@@ -259,7 +260,7 @@ public class MyOffersViewController {
             public ObservableValue<String> call(TableColumn.CellDataFeatures<Offer, String> data) {
 
                 TableSoftware tableSoftware = new TableSoftware();
-                tableSoftware   .setName(softwares.stream()
+                tableSoftware.setName(softwares.stream()
                         .filter(software -> software.getOffers().stream()
                         .anyMatch(offer -> offer.getOfferId().equals(data.getValue().getOfferId())))
                         .findFirst()
@@ -267,7 +268,7 @@ public class MyOffersViewController {
                 return tableSoftware.getNameProperty();
             }
         });
-        
+
         tableColumnBasePrice.setCellValueFactory(new PropertyValueFactory("basePrice"));
         tableColumnDiscountedPrice.setCellValueFactory(new PropertyValueFactory("discountedPrice"));
         tableColumnDiscount.setCellValueFactory(new PropertyValueFactory("discount"));
@@ -291,7 +292,7 @@ public class MyOffersViewController {
 
     /**
      * This method set the user.
-     * 
+     *
      * @param user the user to set.
      */
     public void setUser(User user) {

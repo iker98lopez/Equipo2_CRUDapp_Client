@@ -32,7 +32,7 @@ public class SignUpViewController {
 
     private static final Logger LOGGER = Logger.getLogger("equipo2_crudapp_client.controllers.SignUpController");
     private static final UserClient CLIENT = new UserClient();
-    
+
     /**
      * Stage of the controller
      */
@@ -115,15 +115,13 @@ public class SignUpViewController {
      */
     @FXML
     private TextField textFieldEmail;
-    
-    
+
     /**
      * Default constructor for SignUpController
      */
     public SignUpViewController() {
     }
-    
-    
+
     /**
      * This method initializes the stage and shows the window, sets the
      * visibility of the components and assigns the listeners.
@@ -152,7 +150,7 @@ public class SignUpViewController {
         textFieldPassword.focusedProperty().addListener(this::focusChanged);
         textFieldPasswordRepeat.focusedProperty().addListener(this::focusChanged);
         textFieldEmail.focusedProperty().addListener(this::focusChanged);
-        
+
         /**
          * Modification Adrián García 14/11/2019
          */
@@ -198,21 +196,18 @@ public class SignUpViewController {
             /**
              * Modification Adrián García 15/11/2019
              */
-            if (labelLoginWarning.isVisible())
+            if (labelLoginWarning.isVisible()) {
                 textFieldLogin.requestFocus();
-            
-            else if (labelFullNameWarning.isVisible())
+            } else if (labelFullNameWarning.isVisible()) {
                 textFieldFullName.requestFocus();
-            
-            else if (labelEmailWarning.isVisible())
+            } else if (labelEmailWarning.isVisible()) {
                 textFieldEmail.requestFocus();
-            
-            else if (labelPasswordWarning.isVisible())
+            } else if (labelPasswordWarning.isVisible()) {
                 textFieldPassword.requestFocus();
-            
-            else if (labelPasswordRepeatWarning.isVisible())
+            } else if (labelPasswordRepeatWarning.isVisible()) {
                 textFieldPasswordRepeat.requestFocus();
-            
+            }
+
             if (checkedSyntax) {
                 String login = textFieldLogin.getText();
                 String password = DatatypeConverter.printHexBinary(ClientCipher.cipherText(textFieldPassword.getText().getBytes()));
@@ -383,7 +378,7 @@ public class SignUpViewController {
     private void focusChanged(ObservableValue observable, Boolean oldValue, Boolean newValue) {
         if (!newValue) {
             syntaxCheck();
-            
+
         }
 
     }
@@ -397,19 +392,19 @@ public class SignUpViewController {
         if (focusedTextField.equals(textFieldLogin)
                 && labelLoginWarning.isVisible()) {
             labelLoginWarning.setVisible(false);
-            
+
         } else if (focusedTextField.equals(textFieldFullName)
                 && labelFullNameWarning.isVisible()) {
             labelFullNameWarning.setVisible(false);
-            
+
         } else if (focusedTextField.equals(textFieldEmail)
                 && labelEmailWarning.isVisible()) {
             labelEmailWarning.setVisible(false);
-            
+
         } else if (focusedTextField.equals(textFieldPassword)
                 && labelPasswordWarning.isVisible()) {
             labelPasswordWarning.setVisible(false);
-            
+
         } else if (focusedTextField.equals(textFieldPasswordRepeat)
                 && labelPasswordRepeatWarning.isVisible()) {
             labelPasswordRepeatWarning.setVisible(false);

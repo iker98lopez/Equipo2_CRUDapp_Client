@@ -1,6 +1,5 @@
 package equipo2_crudapp_client.controllers;
 
-
 import equipo2_crudapp_classes.classes.Software;
 import java.io.File;
 import javafx.scene.control.ListCell;
@@ -33,7 +32,7 @@ public class ListViewResultsCell extends ListCell<Software> {
     @Override
     protected void updateItem(Software software, boolean empty) {
         super.updateItem(software, empty);
-        if (software != null && !empty) { 
+        if (software != null && !empty) {
             name.setText(software.getName());
             File file = new File("src/logoOfertAPPs.png");
             Image image = new Image(file.toURI().toString());
@@ -44,5 +43,3 @@ public class ListViewResultsCell extends ListCell<Software> {
         }
     }
 }
-
-

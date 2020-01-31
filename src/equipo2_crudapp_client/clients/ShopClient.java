@@ -59,5 +59,5 @@ public class ShopClient {
     public void close() {
         client.close();
     }
-    
+
 }

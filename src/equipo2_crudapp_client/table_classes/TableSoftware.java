@@ -12,25 +12,26 @@ import javafx.beans.property.SimpleStringProperty;
  * @author leioa
  */
 public class TableSoftware {
+
     private final SimpleStringProperty name;
-    
+
     public TableSoftware() {
         name = null;
     }
-    
+
     public TableSoftware(String name) {
         this.name = new SimpleStringProperty(name);
     }
-    
+
     public String getName() {
         return this.name.get();
     }
-    
+
     public void setName(String name) {
         this.name.set(name);
     }
-    
-    public SimpleStringProperty getNameProperty () {
+
+    public SimpleStringProperty getNameProperty() {
         return name;
     }
 }

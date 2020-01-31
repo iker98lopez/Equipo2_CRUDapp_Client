@@ -1,24 +1,17 @@
 package equipo2_crudapp_client.controllers;
 
-import equipo2_crudapp_classes.classes.Offer;
 import equipo2_crudapp_classes.classes.Software;
 import equipo2_crudapp_classes.classes.User;
 import equipo2_crudapp_classes.enumerators.SoftwareType;
 import equipo2_crudapp_client.clients.SoftwareClient;
-import equipo2_crudapp_client.controllers.ListViewResultsCell;
-import java.net.URL;
-import java.time.Instant;
-import java.util.ArrayList;
+import java.io.File;
 import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.ResourceBundle;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -28,8 +21,13 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.core.GenericType;
 
@@ -39,8 +37,17 @@ import javax.ws.rs.core.GenericType;
  */
 public class ResultsViewController extends GenericSideBarController {
 
+    /**
+     * List that stores the the software results
+     */
     private ObservableList<Software> results = null;
+    /**
+     * Software client to make CRUD operations
+     */
     private static final SoftwareClient SOFTWARE_CLIENT = new SoftwareClient();
+    /**
+     * Logger for the controller
+     */
     private static final Logger LOGGER = Logger.getLogger("equipo2_crudapp_client.controllers.ResultsViewController");
     /**
      * Scene of the controller
@@ -138,7 +145,7 @@ public class ResultsViewController extends GenericSideBarController {
         radioButtonAscending.setToggleGroup(toggleGroupOrder);
         radioButtonAscending.setSelected(true);
         radioButtonDescending.setToggleGroup(toggleGroupOrder);
-        //results = getResultsData();
+        results = getResultsData();
         results = FXCollections.observableArrayList();
         printResultsOnList(results);
     }
@@ -167,17 +174,58 @@ public class ResultsViewController extends GenericSideBarController {
      * Method that populates the results ListView
      */
     private void printResultsOnList(ObservableList<Software> data) {
-        List<Offer> offers = new ArrayList<>();
-        Software sp = new Software();
-        data.add(new Software(1, "s1", "p1", "d", Date.from(Instant.EPOCH.minusSeconds(1)), SoftwareType.PROGRAM, offers, sp));
-        data.add(new Software(1, "s2", "p2", "d", Date.from(Instant.EPOCH.minusSeconds(2)), SoftwareType.GAME, offers, sp));
-        data.add(new Software(1, "s3", "p3", "d", Date.from(Instant.EPOCH.minusSeconds(3)), SoftwareType.GAME, offers, sp));
-        listViewResults.setItems(results);
-        listViewResults.setCellFactory(new Callback<ListView<Software>, ListCell<Software>>() {
-            @Override
-            public ListCell<Software> call(ListView<Software> listView) {
-                return new ListViewResultsCell();
-            }
+        listViewResults.setItems(data);
+        listViewResults.setCellFactory(lv -> {
+            ListCell<Software> cell = new ListCell<Software>() {
+                @Override
+                protected void updateItem(Software item, boolean empty) {
+                    super.updateItem(item, empty);
+                    //ListCell custom adapter
+                    HBox content;
+                    Text name;
+                    ImageView imageView;
+
+                    name = new Text();
+                    imageView = new ImageView();
+                    HBox elementsHBox = new HBox(imageView, name);
+                    content = new HBox(elementsHBox);
+                    content.setSpacing(10);
+                    if (item != null && !empty) {
+                        name.setText(item.getName());
+                        File file = new File("src/softwareDefault.jpg");
+                        Image image = new Image(file.toURI().toString());
+                        imageView.setImage(image);
+                        imageView.setFitHeight(100);
+                        imageView.setFitWidth(100);
+                        name.setFont(Font.font("Verdana", FontWeight.BOLD, 24));
+                        setGraphic(content);
+                    } else {
+                        setGraphic(null);
+                    }
+                }
+            };
+            cell.setOnMouseClicked(e -> {
+                if (!cell.isEmpty()) {
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/SoftwareView.fxml"));
+                        Parent root = (Parent) loader.load();
+                        SoftwareViewController controller = ((SoftwareViewController) loader.getController());
+                        controller.setSoftwareId("" + cell.getItem().getSoftwareId());
+                        controller.setUser(user);
+                        controller.setStage(new Stage());
+                        controller.initStage(root);
+                    } catch (Exception ex) {
+                        LOGGER.severe(ex.getMessage());
+                        ex.printStackTrace();
+                    }
+                }
+                e.consume();
+            });
+            return cell;
+        });
+
+        listViewResults.setOnMouseClicked(e -> {
+
         });
     }
 
@@ -191,61 +239,61 @@ public class ResultsViewController extends GenericSideBarController {
         }
         if (!checkBoxProgram.isSelected() && !checkBoxExtension.isSelected() && !checkBoxGame.isSelected()) {
 
+        } else {
+            if (!checkBoxProgram.isSelected()) {
+                filteredSoftwares.removeIf(s -> s.getSoftwareType() == SoftwareType.PROGRAM);
+            }
+            if (!checkBoxExtension.isSelected()) {
+                filteredSoftwares.removeIf(s -> s.getSoftwareType() == SoftwareType.EXTENSION);
+            }
+            if (!checkBoxGame.isSelected()) {
+                filteredSoftwares.removeIf(s -> s.getSoftwareType() == SoftwareType.GAME);
+            }
+        }
+
+        //Check RadioButton and CheckBox filters to sort
+        if (radioButtonName.isSelected()) {
+            if (radioButtonAscending.isSelected()) {
+                Comparator<Software> comparator = Comparator.comparing(Software::getName);
+                FXCollections.sort(filteredSoftwares, comparator);
             } else {
-                if (!checkBoxProgram.isSelected()) {
-                    filteredSoftwares.removeIf(s -> s.getSoftwareType() == SoftwareType.PROGRAM);
-                }
-                if (!checkBoxExtension.isSelected()) {
-                    filteredSoftwares.removeIf(s -> s.getSoftwareType() == SoftwareType.EXTENSION);
-                }
-                if (!checkBoxGame.isSelected()) {
-                    filteredSoftwares.removeIf(s -> s.getSoftwareType() == SoftwareType.GAME);
-                }
+                Comparator<Software> comparator = Comparator.comparing(Software::getName);
+                FXCollections.sort(filteredSoftwares, comparator.reversed());
             }
 
-            //Check RadioButton and CheckBox filters to sort
-            if (radioButtonName.isSelected()) {
-                if (radioButtonAscending.isSelected()) {
-                    Comparator<Software> comparator = Comparator.comparing(Software::getName);
-                    FXCollections.sort(filteredSoftwares, comparator);
-                } else {
-                    Comparator<Software> comparator = Comparator.comparing(Software::getName);
-                    FXCollections.sort(filteredSoftwares, comparator.reversed());
-                }
-
-            } else if (radioButtonPublisher.isSelected()) {
-                if (radioButtonAscending.isSelected()) {
-                    Comparator<Software> comparator = Comparator.comparing(Software::getPublisher);
-                    FXCollections.sort(filteredSoftwares, comparator);
-                } else {
-                    Comparator<Software> comparator = Comparator.comparing(Software::getPublisher);
-                    FXCollections.sort(filteredSoftwares, comparator.reversed());
-                }
-
-            } else if (radioButtonReleaseDate.isSelected()) {
-                if (radioButtonAscending.isSelected()) {
-                    Comparator<Software> comparator = Comparator.comparing(Software::getReleaseDate);
-                    FXCollections.sort(results, comparator);
-                } else {
-                    Comparator<Software> comparator = Comparator.comparing(Software::getReleaseDate);
-                    FXCollections.sort(results, comparator.reversed());
-                }
-
-            } else if (radioButtonNumOfOffers.isSelected()) {
-                if (radioButtonAscending.isSelected()) {
-                    Comparator<Software> comparator = Comparator.comparingInt((s) -> {
-                        return s.getOffers().size();
-                    });
-                    FXCollections.sort(results, comparator);
-                } else {
-                    Comparator<Software> comparator = Comparator.comparingInt((s) -> {
-                        return s.getOffers().size();
-                    });
-                    FXCollections.sort(results, comparator.reversed());
-                }
+        } else if (radioButtonPublisher.isSelected()) {
+            if (radioButtonAscending.isSelected()) {
+                Comparator<Software> comparator = Comparator.comparing(Software::getPublisher);
+                FXCollections.sort(filteredSoftwares, comparator);
+            } else {
+                Comparator<Software> comparator = Comparator.comparing(Software::getPublisher);
+                FXCollections.sort(filteredSoftwares, comparator.reversed());
             }
-            listViewResults.getItems().clear();
-            printResultsOnList(filteredSoftwares);
+
+        } else if (radioButtonReleaseDate.isSelected()) {
+            if (radioButtonAscending.isSelected()) {
+                Comparator<Software> comparator = Comparator.comparing(Software::getReleaseDate);
+                FXCollections.sort(results, comparator);
+            } else {
+                Comparator<Software> comparator = Comparator.comparing(Software::getReleaseDate);
+                FXCollections.sort(results, comparator.reversed());
+            }
+
+        } else if (radioButtonNumOfOffers.isSelected()) {
+            if (radioButtonAscending.isSelected()) {
+                Comparator<Software> comparator = Comparator.comparingInt((s) -> {
+                    return s.getOffers().size();
+                });
+                FXCollections.sort(results, comparator);
+            } else {
+                Comparator<Software> comparator = Comparator.comparingInt((s) -> {
+                    return s.getOffers().size();
+                });
+                FXCollections.sort(results, comparator.reversed());
+            }
+        }
+        listViewResults.getItems().clear();
+        printResultsOnList(filteredSoftwares);
     }
 
     /**
@@ -261,7 +309,7 @@ public class ResultsViewController extends GenericSideBarController {
      * Method that sets active user
      */
     public void setUser(User user) {
-
+        this.user = user;
     }
 
     /**
@@ -270,7 +318,7 @@ public class ResultsViewController extends GenericSideBarController {
      * @param searchText
      */
     public void setSearchText(String searchText) {
-
+        this.searchText = searchText;
     }
 
 }

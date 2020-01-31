@@ -65,5 +65,5 @@ public class SoftwareClient {
     public void close() {
         client.close();
     }
-    
+
 }

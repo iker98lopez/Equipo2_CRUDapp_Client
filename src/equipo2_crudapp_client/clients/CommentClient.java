@@ -59,5 +59,5 @@ public class CommentClient {
     public void close() {
         client.close();
     }
-    
+
 }

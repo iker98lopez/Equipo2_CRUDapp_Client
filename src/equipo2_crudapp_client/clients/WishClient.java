@@ -59,5 +59,5 @@ public class WishClient {
     public void close() {
         client.close();
     }
-    
+
 }

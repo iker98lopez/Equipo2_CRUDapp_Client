@@ -435,7 +435,7 @@ public class OfferViewController {
                 labelUrlWarning.setVisible(false);
             }
         });
-        
+
         try {
             softwares = SOFTWARECLIENT.findAllSoftwares(new GenericType<Set<Software>>() {
             });

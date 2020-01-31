@@ -66,7 +66,7 @@ public class InsertOfferViewController {
      * Instance of the client manager for the entity Offer.
      */
     private final OfferClient OFFERCLIENT = new OfferClient();
-    
+
     /**
      * Instance of the client manager for the entity Software.
      */
@@ -219,7 +219,7 @@ public class InsertOfferViewController {
         stage.setTitle("Create New Offer");
         stage.getScene().getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, this::closeWindowEvent);
         stage.show();
-        
+
         datePickerExpirationDate.setValue(LocalDate.now());
 
         labelSoftwareNameWarning.setVisible(false);
@@ -232,7 +232,7 @@ public class InsertOfferViewController {
 
         buttonCancel.setOnAction(this::handleButtonCancelAction);
         buttonAccept.setOnAction(this::handleButtonAcceptAction);
-        
+
         textFieldSoftwareName.focusedProperty().addListener(this::focusChanged);
         textFieldShop.focusedProperty().addListener(this::focusChanged);
         datePickerExpirationDate.focusedProperty().addListener(this::focusChanged);
@@ -244,9 +244,9 @@ public class InsertOfferViewController {
         textFieldSoftwareName.textProperty().addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                
+
                 labelSoftwareNameWarning.setVisible(false);
-                
+
                 String enteredText = textFieldSoftwareName.getText();
                 if (enteredText == null || enteredText.isEmpty()) {
                     entriesPopUp.hide();
@@ -269,9 +269,9 @@ public class InsertOfferViewController {
         textFieldShop.textProperty().addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                
+
                 labelShopWarning.setVisible(false);
-                
+
                 String enteredText = textFieldShop.getText();
                 if (enteredText == null || enteredText.isEmpty()) {
                     entriesPopUp.hide();
@@ -318,11 +318,13 @@ public class InsertOfferViewController {
                 labelDiscountWarning.setVisible(false);
             }
         });
-        
+
         try {
-            softwares = SOFTWARECLIENT.findAllSoftwares(new GenericType<Set<Software>>() {});
-            shops = SHOPCLIENT.findAllShops(new GenericType<Set<Shop>>() {});
-        } catch(NotFoundException exception) {
+            softwares = SOFTWARECLIENT.findAllSoftwares(new GenericType<Set<Software>>() {
+            });
+            shops = SHOPCLIENT.findAllShops(new GenericType<Set<Shop>>() {
+            });
+        } catch (NotFoundException exception) {
             LOGGER.warning("There was a problem fetching information from the server. " + exception.getMessage());
         }
     }
@@ -351,7 +353,7 @@ public class InsertOfferViewController {
 
         if (shops.stream().anyMatch(sw -> sw.getName().equalsIgnoreCase(textFieldShop.getText()))) {
             labelShopWarning.setVisible(false);
-        } else if (!textFieldShop.getText().equals("")){
+        } else if (!textFieldShop.getText().equals("")) {
             labelShopWarning.setVisible(true);
             labelShopWarning.setText("*Shop does not exist");
             checkedFields = false;
@@ -498,13 +500,13 @@ public class InsertOfferViewController {
             labelBasePriceWarning.setVisible(true);
             labelBasePriceWarning.setText("*This field is empty");
         }
-        
+
         if (textFieldDiscountedPrice.getText().equals("")) {
             checkedFields = false;
             labelDiscountedPriceWarning.setVisible(true);
             labelDiscountedPriceWarning.setText("*This field is empty");
         }
-        
+
         if (textFieldDiscount.getText().equals("")) {
             checkedFields = false;
             labelDiscountWarning.setVisible(true);
@@ -513,27 +515,27 @@ public class InsertOfferViewController {
 
         if (checkedFields) {
             Offer offer = new Offer();
-            
+
             offer.setShop(shops.stream().filter(shop -> shop.getName().equals(textFieldShop.getText())).findFirst().get());
             offer.setExpiringDate(new Date(datePickerExpirationDate.getValue().toEpochDay()));
             offer.setBasePrice(Double.valueOf(textFieldBasePrice.getText()));
             offer.setDicountedPrice(Double.valueOf(textFieldDiscountedPrice.getText()));
             offer.setDiscount(Integer.valueOf(textFieldDiscount.getText()));
             offer.setUrl(textFieldUrl.getText());
-            
+
             OFFERCLIENT.createOffer(offer);
-            
+
             stage.hide();
         }
     }
-    
+
     /**
      * Event to show an alert when the user presses the close button and ask for
      * confirmation before closing.
-     * 
+     *
      * @param event Event launched by the window.
      */
-    private void closeWindowEvent (WindowEvent event) {
+    private void closeWindowEvent(WindowEvent event) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.getButtonTypes().remove(ButtonType.OK);
         alert.getButtonTypes().add(ButtonType.CANCEL);
@@ -546,7 +548,7 @@ public class InsertOfferViewController {
             event.consume();
         }
     }
-    
+
     /**
      * This method sets the stage.
      *

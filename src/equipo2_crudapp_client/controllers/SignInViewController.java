@@ -14,7 +14,6 @@ import equipo2_crudapp_classes.exceptions.UserNotFoundException;
 import equipo2_crudapp_client.clients.UserClient;
 import java.io.IOException;
 import java.util.Optional;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -38,87 +37,88 @@ import javax.xml.bind.DatatypeConverter;
 
 /**
  * Controller for the sign in view
+ *
  * @author Diego Corral
  */
 public class SignInViewController {
-    
+
     /**
      * Logger for SignInViewController class
      */
     private static final Logger LOGGER = Logger.getLogger("equipo2_crudapp_client.controllers.SignInViewController");
-    
+
     /**
      * Stage of the controller
      */
     private Stage stage;
-    
+
     /**
      * If true the syntax is correct, if false there's an error with the syntax
      */
     private boolean checkedSyntax;
-    
+
     private static final UserClient USERCLIENT = new UserClient();
-    
+
     /**
-     * 
+     *
      */
     @FXML
     private Label labelLoginWarning;
-    
+
     /**
-     * 
+     *
      */
     @FXML
     private TextField textFieldLogin;
-    
+
     /**
-     * 
+     *
      */
     @FXML
     private Label labelPasswordWarning;
-    
+
     /**
-     * 
+     *
      */
     @FXML
     private PasswordField textFieldPassword;
-    
+
     /**
-     * 
+     *
      */
     @FXML
     private TextField textFieldPasswordShow;
-    
+
     /**
-     * 
+     *
      */
     @FXML
     private CheckBox checkBoxShowPassword;
-    
+
     /**
-     * 
+     *
      */
     @FXML
     private Button buttonSignIn;
-    
+
     /**
-     * 
+     *
      */
     @FXML
     private Hyperlink hyperLinkSignUp;
-    
+
     /**
-     * 
+     *
      */
     @FXML
     private Button buttonExit;
-    
+
     /**
-     * Opens 
+     * Opens
      */
     @FXML
     private Hyperlink hyperLinkForgotPassword;
-    
+
     /**
      * This method sets the stage
      *
@@ -127,7 +127,7 @@ public class SignInViewController {
     public void setStage(Stage stage) {
         this.stage = stage;
     }
-    
+
     /**
      * This method initializes the stage and shows the window, sets the
      * visibility of the components and assigns the listeners.
@@ -155,7 +155,7 @@ public class SignInViewController {
         textFieldPassword.focusedProperty().addListener(this::focusChanged);
         textFieldPasswordShow.focusedProperty().addListener(this::focusChanged);
     }
-    
+
     /**
      * Event for buttonSignIn. It is called when the button is clicked and it
      * sends the credentials entered by the user to the server through the
@@ -163,14 +163,14 @@ public class SignInViewController {
      *
      * @param event Event to be handled by this method.
      */
-    public void handleButtonSignInAction(ActionEvent event){
-        
+    public void handleButtonSignInAction(ActionEvent event) {
+
         syntaxCheck();
-        
+
         textFieldLogin.setText(textFieldLogin.getText().trim());
         textFieldPassword.setText(textFieldPassword.getText().trim());
         textFieldPasswordShow.setText(textFieldPasswordShow.getText().trim());
-        
+
         if (textFieldLogin.getText().equals("")) {
             checkedSyntax = false;
             labelLoginWarning.setVisible(true);
@@ -181,7 +181,7 @@ public class SignInViewController {
             labelPasswordWarning.setVisible(true);
             labelPasswordWarning.setText("*This field is empty");
         }
-        
+
         if (checkedSyntax) {
             try {
                 User user = new User();
@@ -214,11 +214,11 @@ public class SignInViewController {
                 LOGGER.warning("There was an error trying to connect to the server. " + exception.getMessage());
                 Alert alert = new Alert(Alert.AlertType.WARNING, "There was an error trying to connect to the server.\nPlease try again later.", ButtonType.OK);
                 alert.showAndWait();
-            }catch (UserNotFoundException exception) {
+            } catch (UserNotFoundException exception) {
                 LOGGER.warning("User does not exist. " + exception.getMessage());
                 Alert alert = new Alert(Alert.AlertType.WARNING, "User does not exist.", ButtonType.OK);
                 alert.showAndWait();
-                
+
                 textFieldLogin.setText("");
                 textFieldPassword.setText("");
                 textFieldPasswordShow.setText("");
@@ -226,16 +226,16 @@ public class SignInViewController {
                 LOGGER.warning("Password is not correct. " + exception.getMessage());
                 Alert alert = new Alert(Alert.AlertType.WARNING, "Password is not correct.", ButtonType.OK);
                 alert.showAndWait();
-                
+
                 textFieldLogin.setText("");
                 textFieldPassword.setText("");
                 textFieldPasswordShow.setText("");
             } catch (UserDisabledException exception) {
                 LOGGER.warning("User has been disabled. " + exception.getMessage());
-                
+
                 Alert alert = new Alert(Alert.AlertType.WARNING, "User has been disabled.", ButtonType.OK);
                 alert.showAndWait();
-                
+
                 textFieldLogin.setText("");
                 textFieldPassword.setText("");
                 textFieldPasswordShow.setText("");
@@ -243,9 +243,9 @@ public class SignInViewController {
                 LOGGER.warning("There was an error opening the window. " + exception.getMessage());
             }
         }
-             
+
     }
-    
+
     /**
      * Event for hyperlinkSignUp. It is called when the hyperlink is clicked and
      * it sends the user to the window SignUpView.
@@ -264,7 +264,7 @@ public class SignInViewController {
             LOGGER.warning("There was an error trying to open SignUpView");
         }
     }
-    
+
     /**
      * Event for checkBoxShowPassword. It is called when the state of the
      * checkbox changes to checked or unchecked and it makes the password field
@@ -285,37 +285,37 @@ public class SignInViewController {
             textFieldPassword.setText(textFieldPasswordShow.getText());
         }
     }
-    
-    public void handleHyperlinkForgotPassword(ActionEvent event){
+
+    public void handleHyperlinkForgotPassword(ActionEvent event) {
         TextInputDialog textInputDialog = new TextInputDialog();
         textInputDialog.setTitle("Password recovery");
         textInputDialog.setHeaderText(null);
         textInputDialog.setContentText("Please enter your account's e-mail:");
         Optional<String> result = textInputDialog.showAndWait();
-        
-        if (result.isPresent()){
+
+        if (result.isPresent()) {
             String email = textInputDialog.getEditor().getText();
-            
+
             try {
                 USERCLIENT.findUserByEmail(User.class, email);
             } catch (NotFoundException | InternalServerErrorException exception) {
                 LOGGER.warning("There is no user with email: " + email + ". " + exception.getMessage());
             }
-            
+
             USERCLIENT.getRecoveryCode(email);
         }
     }
-    
+
     /**
      * Event for buttonExit. It si called when the button is clicked or when ESC
      * is pressed and it closes the application.
-     * 
+     *
      * @param event Event to be handled by this method.
      */
     public void handleButtonExitAction(ActionEvent event) {
         stage.hide();
     }
-    
+
     /**
      * This method checks the syntax of the field received.
      *
@@ -355,10 +355,10 @@ public class SignInViewController {
             checkedSyntax = false;
         }
     }
-    
+
     /**
      * Event for focus changes.
-     * 
+     *
      * @param observable
      * @param oldValue
      * @param newValue if false means out of focus.

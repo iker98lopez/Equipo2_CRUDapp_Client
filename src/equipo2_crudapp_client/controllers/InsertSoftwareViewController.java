@@ -198,7 +198,7 @@ public class InsertSoftwareViewController {
         stage.setTitle("Create New Software");
         stage.getScene().getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, this::closeWindowEvent);
         stage.show();
-        
+
         textFieldParentSoftware.setDisable(true);
         datePickerReleaseDate.setValue(LocalDate.now());
 
@@ -208,7 +208,7 @@ public class InsertSoftwareViewController {
         labelParentSoftwareWarning.setVisible(false);
         labelReleaseDateWarning.setVisible(false);
         labelDescriptionWarning.setVisible(false);
-        
+
         choiceBoxSoftwareType.getItems().add(SoftwareType.PROGRAM);
         choiceBoxSoftwareType.getItems().add(SoftwareType.GAME);
         choiceBoxSoftwareType.getItems().add(SoftwareType.EXTENSION);
@@ -225,7 +225,7 @@ public class InsertSoftwareViewController {
 
         buttonCancel.setOnAction(this::handleButtonCancelAction);
         buttonAccept.setOnAction(this::handleButtonAcceptAction);
-        
+
         textFieldSoftwareName.textProperty().addListener(new ChangeListener<String>() {
 
             @Override
@@ -262,12 +262,13 @@ public class InsertSoftwareViewController {
                 labelDescriptionWarning.setVisible(false);
             }
         });
-        
-        try{
-            softwares = SOFTWARECLIENT.findAllSoftwares(new GenericType<Set<Software>>() {});
+
+        try {
+            softwares = SOFTWARECLIENT.findAllSoftwares(new GenericType<Set<Software>>() {
+            });
         } catch (NotFoundException exception) {
             LOGGER.warning("There are no softwares to be found. " + exception.getMessage());
-        } 
+        }
     }
 
     /**
@@ -499,10 +500,10 @@ public class InsertSoftwareViewController {
     /**
      * Event to show an alert when the user presses the close button and ask for
      * confirmation before closing.
-     * 
+     *
      * @param event Event launched by the window.
      */
-    private void closeWindowEvent (WindowEvent event) {
+    private void closeWindowEvent(WindowEvent event) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.getButtonTypes().remove(ButtonType.OK);
         alert.getButtonTypes().add(ButtonType.CANCEL);
@@ -515,7 +516,7 @@ public class InsertSoftwareViewController {
             event.consume();
         }
     }
-    
+
     /**
      * This method sets the stage.
      *

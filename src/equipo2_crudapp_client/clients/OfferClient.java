@@ -59,5 +59,5 @@ public class OfferClient {
     public void close() {
         client.close();
     }
-    
+
 }

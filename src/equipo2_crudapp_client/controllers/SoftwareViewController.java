@@ -28,7 +28,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
@@ -49,8 +48,17 @@ public class SoftwareViewController {
      * Software client
      */
     private User user = new User();
+    /**
+     * User client to make CRUD operations
+     */
     private static final UserClient USER_CLIENT = new UserClient();
+    /**
+     * Software client to make CRUD operations
+     */
     private static final SoftwareClient SOFTWARE_CLIENT = new SoftwareClient();
+    /**
+     * Logger of the controller
+     */
     private static final Logger LOGGER = Logger.getLogger("equipo2_crudapp_client.controllers.SoftwareViewController");
     /**
      * Stage of the controller
@@ -133,7 +141,6 @@ public class SoftwareViewController {
 
         checkBoxEdit.setOnAction(this::handleCheckBoxEditAction);
         buttonAddWish.setOnAction(this::handleButtonAddWishAction);
-        
 
         textFieldTitle.setEditable(false);
         textFieldPublisher.setEditable(false);
@@ -173,16 +180,16 @@ public class SoftwareViewController {
         });
         //Get extensions filtered from all the software
         List<Software> softwares = new ArrayList<>();
-        
+
         try {
             softwares = SOFTWARE_CLIENT.findAllSoftwares(new GenericType<List<Software>>() {
             });
         } catch (ClientErrorException clientErrorException) {
             clientErrorException.printStackTrace();
         }
-        
+
         for (Software item : softwares) {
-            if (item.getSoftwareId() != Integer.parseInt(softwareId)) {
+            if (item.getParentSoftware().getSoftwareId() != Integer.parseInt(softwareId)) {
                 softwares.remove(item);
             }
         }
@@ -203,6 +210,7 @@ public class SoftwareViewController {
         });
 
     }
+
     /**
      * Method that adds this software to the user's wishList
      */
@@ -220,6 +228,7 @@ public class SoftwareViewController {
         wishes.add(wish);
         user.setWishList(wishes);
     }
+
     /**
      * Method that allows to edit the Software info
      */
@@ -261,5 +270,9 @@ public class SoftwareViewController {
 
     public void setSoftwareId(String id) {
         this.softwareId = id;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
