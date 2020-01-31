@@ -24,14 +24,25 @@ import static org.testfx.matcher.control.LabeledMatchers.hasText;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class MainViewControllerIT extends ApplicationTest{
     
+    /**
+     * Starts the test
+     * @param stage
+     * @throws Exception 
+     */
     @Override
     public void start(Stage stage) throws Exception{
         new Application().start(stage);
     }
     
+    /**
+     * Stop. Does nothing.
+     */
     @Override 
     public void stop() {}
     
+    /**
+     * Set the view
+     */
     @Before
     public void setUp() {
         clickOn("#textFieldLogin");
@@ -42,6 +53,9 @@ public class MainViewControllerIT extends ApplicationTest{
         clickOn("#buttonOk");
     }
     
+    /**
+     * Test the initial values of the view
+     */
     @Test
     public void test_1_InitialState() {
         verifyThat("#textFieldSearch", isVisible());
@@ -49,11 +63,15 @@ public class MainViewControllerIT extends ApplicationTest{
         
     }
     
+    /**
+     * Test that the search button sends the user to results view
+     */
     @Test
     public void test_2_search() {
         clickOn("#textFieldSearch");
         write("example");
         clickOn("#buttonSearch");
+        verifyThat("#listViewResults", isVisible());
     }
     
 }

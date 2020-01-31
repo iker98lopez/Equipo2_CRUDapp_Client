@@ -253,7 +253,7 @@ public class ResultsViewController extends GenericSideBarController {
      * @param searchText 
      */
     public void setSearchText(String searchText) {
-        
+        this.searchText = searchText;
     }
 
 }

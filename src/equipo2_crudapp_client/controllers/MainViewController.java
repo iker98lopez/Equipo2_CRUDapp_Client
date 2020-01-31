@@ -117,12 +117,15 @@ public class MainViewController extends GenericSideBarController {
      */
     public void handleButtonSearchAction(ActionEvent event){
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/ResultsView.fxml"));
-            Parent root = (Parent) loader.load();
-            ResultsViewController controller = ((ResultsViewController) loader.getController());
-            controller.setStage(new Stage());
-            controller.initStage(root);
-            stage.hide();
+            if(syntaxCheck(textFieldSearch.getText())) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/ResultsView.fxml"));
+                Parent root = (Parent) loader.load();
+                ResultsViewController controller = ((ResultsViewController) loader.getController());
+                controller.setSearchText(textFieldSearch.getText());
+                controller.setStage(new Stage());
+                controller.initStage(root);
+                stage.hide();
+            }
         } catch (IOException ex) {
             LOGGER.severe(ex.getMessage());
         }
@@ -160,7 +163,7 @@ public class MainViewController extends GenericSideBarController {
     private void setMostDiscountedOffers() {
         ObservableList<String> items = FXCollections.observableArrayList (
             "A", "B", "C", "D");
-        listViewGiveaways.setItems(items);
+        listViewMostDiscounted.setItems(items);
     }
     
     /**
@@ -169,7 +172,7 @@ public class MainViewController extends GenericSideBarController {
     private void setExpiringSoonOffers() {
         ObservableList<String> items = FXCollections.observableArrayList (
             "A", "B", "C", "D");
-        listViewGiveaways.setItems(items);
+        listViewExpiringSoon.setItems(items);
     }
     
     /**
@@ -181,7 +184,7 @@ public class MainViewController extends GenericSideBarController {
         
         boolean ret = false;
         
-        if(text.equals("") && text.length() > 3 && text.length() < 128){
+        if(!text.equals("") && text.length() > 3 && text.length() < 128){
             ret = true;
         }
         
