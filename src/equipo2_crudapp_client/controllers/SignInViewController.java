@@ -59,24 +59,63 @@ public class SignInViewController {
     
     private static final UserClient USERCLIENT = new UserClient();
     
+    /**
+     * 
+     */
     @FXML
     private Label labelLoginWarning;
+    
+    /**
+     * 
+     */
     @FXML
     private TextField textFieldLogin;
+    
+    /**
+     * 
+     */
     @FXML
     private Label labelPasswordWarning;
+    
+    /**
+     * 
+     */
     @FXML
     private PasswordField textFieldPassword;
+    
+    /**
+     * 
+     */
     @FXML
     private TextField textFieldPasswordShow;
+    
+    /**
+     * 
+     */
     @FXML
     private CheckBox checkBoxShowPassword;
+    
+    /**
+     * 
+     */
     @FXML
     private Button buttonSignIn;
+    
+    /**
+     * 
+     */
     @FXML
     private Hyperlink hyperLinkSignUp;
+    
+    /**
+     * 
+     */
     @FXML
     private Button buttonExit;
+    
+    /**
+     * Opens 
+     */
     @FXML
     private Hyperlink hyperLinkForgotPassword;
     
@@ -204,59 +243,7 @@ public class SignInViewController {
                 LOGGER.warning("There was an error opening the window. " + exception.getMessage());
             }
         }
-        
-        /*if (checkedSyntax) {
-            User user = new User(textFieldLogin.getText().trim(), textFieldPassword.getText().trim());
-            try {
-                user = CLIENT.signIn(user);
-
-                FXMLLoader loader;
-                Parent root;
-                loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/MainView.fxml"));
-                root = (Parent) loader.load();
-                MainViewController controller = ((MainViewController) loader.getController());
-                controller.setUser(user);
-                controller.initStage(root);
-                stage.hide();
-                
-            } catch (ServerException ex) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "There was an error connecting to the server.\nPlease try again later.", ButtonType.OK);
-                alert.showAndWait();
-                
-                textFieldPassword.setText("");
-                textFieldPasswordShow.setText("");
-                LOGGER.warning("There was an error connecting to the server.");
-            } catch (UserDisabledException ex) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "The user trying to log in has been disabled.", ButtonType.OK);
-                alert.showAndWait();
-                
-                labelLoginWarning.setVisible(true);
-                
-                textFieldPassword.setText("");
-                textFieldPasswordShow.setText("");
-                LOGGER.warning("The user has been disabled.");
-            } catch (IncorrectUserException ex) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "The user is not correct.\nPlease try again.", ButtonType.OK);
-                alert.showAndWait();
-                
-                labelLoginWarning.setVisible(true);
-                
-                textFieldPassword.setText("");
-                textFieldPasswordShow.setText("");
-                LOGGER.warning("The user is not correct.");
-            } catch (IncorrectPasswordException ex) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "The password is not correct.\nPlease try again.", ButtonType.OK);
-                alert.showAndWait();
-                
-                labelPasswordWarning.setVisible(true);
-                
-                textFieldPassword.setText("");
-                textFieldPasswordShow.setText("");
-                LOGGER.warning("The password is not correct.");
-            } catch (IOException ex) {
-                LOGGER.warning("There was an error trying to open LogOutView");
-            }
-        }*/        
+             
     }
     
     /**

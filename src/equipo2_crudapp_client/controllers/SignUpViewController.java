@@ -5,6 +5,7 @@ import equipo2_crudapp_classes.classes.User;
 import equipo2_crudapp_classes.exceptions.EmailAlreadyInUseException;
 import equipo2_crudapp_classes.exceptions.ServerException;
 import equipo2_crudapp_classes.exceptions.UserAlreadyExistsException;
+import equipo2_crudapp_client.clients.UserClient;
 import javafx.event.ActionEvent;
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -22,7 +23,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import equipo2_crudapp_client.clients.UserClient;
+import equipo2_crudapp_client.clients.UserClientOld;
 import javax.ws.rs.ClientErrorException;
 import javax.xml.bind.DatatypeConverter;
 
