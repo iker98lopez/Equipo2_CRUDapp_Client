@@ -14,24 +14,22 @@ import javafx.stage.Stage;
 /**
  * OfertAPPs application class. This application allows users to upload and view
  * different offers found by users on internet.
- *
  * @author Diego Corral
- *
+ * 
  */
-public class Application extends javafx.application.Application {
-
+public class Application extends javafx.application.Application{
+    
     /**
      * @param args args the command line arguments.
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) {        
         launch(args);
     }
 
     /**
      * Entry point for the application. Loads, sets and shows primary window.
-     *
      * @param primaryStage The primary window of the application.
-     * @throws Exception
+     * @throws Exception 
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -39,6 +37,6 @@ public class Application extends javafx.application.Application {
         Parent root = (Parent) loader.load();
         SignInViewController controller = ((SignInViewController) loader.getController());
         controller.setStage(primaryStage);
-        controller.initStage(root);
+        controller.initStage(root);   
     }
 }

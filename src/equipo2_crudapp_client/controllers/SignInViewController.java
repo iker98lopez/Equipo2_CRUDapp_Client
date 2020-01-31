@@ -199,14 +199,55 @@ public class SignInViewController {
         if(textFieldLogin.getText().equalsIgnoreCase(testUser.getLogin()) &&
                 textFieldPassword.getText().equalsIgnoreCase(testUser.getPassword())) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/MainView.fxml"));
-                Parent root = (Parent) loader.load();
-                MainViewController controller = ((MainViewController) loader.getController());
-                controller.setUser(testUser);
-                controller.initStage(root);
-                stage.hide();
-            } catch (IOException ex) {
-                Logger.getLogger(SignInViewController.class.getName()).log(Level.SEVERE, null, ex);
+                User user = new User();
+                String login = textFieldLogin.getText();
+                String password = DatatypeConverter.printHexBinary(ClientCipher.cipherText(textFieldPassword.getText().getBytes()));
+
+                try {
+                    user = USERCLIENT.findUserByLogin(user.getClass(), login);
+                } catch (NotFoundException exception) {
+                    throw new UserNotFoundException(exception.getMessage());
+                }
+
+                try {
+                    user = USERCLIENT.checkUserPassword(user.getClass(), login, password);
+                } catch (NotFoundException exception) {
+                    throw new IncorrectPasswordException(exception.getMessage());
+                }
+
+                if (user.getStatus() == UserStatus.DISABLED) {
+                    throw new UserDisabledException();
+                } else {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/MainView.fxml"));
+                    Parent root = (Parent) loader.load();
+                    MainViewController controller = ((MainViewController) loader.getController());
+                    controller.setUser(user);
+                    controller.initStage(root);
+                    stage.hide();
+                }
+            } catch (UserNotFoundException exception) {
+                Alert alert = new Alert(Alert.AlertType.WARNING, "User does not exist.", ButtonType.OK);
+                alert.showAndWait();
+                
+                textFieldLogin.setText("");
+                textFieldPassword.setText("");
+                textFieldPasswordShow.setText("");
+            } catch (IncorrectPasswordException exception) {
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Password is not correct.", ButtonType.OK);
+                alert.showAndWait();
+                
+                textFieldLogin.setText("");
+                textFieldPassword.setText("");
+                textFieldPasswordShow.setText("");
+            } catch (UserDisabledException exception) {
+                Alert alert = new Alert(Alert.AlertType.WARNING, "User has been disabled.", ButtonType.OK);
+                alert.showAndWait();
+                
+                textFieldLogin.setText("");
+                textFieldPassword.setText("");
+                textFieldPasswordShow.setText("");
+            } catch (IOException exception) {
+                LOGGER.warning("There was an error opening the window. " + exception.getMessage());
             }
         } else {
             if (checkedSyntax) {
