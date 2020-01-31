@@ -139,6 +139,8 @@ public class MainViewController extends GenericSideBarController {
             LOGGER.warning(e.getMessage());
             Alert alert = new Alert(Alert.AlertType.WARNING, "Couldn't connect "
                     + "with the server...", ButtonType.OK);
+            Button buttonOk = (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
+            buttonOk.setId("buttonOk");
             alert.showAndWait();
         }
     }
@@ -156,14 +158,18 @@ public class MainViewController extends GenericSideBarController {
      * Load in a list the most discounted offers
      */
     private void setMostDiscountedOffers() {
-        
+        ObservableList<String> items = FXCollections.observableArrayList (
+            "A", "B", "C", "D");
+        listViewGiveaways.setItems(items);
     }
     
     /**
      * Load in a list the offers that expire soon
      */
     private void setExpiringSoonOffers() {
-        
+        ObservableList<String> items = FXCollections.observableArrayList (
+            "A", "B", "C", "D");
+        listViewGiveaways.setItems(items);
     }
     
     /**

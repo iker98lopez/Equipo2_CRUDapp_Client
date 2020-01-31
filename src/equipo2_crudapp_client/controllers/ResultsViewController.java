@@ -172,22 +172,6 @@ public class ResultsViewController extends GenericSideBarController implements I
     
     }
     
-     /**
-     * This method sets the stage
-     *
-     * @param stage Stage to be setted
-     */
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-    
-    /**
-     * Method that sets active user
-     */
-    public void setUser(User user) {
-        
-    }
-    
     /**
      * Method that sets searchText from MainView
      * @param searchText 
