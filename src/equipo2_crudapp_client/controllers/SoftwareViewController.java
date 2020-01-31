@@ -7,8 +7,11 @@ package equipo2_crudapp_client.controllers;
 
 import equipo2_crudapp_classes.classes.Offer;
 import equipo2_crudapp_classes.classes.Software;
+import equipo2_crudapp_classes.classes.User;
+import equipo2_crudapp_classes.classes.Wish;
 import equipo2_crudapp_classes.enumerators.SoftwareType;
 import equipo2_crudapp_client.clients.SoftwareClient;
+import equipo2_crudapp_client.clients.UserClient;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,6 +24,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -44,6 +48,8 @@ public class SoftwareViewController {
     /**
      * Software client
      */
+    private User user = new User();
+    private static final UserClient USER_CLIENT = new UserClient();
     private static final SoftwareClient SOFTWARE_CLIENT = new SoftwareClient();
     private static final Logger LOGGER = Logger.getLogger("equipo2_crudapp_client.controllers.SoftwareViewController");
     /**
@@ -94,6 +100,11 @@ public class SoftwareViewController {
     @FXML
     private ListView listViewExtensions;
     /**
+     * Button that adds this software to user's wishlist
+     */
+    @FXML
+    private Button buttonAddWish;
+    /**
      * ComboBox to select software type
      */
     @FXML
@@ -121,6 +132,8 @@ public class SoftwareViewController {
         stage.show();
 
         checkBoxEdit.setOnAction(this::handleCheckBoxEditAction);
+        buttonAddWish.setOnAction(this::handleButtonAddWishAction);
+        
 
         textFieldTitle.setEditable(false);
         textFieldPublisher.setEditable(false);
@@ -136,6 +149,7 @@ public class SoftwareViewController {
         try {
             software = SOFTWARE_CLIENT.findSoftware(Software.class, softwareId);
         } catch (ClientErrorException clientErrorException) {
+            clientErrorException.printStackTrace();
         }
         textFieldTitle.setText(software.getName());
         textFieldPublisher.setText(software.getPublisher());
@@ -189,7 +203,23 @@ public class SoftwareViewController {
         });
 
     }
-
+    /**
+     * Method that adds this software to the user's wishList
+     */
+    public void handleButtonAddWishAction(ActionEvent event) {
+        Software software = new Software();
+        try {
+            software = SOFTWARE_CLIENT.findSoftware(Software.class, softwareId);
+        } catch (ClientErrorException clientErrorException) {
+            clientErrorException.printStackTrace();
+        }
+        Wish wish = new Wish();
+        wish.setSoftware(software);
+        wish.setMinPrice(0.0);
+        Set<Wish> wishes = user.getWishList();
+        wishes.add(wish);
+        user.setWishList(wishes);
+    }
     /**
      * Method that allows to edit the Software info
      */

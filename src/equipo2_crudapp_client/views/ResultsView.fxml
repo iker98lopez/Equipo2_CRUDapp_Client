@@ -59,7 +59,7 @@
                               <Insets left="60.0" />
                            </VBox.margin>
                         </RadioButton>
-                        <RadioButton id="radioButtonNumOfOfers" fx:id="radioButtonNumOfOfers" mnemonicParsing="false" text="Nº of offers">
+                        <RadioButton id="radioButtonNumOfOffers" fx:id="radioButtonNumOfOffers" mnemonicParsing="false" text="Nº of offers">
                            <VBox.margin>
                               <Insets left="60.0" />
                            </VBox.margin>
