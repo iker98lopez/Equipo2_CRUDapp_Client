@@ -5,6 +5,10 @@
  */
 package equipo2_crudapp_client.controllers;
 
+import equipo2_crudapp_classes.classes.User;
+import equipo2_crudapp_client.clients.UserClient;
+import java.util.Optional;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -12,8 +16,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javax.ws.rs.InternalServerErrorException;
+import javax.ws.rs.NotFoundException;
 
 /**
  * Controller for the FogotPassword view
@@ -30,6 +37,20 @@ public class ForgotPasswordController {
      * Scene of the controller
      */
     private Scene scene;
+    
+    private User user;
+    
+    /**
+     * Client for communicatng with the server
+     */
+    private static final UserClient USERCLIENT = new UserClient();
+    
+    
+    /**
+     * Logger for SignInViewController class
+     */
+    private static final Logger LOGGER = Logger.getLogger("equipo2_crudapp_client.controllers.ForgotPasswordController");
+    
     
     /**
      * Goes to the next step. In this case to the introduction of the code sent 
@@ -119,6 +140,15 @@ public class ForgotPasswordController {
         if(emailSyntaxIsCorrect()) {
             
             // Send email with recuperation code
+            try {
+                user = USERCLIENT.findUserByEmail(User.class, textFieldEmail.getText());
+                USERCLIENT.getRecoveryCode(textFieldEmail.getText());
+            } catch (NotFoundException | InternalServerErrorException exception) {
+                LOGGER.warning("There is no user with email: " +  ". " + exception.getMessage());
+            } catch(Exception e) {
+                LOGGER.severe(e.getMessage());
+            }
+                
             textFieldEmail.setDisable(true);
             labelEmail.setDisable(true);
             buttonEmailNext.setDisable(true);
@@ -134,8 +164,36 @@ public class ForgotPasswordController {
      * @param event 
      */
     private void handleButtonCodeNextAction(ActionEvent event) {
+        String password = null;
+        String repeatedPassword = null;
+        
         if(codeSyntaxIsCorrect()) {
+            TextInputDialog textInputDialog = new TextInputDialog();
+            textInputDialog.setTitle("Password recovery");
+            textInputDialog.setHeaderText(null);
+            textInputDialog.setContentText("Enter new password:");
+            Optional<String> result = textInputDialog.showAndWait();
+
+            if (result.isPresent()){
+                password = textInputDialog.getEditor().getText();
+
+            }
             
+            textInputDialog = new TextInputDialog();
+            textInputDialog.setTitle("Password recovery");
+            textInputDialog.setHeaderText(null);
+            textInputDialog.setContentText("Repeat password:");
+            result = textInputDialog.showAndWait();
+
+            if (result.isPresent()) {
+                repeatedPassword = textInputDialog.getEditor().getText();
+            }
+            
+            if(!password.isEmpty() && password.equalsIgnoreCase(repeatedPassword)) {
+                
+                USERCLIENT.modifyPassword(user, password);
+                
+            }
         }
     }
     

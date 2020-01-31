@@ -70,61 +70,61 @@ public class SignInViewController {
     private User testUser;
     
     /**
-     * 
+     * Warning. Shown when the login its not valid
      */
     @FXML
     private Label labelLoginWarning;
     
     /**
-     * 
+     * Text field for entering the login
      */
     @FXML
     private TextField textFieldLogin;
     
     /**
-     * 
+     * Warning. Shown when the password its not valid
      */
     @FXML
     private Label labelPasswordWarning;
     
     /**
-     * 
+     * Text field for entering the password
      */
     @FXML
     private PasswordField textFieldPassword;
     
     /**
-     * 
+     * Test field that shows the password
      */
     @FXML
     private TextField textFieldPasswordShow;
     
     /**
-     * 
+     * check box for showing the password
      */
     @FXML
     private CheckBox checkBoxShowPassword;
     
     /**
-     * 
+     * Button for signing into the application
      */
     @FXML
     private Button buttonSignIn;
     
     /**
-     * 
+     * Hyperlink for signing up
      */
     @FXML
     private Hyperlink hyperLinkSignUp;
     
     /**
-     * 
+     * Exits the application
      */
     @FXML
     private Button buttonExit;
     
     /**
-     * Opens 
+     * Opens the forgot password view
      */
     @FXML
     private Hyperlink hyperLinkForgotPassword;
@@ -215,7 +215,7 @@ public class SignInViewController {
                     throw new IncorrectPasswordException(exception.getMessage());
                 }
 
-                if (user.getStatus() == UserStatus.DISABLED) {
+                if (user != null && user.getStatus() == UserStatus.DISABLED) {
                     throw new UserDisabledException();
                 } else {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/MainView.fxml"));
@@ -225,7 +225,12 @@ public class SignInViewController {
                     controller.initStage(root);
                     stage.hide();
                 }
-            } catch (UserNotFoundException exception) {
+            } catch (InternalServerErrorException exception) {
+                LOGGER.warning("There was an error trying to connect to the server. " + exception.getMessage());
+                Alert alert = new Alert(Alert.AlertType.WARNING, "There was an error trying to connect to the server.\nPlease try again later.", ButtonType.OK);
+                alert.showAndWait();
+            }catch (UserNotFoundException exception) {
+                LOGGER.warning("User does not exist. " + exception.getMessage());
                 Alert alert = new Alert(Alert.AlertType.WARNING, "User does not exist.", ButtonType.OK);
                 alert.showAndWait();
                 
@@ -233,6 +238,7 @@ public class SignInViewController {
                 textFieldPassword.setText("");
                 textFieldPasswordShow.setText("");
             } catch (IncorrectPasswordException exception) {
+                LOGGER.warning("Password is not correct. " + exception.getMessage());
                 Alert alert = new Alert(Alert.AlertType.WARNING, "Password is not correct.", ButtonType.OK);
                 alert.showAndWait();
                 
@@ -240,6 +246,8 @@ public class SignInViewController {
                 textFieldPassword.setText("");
                 textFieldPasswordShow.setText("");
             } catch (UserDisabledException exception) {
+                LOGGER.warning("User has been disabled. " + exception.getMessage());
+                
                 Alert alert = new Alert(Alert.AlertType.WARNING, "User has been disabled.", ButtonType.OK);
                 alert.showAndWait();
                 
@@ -351,22 +359,15 @@ public class SignInViewController {
     }
     
     public void handleHyperlinkForgotPassword(ActionEvent event){
-        TextInputDialog textInputDialog = new TextInputDialog();
-        textInputDialog.setTitle("Password recovery");
-        textInputDialog.setHeaderText(null);
-        textInputDialog.setContentText("Please enter your account's e-mail:");
-        Optional<String> result = textInputDialog.showAndWait();
         
-        if (result.isPresent()){
-            String email = textInputDialog.getEditor().getText();
-            
-            try {
-                USERCLIENT.findUserByEmail(User.class, email);
-            } catch (NotFoundException | InternalServerErrorException exception) {
-                LOGGER.warning("There is no user with email: " + email + ". " + exception.getMessage());
-            }
-            
-            USERCLIENT.getRecoveryCode(email);
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/ForgotPasswordView.fxml"));
+            Parent root = (Parent) loader.load();
+            ForgotPasswordController controller = ((ForgotPasswordController) loader.getController());
+            controller.initStage(root);
+            stage.hide();
+        } catch (IOException ex) {
+            LOGGER.warning("There was an error trying to open ForgotPasswordView");
         }
     }
     
