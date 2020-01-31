@@ -8,10 +8,8 @@ package equipo2_crudapp_client.controllers;
 import equipo2_crudapp_classes.classes.Software;
 import equipo2_crudapp_classes.classes.User;
 import equipo2_crudapp_classes.classes.Wish;
-import equipo2_crudapp_classes.enumerators.SoftwareType;
 import equipo2_crudapp_client.clients.WishClient;
 import equipo2_crudapp_client.table_classes.TableSoftware;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -44,8 +42,6 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.converter.DoubleStringConverter;
 import javax.ws.rs.ClientErrorException;
-import javax.ws.rs.NotFoundException;
-import javax.ws.rs.core.GenericType;
 
 /**
  *

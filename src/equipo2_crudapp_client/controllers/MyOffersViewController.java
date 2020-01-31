@@ -8,7 +8,10 @@ package equipo2_crudapp_client.controllers;
 import equipo2_crudapp_classes.classes.Offer;
 import equipo2_crudapp_classes.classes.Software;
 import equipo2_crudapp_classes.classes.User;
+import equipo2_crudapp_classes.classes.Wish;
 import equipo2_crudapp_client.clients.SoftwareClient;
+import equipo2_crudapp_client.table_classes.TableShop;
+import equipo2_crudapp_client.table_classes.TableSoftware;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -18,19 +21,14 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -58,7 +56,7 @@ public class MyOffersViewController {
      * List of type Offer to contain every offer of the user.
      */
     private List<Offer> offers;
-    
+
     /**
      * Instance of the client manager for the entity Software.
      */
@@ -182,70 +180,10 @@ public class MyOffersViewController {
         buttonApplyFilter.setOnAction(this::handleButtonApplyFilterAction);
         buttonClearFilters.setOnAction(this::handleButtonClearFiltersAction);
         buttonClose.setOnAction(this::handleButtonCloseAction);
-
-        /*
-        tableColumnSoftware.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Offer, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Offer, String> data) {
-
-                return softwares.stream()
-                        .filter(software -> software.getOffers().stream()
-                        .anyMatch(offer -> offer.getOfferId().equals(data.getValue().getOfferId())))
-                        .findFirst()
-                        .get().getNameProperty();
-            }
-        });
-        */
         
-        tableColumnSoftware.setCellFactory(new Callback<TableColumn,TableCell> () {
-            public TableCell call(TableColumn p) {
-                TableCell cell = new TableCell() {
-                    @Override 
-                    protected void updateItem(Object item, boolean empty) {
-                      // calling super here is very important - don't skip this!
-                      super.updateItem(item, empty);
-                      if(item != null) {
-                          setText(item.toString());
-                      }
-                    }
-                };
-                ContextMenu menu = new ContextMenu();
-                MenuItem item = new MenuItem("View Person");
-                /*item.setOnAction(new EventHandler() {
-                    public void handle(ActionEvent t) {
-                        
-                    }
-                });
-                menu.getItems().addAll(item);
-                cell.setOnClick(new EventHandler() {
-                    public void handle(MouseEvent t) {
-                        if(t.getClickCount() == 2) {
-
-                        }
-                    }
-                });*/
-                return cell;
-            }
-        });
-
-        tableColumnBasePrice.setCellValueFactory(new PropertyValueFactory("basePrice"));
-        tableColumnDiscountedPrice.setCellValueFactory(new PropertyValueFactory("discountedPrice"));
-        tableColumnDiscount.setCellValueFactory(new PropertyValueFactory("discount"));
-
-        /*
-        tableColumnShop.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Offer, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Offer, String> data) {
-                return data.getValue().getShop().getNameProperty();
-            }
-        });
-        */
-
-        tableColumnUrl.setCellValueFactory(new PropertyValueFactory("url"));
-
         ObservableList<Offer> observableOffers = FXCollections.observableArrayList();
         observableOffers.addAll(offers);
-        tableViewOffers.setItems(observableOffers);
+        setTableData(observableOffers);
     }
 
     /**
@@ -257,30 +195,30 @@ public class MyOffersViewController {
         String nameFilter = textFieldFilterByName.getText();
         String shopFilter = textFieldFilterByShop.getText();
         String minimumDicountFilter = textFieldMinimumDiscount.getText();
-        
+
         if (!nameFilter.isEmpty()) {
             softwares = softwares.stream()
                     .filter(software -> software
-                            .getName()
-                            .matches(nameFilter))
+                    .getName()
+                    .matches(nameFilter))
                     .collect(Collectors.toSet());
         }
-        
+
         if (!shopFilter.isEmpty()) {
             offers = offers.stream()
                     .filter(offer -> offer
-                            .getShop().getName()
-                            .matches(shopFilter))
+                    .getShop().getName()
+                    .matches(shopFilter))
                     .collect(Collectors.toList());
         }
-        
+
         if (!minimumDicountFilter.isEmpty()) {
             offers = offers.stream()
                     .filter(offer -> offer
-                            .getDicountedPrice() < Double.valueOf(minimumDicountFilter))
+                    .getDicountedPrice() < Double.valueOf(minimumDicountFilter))
                     .collect(Collectors.toList());
         }
-        
+
         tableViewOffers.refresh();
     }
 
@@ -293,11 +231,12 @@ public class MyOffersViewController {
         offers = user.getOffers();
 
         try {
-            softwares = SOFTWARECLIENT.findAllSoftwares(new GenericType<Set<Software>>() {});
+            softwares = SOFTWARECLIENT.findAllSoftwares(new GenericType<Set<Software>>() {
+            });
         } catch (NotFoundException exception) {
             LOGGER.warning("There are no softwares to be found. " + exception.getMessage());
         }
-        
+
         tableViewOffers.refresh();
     }
 
@@ -310,6 +249,51 @@ public class MyOffersViewController {
         stage.hide();
     }
 
+    /**
+     * Method that sets the data of the table using an ObservableList of offers.
+     */
+    private void setTableData(ObservableList<Offer> offers) {
+
+        tableColumnSoftware.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Offer, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Offer, String> data) {
+
+                TableSoftware tableSoftware = new TableSoftware();
+                tableSoftware   .setName(softwares.stream()
+                        .filter(software -> software.getOffers().stream()
+                        .anyMatch(offer -> offer.getOfferId().equals(data.getValue().getOfferId())))
+                        .findFirst()
+                        .get().getName());
+                return tableSoftware.getNameProperty();
+            }
+        });
+        
+        tableColumnBasePrice.setCellValueFactory(new PropertyValueFactory("basePrice"));
+        tableColumnDiscountedPrice.setCellValueFactory(new PropertyValueFactory("discountedPrice"));
+        tableColumnDiscount.setCellValueFactory(new PropertyValueFactory("discount"));
+
+        tableColumnShop.setCellValueFactory(new Callback<
+        TableColumn.CellDataFeatures<Wish, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(
+                    TableColumn.CellDataFeatures<Wish, String> data) {
+                TableShop shop = new TableShop(data.getValue().getSoftware().getName());
+                return shop.getNameProperty();
+            }
+        });
+
+        tableColumnUrl.setCellValueFactory(new PropertyValueFactory("url"));
+
+        ObservableList<Offer> observableOffers = FXCollections.observableArrayList();
+        observableOffers.addAll(offers);
+        tableViewOffers.setItems(observableOffers);
+    }
+
+    /**
+     * This method set the user.
+     * 
+     * @param user the user to set.
+     */
     public void setUser(User user) {
         this.user = user;
     }
