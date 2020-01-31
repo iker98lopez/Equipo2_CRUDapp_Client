@@ -57,7 +57,17 @@ public class SignInViewController {
      */
     private boolean checkedSyntax;
     
+    /**
+     * Client for communicatng with the server
+     */
     private static final UserClient USERCLIENT = new UserClient();
+    
+    /**
+     * User for testing 
+     * Login = test
+     * Password = test
+     */
+    private User testUser;
     
     /**
      * 
@@ -141,6 +151,8 @@ public class SignInViewController {
         stage.setTitle("Sign in");
         stage.show();
 
+        initializeTestUser();
+        
         labelLoginWarning.setVisible(false);
         labelPasswordWarning.setVisible(false);
         textFieldPasswordShow.setVisible(false);
@@ -182,64 +194,79 @@ public class SignInViewController {
             labelPasswordWarning.setText("*This field is empty");
         }
         
-        if (checkedSyntax) {
+        // Logs in if the user is the testUser
+        System.out.println(textFieldLogin.getText() + textFieldPassword.getText());
+        if(textFieldLogin.getText().equalsIgnoreCase(testUser.getLogin()) &&
+                textFieldPassword.getText().equalsIgnoreCase(testUser.getPassword())) {
             try {
-                User user = new User();
-                String login = textFieldLogin.getText();
-                String password = DatatypeConverter.printHexBinary(ClientCipher.cipherText(textFieldPassword.getText().getBytes()));
-
-                try {
-                    user = USERCLIENT.findUserByLogin(user.getClass(), login);
-                } catch (NotFoundException exception) {
-                    throw new UserNotFoundException(exception.getMessage());
-                }
-
-                try {
-                    user = USERCLIENT.checkUserPassword(user.getClass(), login, password);
-                } catch (NotFoundException exception) {
-                    throw new IncorrectPasswordException(exception.getMessage());
-                }
-
-                if (user != null && user.getStatus() == UserStatus.DISABLED) {
-                    throw new UserDisabledException();
-                } else {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/MainView.fxml"));
-                    Parent root = (Parent) loader.load();
-                    MainViewController controller = ((MainViewController) loader.getController());
-                    controller.setUser(user);
-                    controller.initStage(root);
-                    stage.hide();
-                }
-            } catch (UserNotFoundException exception) {
-                LOGGER.warning("User does not exist. " + exception.getMessage());
-                Alert alert = new Alert(Alert.AlertType.WARNING, "User does not exist.", ButtonType.OK);
-                alert.showAndWait();
-                
-                textFieldLogin.setText("");
-                textFieldPassword.setText("");
-                textFieldPasswordShow.setText("");
-            } catch (IncorrectPasswordException exception) {
-                LOGGER.warning("Password is not correct. " + exception.getMessage());
-                Alert alert = new Alert(Alert.AlertType.WARNING, "Password is not correct.", ButtonType.OK);
-                alert.showAndWait();
-                
-                textFieldLogin.setText("");
-                textFieldPassword.setText("");
-                textFieldPasswordShow.setText("");
-            } catch (UserDisabledException exception) {
-                LOGGER.warning("User has been disabled. " + exception.getMessage());
-                
-                Alert alert = new Alert(Alert.AlertType.WARNING, "User has been disabled.", ButtonType.OK);
-                alert.showAndWait();
-                
-                textFieldLogin.setText("");
-                textFieldPassword.setText("");
-                textFieldPasswordShow.setText("");
-            } catch (IOException exception) {
-                LOGGER.warning("There was an error opening the window. " + exception.getMessage());
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/MainView.fxml"));
+                Parent root = (Parent) loader.load();
+                MainViewController controller = ((MainViewController) loader.getController());
+                controller.setUser(testUser);
+                controller.initStage(root);
+                stage.hide();
+            } catch (IOException ex) {
+                Logger.getLogger(SignInViewController.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
-             
+        } else {
+            if (checkedSyntax) {
+                try {
+                    User user = new User();
+                    String login = textFieldLogin.getText();
+                    String password = DatatypeConverter.printHexBinary(ClientCipher.cipherText(textFieldPassword.getText().getBytes()));
+
+                    try {
+                        user = USERCLIENT.findUserByLogin(user.getClass(), login);
+                    } catch (NotFoundException exception) {
+                        throw new UserNotFoundException(exception.getMessage());
+                    }
+
+                    try {
+                        user = USERCLIENT.checkUserPassword(user.getClass(), login, password);
+                    } catch (NotFoundException exception) {
+                        throw new IncorrectPasswordException(exception.getMessage());
+                    }
+
+                    if (user != null && user.getStatus() == UserStatus.DISABLED) {
+                        throw new UserDisabledException();
+                    } else {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/MainView.fxml"));
+                        Parent root = (Parent) loader.load();
+                        MainViewController controller = ((MainViewController) loader.getController());
+                        controller.setUser(user);
+                        controller.initStage(root);
+                        stage.hide();
+                    }
+                } catch (UserNotFoundException exception) {
+                    LOGGER.warning("User does not exist. " + exception.getMessage());
+                    Alert alert = new Alert(Alert.AlertType.WARNING, "User does not exist.", ButtonType.OK);
+                    alert.showAndWait();
+
+                    textFieldLogin.setText("");
+                    textFieldPassword.setText("");
+                    textFieldPasswordShow.setText("");
+                } catch (IncorrectPasswordException exception) {
+                    LOGGER.warning("Password is not correct. " + exception.getMessage());
+                    Alert alert = new Alert(Alert.AlertType.WARNING, "Password is not correct.", ButtonType.OK);
+                    alert.showAndWait();
+
+                    textFieldLogin.setText("");
+                    textFieldPassword.setText("");
+                    textFieldPasswordShow.setText("");
+                } catch (UserDisabledException exception) {
+                    LOGGER.warning("User has been disabled. " + exception.getMessage());
+
+                    Alert alert = new Alert(Alert.AlertType.WARNING, "User has been disabled.", ButtonType.OK);
+                    alert.showAndWait();
+
+                    textFieldLogin.setText("");
+                    textFieldPassword.setText("");
+                    textFieldPasswordShow.setText("");
+                } catch (IOException exception) {
+                    LOGGER.warning("There was an error opening the window. " + exception.getMessage());
+                }
+            }
+        }   
     }
     
     /**
@@ -367,5 +394,16 @@ public class SignInViewController {
 
             syntaxCheck();
         }
+    }
+    
+    /**
+     * Initilize the test user
+     */
+    private void initializeTestUser() {
+        testUser = new User();
+        testUser.setLogin("test");
+        testUser.setPassword("test");
+        testUser.setFullName("test");
+        testUser.setEmail("test@test.com");
     }
 }

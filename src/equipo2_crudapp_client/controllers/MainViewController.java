@@ -7,6 +7,7 @@
 package equipo2_crudapp_client.controllers;
 
 import equipo2_crudapp_classes.classes.Offer;
+import equipo2_crudapp_classes.exceptions.ServerException;
 import equipo2_crudapp_client.clients.OfferClient;
 import equipo2_crudapp_client.clients.ShopClient;
 import java.io.IOException;
@@ -20,7 +21,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -101,6 +104,7 @@ public class MainViewController extends GenericSideBarController {
         stage.setTitle("Home");
         stage.show();
         loadData();
+        setFreeOffers();
         
         buttonSearch.setOnAction(this::handleButtonSearchAction);
         
@@ -129,7 +133,14 @@ public class MainViewController extends GenericSideBarController {
      * Loads all the offers from the server
      */
     private void loadData() {
-        offers = CLIENT.findAllOffers(new GenericType<Set<Offer>>() {});
+        try {
+            offers = CLIENT.findAllOffers(new GenericType<Set<Offer>>() {});
+        } catch(Exception e) {
+            LOGGER.warning(e.getMessage());
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Couldn't connect "
+                    + "with the server...", ButtonType.OK);
+            alert.showAndWait();
+        }
     }
     
     /**

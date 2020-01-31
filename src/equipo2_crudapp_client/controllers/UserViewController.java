@@ -39,11 +39,6 @@ public class UserViewController extends GenericSideBarController{
     private Scene scene;
     
     /**
-     * User logged in the application
-     */
-    private User user = new User();
-    
-    /**
      * True if the edit toggle button is pressed, otherwise false
      */
     private boolean toggleButtonEditIsPressed;
@@ -106,11 +101,6 @@ public class UserViewController extends GenericSideBarController{
         labelEmailNotValid.setVisible(false);
         labelNewPasswordNotValid.setVisible(false);
         labelRepeatPasswordNotValid.setVisible(false);
-        
-        /*TODO*/
-        user.setLogin("Juan");
-        user.setFullName("Juan Perez");
-        user.setEmail("juan@example.com");
         
         textFieldLogin.setText(user.getLogin());
         textFieldName.setText(user.getFullName());

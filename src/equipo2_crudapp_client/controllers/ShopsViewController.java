@@ -6,6 +6,7 @@
 package equipo2_crudapp_client.controllers;
 
 import equipo2_crudapp_classes.classes.Shop;
+import equipo2_crudapp_classes.classes.User;
 import equipo2_crudapp_client.clients.ShopClient;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -17,7 +18,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -41,6 +44,11 @@ public class ShopsViewController{
      * Client for the communication with the server
      */
     private static final ShopClient CLIENT = new ShopClient();
+    
+    /**
+     * User logged into the application
+     */
+    private User user;
     
     /**
      * Stage of the controller
@@ -101,6 +109,14 @@ public class ShopsViewController{
         this.stage = stage;
     }
     
+    /**
+     * This method sets the user
+     * @param user User
+     */
+    public void setUser(User user) {
+        this.user = user;
+    }
+    
     /** 
      * This method initializes the stage and shows the window, sets the
      * visibility of the components and assigns the listeners.
@@ -113,10 +129,11 @@ public class ShopsViewController{
         stage.setScene(scene);
         stage.setResizable(false);
         stage.setTitle("Shops");
-        stage.show();
         
         buttonClose.setOnAction(this::handleButtonCloseAction);
         labelFilterNotValid.setVisible(false);
+        
+        stage.show();
         
         loadData();
         
@@ -135,22 +152,35 @@ public class ShopsViewController{
      * Loads all the shops from the server
      */
     private void loadData() {
-        
-        shops = CLIENT.findAllShops(new GenericType<Set<Shop>>() {});
+        try{
+            shops = CLIENT.findAllShops(new GenericType<Set<Shop>>() {});
+        } catch(Exception e) {
+            LOGGER.warning(e.getMessage());
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Couldn't connect "
+                    + "with the server...", ButtonType.OK);
+            alert.showAndWait();
+        }
     }
     
     /**
      * Method that populates tableView with shops
      */
     private void setTableData() {
+        try{
+            tableColumnName.setCellValueFactory(new PropertyValueFactory("name"));
+            tableColumnUrl.setCellValueFactory(new PropertyValueFactory("url"));
+            tableColumnImage.setCellValueFactory(new PropertyValueFactory("image"));
 
-        tableColumnName.setCellValueFactory(new PropertyValueFactory("name"));
-        tableColumnUrl.setCellValueFactory(new PropertyValueFactory("url"));
-        tableColumnImage.setCellValueFactory(new PropertyValueFactory("image"));
-
-        ObservableList<Shop> observableShops = FXCollections.observableArrayList();
-        observableShops.addAll(shops);
-        tableViewShop.setItems(observableShops);
+            ObservableList<Shop> observableShops = FXCollections.observableArrayList();
+            observableShops.addAll(shops);
+            tableViewShop.setItems(observableShops);
+        }catch(Exception e) {
+            LOGGER.severe("Error loading a table " + e.getMessage());
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Couldn't load the "
+                    + "table data", ButtonType.OK);
+            alert.showAndWait();
+        }
+        
 
     }
 }

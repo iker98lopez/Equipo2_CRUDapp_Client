@@ -12,7 +12,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -135,7 +137,12 @@ public class GenericSideBarController {
      */
     public void windowShowing(WindowEvent event){
         
-       // labelUsername.setText(user.getLogin());
+       try{
+           labelUsername.setText(user.getLogin());
+       }catch(Exception e) {
+           LOGGER.severe(e.getMessage());
+       }
+       
     }
     
     /**
@@ -196,6 +203,7 @@ public class GenericSideBarController {
             Parent root = (Parent) loader.load();
             ShopsViewController controller = ((ShopsViewController) loader.getController());
             controller.setStage(new Stage());
+            controller.setUser(user);
             controller.initStage(root);
         } catch (IOException ex) {
             LOGGER.severe(ex.getMessage());
@@ -229,6 +237,7 @@ public class GenericSideBarController {
             Parent root = (Parent) loader.load();
             UserViewController controller = ((UserViewController) loader.getController());
             controller.setStage(new Stage());
+            controller.setUser(user);
             controller.initStage(root);
             stage.hide();
         } catch (IOException ex) {

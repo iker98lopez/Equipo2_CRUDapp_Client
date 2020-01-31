@@ -5,14 +5,11 @@
  */
 package equipo2_crudapp_client;
 
-import equipo2_crudapp_ciphering.ClientCipher;
 import equipo2_crudapp_client.controllers.SignInViewController;
-import java.io.FileOutputStream;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
-import javax.xml.bind.DatatypeConverter;
 
 /**
  * OfertAPPs application class. This application allows users to upload and view
