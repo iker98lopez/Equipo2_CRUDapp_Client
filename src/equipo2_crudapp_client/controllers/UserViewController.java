@@ -6,6 +6,7 @@
 package equipo2_crudapp_client.controllers;
 
 import equipo2_crudapp_classes.classes.User;
+import equipo2_crudapp_client.clients.UserClient;
 import java.util.Optional;
 import java.util.logging.Logger;
 import javafx.beans.value.ObservableValue;
@@ -37,6 +38,13 @@ public class UserViewController extends GenericSideBarController{
      * Scene of the controller
      */
     private Scene scene;
+    
+    /**
+     * User logged in the application
+     */
+    private User user = new User();
+    
+    private static final UserClient USERCLIENT = new UserClient();
     
     /**
      * True if the edit toggle button is pressed, otherwise false
@@ -107,6 +115,7 @@ public class UserViewController extends GenericSideBarController{
         textFieldEmail.setText(user.getEmail());
         
         // Set handlers
+        buttonChangePassword.setOnAction(this::handleChangePasswordButtonAction);
         toggleButtonEdit.setOnAction(this::handleToggleButtonEditAction);
         textFieldLogin.textProperty().addListener(this::handleTextChangeLogin);
         textFieldName.textProperty().addListener(this::handleTextChangeName);
@@ -211,11 +220,11 @@ public class UserViewController extends GenericSideBarController{
     
     /**
      * Checks the syntax of the user's data fields.
-     * @return true if corret, otherwise false.
+     * @return true if correct, otherwise false.
      */
     private boolean userDataSyntaxIsCorrect() {
         boolean ret = true;
-        final String NECESSARY_CHARS = "[a-zA-Z0-9\\.\\-\\*]+";
+        final String NECESSARY_CHARS = "[a-zA-Z0-9\\.\\-\\*\\s]+";
         
         // Validation of the login field
         if (textFieldLogin.getText().length() >= 3
@@ -252,14 +261,33 @@ public class UserViewController extends GenericSideBarController{
         return ret;
     }
     
-    /**
-     * Checks the syntax of the forgot password fields.
-     * @return true if correct, otherwise false.
-     */
-    private boolean changePasswordSyntaxIsCorrect(){
-        boolean ret = false;
+    private void handleChangePasswordButtonAction(ActionEvent event) {
+        Boolean checkedSyntax = true;
         
-        return ret;
+        if (passwordFieldNewPassword.getText().length() >= 3
+                && passwordFieldNewPassword.getText().length() < 18
+                && passwordFieldNewPassword.getText().matches("[a-zA-Z0-9\\.\\-\\*]+")) {
+
+            labelNewPasswordNotValid.setVisible(false);
+        } else if (!passwordFieldNewPassword.getText().equals("")) {
+            labelNewPasswordNotValid.setText("*Password is not valid");
+            labelNewPasswordNotValid.setVisible(true);
+            checkedSyntax = false;
+        }
+        if (passwordFieldRepeatPassword.getText().length() >= 3
+                && passwordFieldRepeatPassword.getText().length() < 18
+                && passwordFieldRepeatPassword.getText().matches("[a-zA-Z0-9\\.\\-\\*]+")) {
+
+            labelRepeatPasswordNotValid.setVisible(false);
+        } else if (!passwordFieldRepeatPassword.getText().equals("") && !passwordFieldNewPassword.getText().equals(passwordFieldRepeatPassword.getText())) {
+            labelNewPasswordNotValid.setText("*Passwords do not match");
+            labelNewPasswordNotValid.setVisible(true);
+            checkedSyntax = false;
+        }
+        
+        if (checkedSyntax == true) {
+            USERCLIENT.modifyPassword(user, passwordFieldNewPassword.getText());
+        }
     }
     
     /**

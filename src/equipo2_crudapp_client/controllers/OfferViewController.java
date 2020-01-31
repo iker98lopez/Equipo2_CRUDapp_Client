@@ -484,8 +484,8 @@ public class OfferViewController {
         checkedFields = true;
 
         if (textFieldSoftwareName.getText().length() >= 3
-                && textFieldSoftwareName.getText().length() < 18
-                && textFieldSoftwareName.getText().matches("[a-zA-Z0-9\\.\\-\\*\\_]+")) {
+                && textFieldSoftwareName.getText().length() < 32
+                && textFieldSoftwareName.getText().matches("[a-zA-Z0-9\\.\\-\\*\\_\\s]+")) {
 
             labelSoftwareNameWarning.setVisible(false);
         } else if (!textFieldSoftwareName.getText().equals("")) {
@@ -495,8 +495,8 @@ public class OfferViewController {
         }
 
         if (textFieldShop.getText().length() >= 3
-                && textFieldShop.getText().length() < 18
-                && textFieldShop.getText().matches("[a-zA-Z0-9\\.\\-\\*\\_]+")) {
+                && textFieldShop.getText().length() < 24
+                && textFieldShop.getText().matches("[a-zA-Z0-9\\.\\-\\*\\_\\s]+")) {
 
             labelShopWarning.setVisible(false);
         } else if (!textFieldShop.getText().equals("")) {
@@ -522,7 +522,7 @@ public class OfferViewController {
         }
 
         if (textFieldUrl.getText().length() >= 3
-                && textFieldUrl.getText().length() < 18
+                && textFieldUrl.getText().length() < 128
                 && textFieldUrl.getText().matches("[a-zA-Z0-9\\.\\*\\_\\/\\=\\?\\-\\(\\)\\'\\|\\@\\#\\$\\&]+")) {
 
             labelUrlWarning.setVisible(false);

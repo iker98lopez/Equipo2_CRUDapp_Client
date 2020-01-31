@@ -14,14 +14,13 @@ import javafx.beans.property.SimpleStringProperty;
 public class TableSoftware {
     private final SimpleStringProperty name;
     
-    
     public TableSoftware() {
         name = null;
     }
+    
     public TableSoftware(String name) {
         this.name = new SimpleStringProperty(name);
     }
-    
     
     public String getName() {
         return this.name.get();
@@ -34,5 +33,4 @@ public class TableSoftware {
     public SimpleStringProperty getNameProperty () {
         return name;
     }
-    
 }
