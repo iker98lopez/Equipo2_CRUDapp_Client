@@ -5,14 +5,10 @@
  */
 package equipo2_crudapp_client.controllers;
 
-import equipo2_crudapp_classes.classes.Shop;
-import equipo2_crudapp_classes.classes.Software;
 import equipo2_crudapp_classes.classes.User;
 import equipo2_crudapp_classes.classes.Wish;
-import equipo2_crudapp_classes.enumerators.SoftwareType;
 import equipo2_crudapp_client.clients.WishClient;
 import equipo2_crudapp_client.table_classes.TableSoftware;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -45,8 +41,6 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.converter.DoubleStringConverter;
 import javax.ws.rs.ClientErrorException;
-import javax.ws.rs.NotFoundException;
-import javax.ws.rs.core.GenericType;
 
 /**
  *
@@ -143,23 +137,12 @@ public class WishListViewController extends GenericSideBarController {
         buttonFilter.setOnAction(this::handleButtonFilterAction);
         checkBoxEdit.setOnAction(this::handleCheckBoxEditAction);
         
-        /*try {
+        try {
         wishes = user.getWishList();
         } catch (Exception e) {
         e.printStackTrace();
-        }*/
-        Wish w1 = new Wish();
-        Wish w2 = new Wish();
-        Software s1 = new Software();
-        Software s2 = new Software();
-        s1.setName("s1");
-        s2.setName("s2");
-        w1.setSoftware(s1);
-        w1.setMinPrice(1.0);
-        w2.setMinPrice(2.0);
-        w2.setSoftware(s2);
-        wishes.add(w1);
-        wishes.add(w2);
+        }
+    
         ObservableList<Wish> observableWishes = FXCollections.observableArrayList();
         observableWishes.addAll(wishes);
         setTableData(observableWishes);
@@ -239,17 +222,6 @@ public class WishListViewController extends GenericSideBarController {
                 i -> checkedRows.computeIfAbsent(((Wish) tableViewWishList.getItems()
                         .get(i)), p -> new SimpleBooleanProperty())));
 
-
-        /* Possible method to access a row item when table checkbox is selected
-        
-        ((CheckBoxTableCell) tableColumnDelete.getCellFactory()).setSelectedStateCallback(new Callback<Integer, ObservableValue<Boolean>>() {
-            @Override
-            public ObservableValue<Boolean> call(Integer index) {
-                newWishes.add((Wish)(tableViewWishList.getItems().get(index)));
-                return ?;
-            }
-        });
-         */
         //Column software name
         tableColumnSoftware.setCellValueFactory(new Callback<
         CellDataFeatures<Wish, String>, ObservableValue<String>>() {
@@ -286,7 +258,7 @@ public class WishListViewController extends GenericSideBarController {
     /**
      * Method to set the active user
      */
-    public void setUser() {
-
+    public void setUser(User user){
+        this.user = user;
     }
 }
