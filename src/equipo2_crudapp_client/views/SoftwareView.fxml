@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
@@ -78,11 +79,15 @@
                         </CheckBox>
                      </children>
                   </HBox>
-                  <TextField id="textFieldPublisher" fx:id="textFieldPublisher" prefHeight="25.0" prefWidth="359.0" text="Publisher">
+                  <HBox>
                      <VBox.margin>
                         <Insets bottom="2.0" right="6.0" top="-10.0" />
                      </VBox.margin>
-                  </TextField>
+                     <children>
+                        <TextField id="textFieldPublisher" fx:id="textFieldPublisher" prefHeight="25.0" prefWidth="359.0" text="Publisher" />
+                        <Button id="buttonAddWish" fx:id="buttonAddWish" mnemonicParsing="false" prefHeight="25.0" prefWidth="85.0" text="Add wish" />
+                     </children>
+                  </HBox>
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
                         <Label text="Date:">
