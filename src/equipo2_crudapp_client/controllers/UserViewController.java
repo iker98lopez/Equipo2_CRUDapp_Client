@@ -39,10 +39,6 @@ public class UserViewController extends GenericSideBarController{
      */
     private Scene scene;
     
-    /**
-     * User logged in the application
-     */
-    private User user = new User();
     
     private static final UserClient USERCLIENT = new UserClient();
     
@@ -110,9 +106,12 @@ public class UserViewController extends GenericSideBarController{
         labelNewPasswordNotValid.setVisible(false);
         labelRepeatPasswordNotValid.setVisible(false);
         
-        textFieldLogin.setText(user.getLogin());
-        textFieldName.setText(user.getFullName());
-        textFieldEmail.setText(user.getEmail());
+        if(user!=null){
+            textFieldLogin.setText(user.getLogin());
+            textFieldName.setText(user.getFullName());
+            textFieldEmail.setText(user.getEmail());
+        }
+        
         
         // Set handlers
         buttonChangePassword.setOnAction(this::handleChangePasswordButtonAction);

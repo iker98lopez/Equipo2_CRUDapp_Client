@@ -105,6 +105,8 @@ public class MainViewController extends GenericSideBarController {
         stage.show();
         loadData();
         setFreeOffers();
+        setExpiringSoonOffers();
+        setMostDiscountedOffers();
         
         buttonSearch.setOnAction(this::handleButtonSearchAction);
         

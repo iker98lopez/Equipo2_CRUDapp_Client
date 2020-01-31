@@ -13,14 +13,16 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import static org.testfx.api.FxAssert.verifyThat;
 import org.testfx.framework.junit.ApplicationTest;
-import static org.testfx.matcher.base.NodeMatchers.isVisible;
+import static org.testfx.matcher.base.NodeMatchers.isDisabled;
+import static org.testfx.matcher.base.NodeMatchers.isEnabled;
+import static org.testfx.matcher.control.LabeledMatchers.hasText;
 
 /**
- * Testing class Shops view
+ * Testing class User view
  * @author Diego Corral
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class ShopsViewControllerIT extends ApplicationTest{
+public class UserViewControllerIT extends ApplicationTest{
     
     /**
      * Starts the test
@@ -39,7 +41,7 @@ public class ShopsViewControllerIT extends ApplicationTest{
     public void stop() {}
     
     /**
-     * Sets the view
+     * Set the view
      */
     @Before
     public void setUp() {
@@ -49,13 +51,23 @@ public class ShopsViewControllerIT extends ApplicationTest{
         write("test");
         clickOn("#buttonSignIn");
         clickOn("#buttonOk");
-        clickOn("#buttonViewShops");
+        clickOn("#buttonViewUser");
     }
     
     @Test
     public void test_1_initialState() {
-        verifyThat("#labelFilterNotValid", isVisible());
+        verifyThat("#textFieldLogin", isDisabled());
+        verifyThat("#textFieldName", isDisabled());
+        verifyThat("#textFieldEmail", isDisabled());
     }
     
+    @Test
+    public void test_2_editButton() {
+        clickOn("#toggleButtonEdit");
+        verifyThat("#textFieldLogin", isEnabled());
+        verifyThat("#textFieldName", isEnabled());
+        verifyThat("#textFieldEmail", isEnabled());
+    }
+
     
 }
