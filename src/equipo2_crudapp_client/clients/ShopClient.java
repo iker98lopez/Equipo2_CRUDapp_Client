@@ -20,7 +20,7 @@ import javax.ws.rs.core.GenericType;
  *        client.close();
  * </pre>
  *
- * @author Diego Corral
+ * @author iker lopez carrillo
  */
 public class ShopClient {
 
@@ -33,8 +33,8 @@ public class ShopClient {
         webTarget = client.target(BASE_URI).path("shop");
     }
 
-    public void removeShop(String id) throws ClientErrorException {
-        webTarget.path(java.text.MessageFormat.format("{0}", new Object[]{id})).request().delete();
+    public void removeShop(String shop) throws ClientErrorException {
+        webTarget.path(java.text.MessageFormat.format("{0}", new Object[]{shop})).request().delete();
     }
 
     public void modifyShop(Object requestEntity, String id) throws ClientErrorException {

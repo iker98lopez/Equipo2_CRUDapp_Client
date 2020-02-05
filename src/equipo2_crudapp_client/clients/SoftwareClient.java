@@ -20,7 +20,7 @@ import javax.ws.rs.core.GenericType;
  *        client.close();
  * </pre>
  *
- * @author Diego Corral
+ * @author iker lopez carrillo
  */
 public class SoftwareClient {
 
@@ -38,8 +38,8 @@ public class SoftwareClient {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
-    public void removeSoftware(String id) throws ClientErrorException {
-        webTarget.path(java.text.MessageFormat.format("{0}", new Object[]{id})).request().delete();
+    public void removeSoftware(String software) throws ClientErrorException {
+        webTarget.path(java.text.MessageFormat.format("{0}", new Object[]{software})).request().delete();
     }
 
     public void createSoftware(Object requestEntity) throws ClientErrorException {

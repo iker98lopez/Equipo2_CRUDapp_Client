@@ -8,6 +8,7 @@ package equipo2_crudapp_client.clients;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
 
 /**
  * Jersey REST client generated for REST resource:UserREST [user]<br>
@@ -58,15 +59,15 @@ public class UserClient {
         return resource.request(javax.ws.rs.core.MediaType.TEXT_PLAIN).get(String.class);
     }
 
-    public void deleteUser(String id) throws ClientErrorException {
-        webTarget.path(java.text.MessageFormat.format("{0}", new Object[]{id})).request().delete();
+    public void deleteUser(String user) throws ClientErrorException {
+        webTarget.path(java.text.MessageFormat.format("{0}", new Object[]{user})).request().delete();
     }
 
     public void createUser(Object requestEntity) throws ClientErrorException {
         webTarget.request(javax.ws.rs.core.MediaType.APPLICATION_XML).post(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_XML));
     }
 
-    public <T> T findAllUsers(Class<T> responseType) throws ClientErrorException {
+    public <T> T findAllUsers(GenericType<T> responseType) throws ClientErrorException {
         WebTarget resource = webTarget;
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
@@ -77,9 +78,9 @@ public class UserClient {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
-    public <T> T findUserByLogin(Class<T> responseType, String login) throws ClientErrorException {
+    public <T> T findUserByLogin(Class<T> responseType, String id) throws ClientErrorException {
         WebTarget resource = webTarget;
-        resource = resource.path(java.text.MessageFormat.format("login/{0}", new Object[]{login}));
+        resource = resource.path(java.text.MessageFormat.format("login/{0}", new Object[]{id}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
     }
 
