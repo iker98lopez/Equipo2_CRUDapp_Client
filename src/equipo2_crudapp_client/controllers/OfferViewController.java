@@ -343,7 +343,7 @@ public class OfferViewController {
 
                         if (alertSave.getResult() == ButtonType.OK) {
                             if (checkedFields) {
-                                OFFERCLIENT.deleteOffer(offer.getOfferId());
+                                OFFERCLIENT.removeOffer(offer);
                                 scene.getStylesheets().add("/equipo2_crudapp_client/views/textField.css");
 
                                 textFieldSoftwareName.setEditable(false);
@@ -583,7 +583,7 @@ public class OfferViewController {
         alert.showAndWait();
 
         if (alert.getResult() == ButtonType.OK) {
-            OFFERCLIENT.deleteOffer(offer.getOfferId());
+            OFFERCLIENT.removeOffer(offer);
             stage.hide();
         }
     }

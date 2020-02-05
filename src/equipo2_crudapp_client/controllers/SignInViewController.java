@@ -41,6 +41,8 @@ import javax.xml.bind.DatatypeConverter;
  * @author Diego Corral
  */
 public class SignInViewController {
+
+    private User testUser = new User();
     
     /**
      * Logger for SignInViewController class
@@ -141,6 +143,10 @@ public class SignInViewController {
         stage.setTitle("Sign in");
         stage.show();
 
+        testUser.setLogin("TEST");
+        testUser.setPassword("TEST");
+        testUser.setEmail("test@test.com");
+        
         labelLoginWarning.setVisible(false);
         labelPasswordWarning.setVisible(false);
         textFieldPasswordShow.setVisible(false);
@@ -180,6 +186,19 @@ public class SignInViewController {
             checkedSyntax = false;
             labelPasswordWarning.setVisible(true);
             labelPasswordWarning.setText("*This field is empty");
+        }
+
+        if (textFieldLogin.getText().equalsIgnoreCase(testUser.getLogin())) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/MainView.fxml"));
+                Parent root = (Parent) loader.load();
+                MainViewController controller = ((MainViewController) loader.getController());
+                controller.setUser(testUser);
+                controller.initStage(root);
+                stage.hide();
+            } catch (IOException exception) {
+                LOGGER.warning("There was an error trying to open the main view as test. " + exception.getMessage());
+            }
         }
         
         if (checkedSyntax) {
