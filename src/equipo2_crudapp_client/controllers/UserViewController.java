@@ -5,6 +5,7 @@
  */
 package equipo2_crudapp_client.controllers;
 
+import equipo2_crudapp_ciphering.ClientCipher;
 import equipo2_crudapp_classes.classes.User;
 import equipo2_crudapp_client.clients.UserClient;
 import java.util.Optional;
@@ -21,6 +22,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javax.ws.rs.InternalServerErrorException;
+import javax.xml.bind.DatatypeConverter;
 
 /**
  * Controller for the user view
@@ -38,11 +41,6 @@ public class UserViewController extends GenericSideBarController{
      * Scene of the controller
      */
     private Scene scene;
-    
-    /**
-     * User logged in the application
-     */
-    private User user = new User();
     
     private static final UserClient USERCLIENT = new UserClient();
     
@@ -109,11 +107,6 @@ public class UserViewController extends GenericSideBarController{
         labelEmailNotValid.setVisible(false);
         labelNewPasswordNotValid.setVisible(false);
         labelRepeatPasswordNotValid.setVisible(false);
-        
-        /*TODO*/
-        user.setLogin("Juan");
-        user.setFullName("Juan Perez");
-        user.setEmail("juan@example.com");
         
         textFieldLogin.setText(user.getLogin());
         textFieldName.setText(user.getFullName());
@@ -291,7 +284,17 @@ public class UserViewController extends GenericSideBarController{
         }
         
         if (checkedSyntax == true) {
-            USERCLIENT.modifyPassword(user, passwordFieldNewPassword.getText());
+            try {
+                String password = DatatypeConverter.printHexBinary(ClientCipher.cipherText(passwordFieldNewPassword.getText().getBytes()));
+                USERCLIENT.modifyPassword(user, password);
+                LOGGER.warning("Password changed successfully.");
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Password changed successfully.", ButtonType.OK);
+                alert.showAndWait();
+            } catch (InternalServerErrorException exception) {
+                LOGGER.warning("There was an error trying to connect to the server. " + exception.getMessage());
+                Alert alert = new Alert(Alert.AlertType.WARNING, "There was an error trying to connect to the server.\nPlease try again later.", ButtonType.OK);
+                alert.showAndWait();
+            }
         }
     }
     
