@@ -103,7 +103,7 @@ public class MainViewController extends GenericSideBarController {
         stage.setScene(scene);
         stage.setTitle("Home");
         stage.show();
-        loadData();
+        //loadData();
         setFreeOffers();
         setExpiringSoonOffers();
         setMostDiscountedOffers();

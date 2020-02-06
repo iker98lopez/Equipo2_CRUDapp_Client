@@ -24,6 +24,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -97,6 +98,24 @@ public class ShopsViewController{
     private Label labelFilterNotValid;
     
     /**
+     * Makes the table editable
+     */
+    @FXML
+    private ToggleButton toggleButtonEdit;
+    
+    /**
+     * Adds a new shop
+     */
+    @FXML
+    private Button buttonAdd;
+    
+    /**
+     * Deletes a shop
+     */
+    @FXML
+    private Button buttonDelete;
+    
+    /**
      * Set of shops
      */
     private Set<Shop> shops = new HashSet<>();
@@ -131,6 +150,8 @@ public class ShopsViewController{
         stage.setTitle("Shops");
         
         buttonClose.setOnAction(this::handleButtonCloseAction);
+        buttonAdd.setVisible(false);
+        buttonDelete.setVisible(false);
         labelFilterNotValid.setVisible(false);
         
         stage.show();
