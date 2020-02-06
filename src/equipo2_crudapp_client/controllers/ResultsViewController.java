@@ -10,7 +10,9 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -44,7 +46,8 @@ public class ResultsViewController extends GenericSideBarController {
     /**
      * List that stores the the software results
      */
-    private ObservableList<Software> results = null;
+    private ObservableList<Software> results = FXCollections.observableArrayList();
+    private Set<Software> softwares = new HashSet<Software>();
     /**
      * Software client to make CRUD operations
      */
@@ -149,8 +152,11 @@ public class ResultsViewController extends GenericSideBarController {
         radioButtonAscending.setToggleGroup(toggleGroupOrder);
         radioButtonAscending.setSelected(true);
         radioButtonDescending.setToggleGroup(toggleGroupOrder);
-        results = getResultsData();
+        /**
+          * Modificacion Adrian Garcia 06/02/2020
+          */
         results = FXCollections.observableArrayList();
+        results = getResultsData();
         printResultsOnList(results);
     }
 
@@ -160,17 +166,21 @@ public class ResultsViewController extends GenericSideBarController {
     private ObservableList<Software> getResultsData() {
         ObservableList<Software> data = FXCollections.observableArrayList();
         try {
-            if (textFieldSearchBar.getText() != null || textFieldSearchBar.getText() != "") {
-                data = SOFTWARE_CLIENT.findSoftwaresByName(new GenericType<ObservableList<Software>>() {
-                }, searchText);
+            /**
+             * Modificacion Adrian Garcia 06/02/2020
+            */
+            if (!textFieldSearchBar.getText().isEmpty()) {
+                softwares = SOFTWARE_CLIENT.findSoftwaresByName(new GenericType<Set<Software>>() {
+                }, textFieldSearchBar.getText());
 
             } else {
-                data = SOFTWARE_CLIENT.findAllSoftwares(new GenericType<ObservableList<Software>>() {
+                softwares = SOFTWARE_CLIENT.findAllSoftwares(new GenericType<Set<Software>>() {
                 });
             }
         } catch (ClientErrorException clientErrorException) {
             clientErrorException.printStackTrace();
         }
+        data.addAll(softwares);
         return data;
     }
 
@@ -237,7 +247,7 @@ public class ResultsViewController extends GenericSideBarController {
      * Method that searches Software based on filters applied
      */
     public void handleButtonSearchAction(ActionEvent event) {
-        ObservableList<Software> filteredSoftwares = results;
+        ObservableList<Software> filteredSoftwares = getResultsData();
         if (textFieldSearchBar.getText() != null || textFieldSearchBar.getText() != "") {
             filteredSoftwares.removeIf(s -> !s.getName().toLowerCase().contains(textFieldSearchBar.getText().toLowerCase()));
         }
@@ -301,20 +311,8 @@ public class ResultsViewController extends GenericSideBarController {
     }
 
     /**
-     * This method sets the stage
-     *
-     * @param stage Stage to be setted
+     * Modificacion Adrian Garcia 06/02/2020
      */
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
-    /**
-     * Method that sets active user
-     */
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     /**
      * Method that sets searchText from MainView
@@ -323,6 +321,7 @@ public class ResultsViewController extends GenericSideBarController {
      */
     public void setSearchText(String searchText) {
         this.searchText = searchText;
+        textFieldSearchBar.setText(searchText);
     }
 
 }

@@ -114,6 +114,10 @@ public class MainViewController extends GenericSideBarController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/ResultsView.fxml"));
             Parent root = (Parent) loader.load();
             ResultsViewController controller = ((ResultsViewController) loader.getController());
+            /**
+             * Modificacion Adrian Garci 06/02/2020
+             */
+            controller.setSearchText(textFieldSearch.getText());
             controller.setStage(new Stage());
             controller.initStage(root);
             stage.hide();

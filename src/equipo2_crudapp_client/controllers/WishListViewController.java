@@ -5,11 +5,10 @@
  */
 package equipo2_crudapp_client.controllers;
 
-import equipo2_crudapp_classes.classes.Software;
-import equipo2_crudapp_classes.classes.User;
 import equipo2_crudapp_classes.classes.Wish;
 import equipo2_crudapp_client.clients.WishClient;
 import equipo2_crudapp_client.table_classes.TableSoftware;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -65,7 +64,9 @@ public class WishListViewController extends GenericSideBarController {
     /**
      * Modificacion Adrian garcia 06/02/2020
      */
-
+    private Set<Wish> updatedWishes = new HashSet<Wish>();
+    private ObservableList<Wish> observableWishes = FXCollections.observableArrayList();
+    private List<Wish> checkedItems = new ArrayList();
     /**
      * Logger to output messages to the console
      */
@@ -143,7 +144,6 @@ public class WishListViewController extends GenericSideBarController {
         e.printStackTrace();
         }
     
-        ObservableList<Wish> observableWishes = FXCollections.observableArrayList();
         observableWishes.addAll(wishes);
         setTableData(observableWishes);
     }
@@ -156,7 +156,7 @@ public class WishListViewController extends GenericSideBarController {
      * Method that deletes selected wishes from wishList
      */
     public void handleButtonDeleteAction(ActionEvent event) {
-        List<Wish> checkedItems = checkedRows.entrySet().stream()
+        checkedItems = checkedRows.entrySet().stream()
                 .filter(e -> e.getValue().get())
                 .map(Entry::getKey)
                 .collect(Collectors.toList());
@@ -164,7 +164,7 @@ public class WishListViewController extends GenericSideBarController {
         for (int i = 0; i < checkedItems.size(); i++) {
             if (wishes.contains(checkedItems.get(i))) {
                 try {
-                    CLIENT.removeWish("" + checkedItems.get(i).getWishId());
+                    wishes.remove(checkedItems.get(i));
                 } catch (ClientErrorException clientErrorException) {
                     clientErrorException.printStackTrace();
                 }
@@ -180,13 +180,27 @@ public class WishListViewController extends GenericSideBarController {
      */
     public void handleCheckBoxEditAction(ActionEvent event) {
         if (checkBoxEdit.isSelected()) {
+            checkBoxEdit.setText("Save");
             tableViewWishList.setEditable(true);
             buttonDelete.setDisable(false);
 
         } else {
-            tableViewWishList.setEditable(false);
-            buttonDelete.setDisable(true);
-
+            checkBoxEdit.setText("Edit");
+            tableViewWishList.setEditable(true);
+            if(!updatedWishes.isEmpty()) {
+                for(Wish wish: updatedWishes) {
+                    try {
+                    CLIENT.modifyWish(wish, ""+wish.getWishId());
+                } catch (ClientErrorException clientErrorException) {
+                    clientErrorException.printStackTrace();
+                }
+                }
+            }
+            if(!checkedItems.isEmpty()) {
+                for(Wish wish: checkedItems)
+                    CLIENT.removeWish(""+wish.getWishId());
+            }
+            checkedItems.clear();
         }
     }
 
@@ -210,6 +224,7 @@ public class WishListViewController extends GenericSideBarController {
      */
     private void setTableData(ObservableList<Wish> data) {
         checkedRows = new HashMap<>();
+        updatedWishes.clear();
         
         //Column checkbox
         tableColumnDelete.setCellFactory(CheckBoxTableCell.forTableColumn(
@@ -231,19 +246,21 @@ public class WishListViewController extends GenericSideBarController {
         tableColumnMinPrice.setCellFactory(TextFieldTableCell.<Wish, Double>forTableColumn(new DoubleStringConverter()));
         tableColumnMinPrice.setCellValueFactory(new PropertyValueFactory("minPrice"));
 
-        ObservableList<Wish> observableWishes = FXCollections.observableArrayList();
-        observableWishes.addAll(data);
-        tableViewWishList.setItems(observableWishes);
+        tableViewWishList.setItems(data);
 
+         /**
+          * Modificacion Adrian Garcia 06/02/2020
+          */
         //Save minimum price changes
         tableColumnMinPrice.setOnEditCommit(
                 new EventHandler<CellEditEvent<Wish, Double>>() {
             @Override
             public void handle(CellEditEvent<Wish, Double> t) {
-                Wish wish = ((Wish) t.getTableView().getItems().get(t.getTablePosition().getRow()));
-                Double newPrice = t.getNewValue();
-                wish.setMinPrice(newPrice);
-                CLIENT.modifyWish(wish, "" + wish.getWishId());
+                Wish wish = observableWishes.get(t.getTablePosition().getRow());
+               // Wish wish = ((Wish) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+               Double newPrice = t.getNewValue();
+               wish.setMinPrice(newPrice);
+               updatedWishes.add(wish);
             }
         }
         );
