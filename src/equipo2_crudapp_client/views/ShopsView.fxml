@@ -6,6 +6,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -60,12 +61,34 @@
                   <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
                </effect>
             </Button>
+            <ToggleButton id="toggleButtonEdit" fx:id="toggleButtonEdit" mnemonicParsing="false" prefHeight="31.0" prefWidth="50.0" text="Edit">
+               <HBox.margin>
+                  <Insets left="40.0" top="27.0" />
+               </HBox.margin>
+            </ToggleButton>
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Button id="buttonAdd" fx:id="buttonAdd" mnemonicParsing="false" prefHeight="26.0" prefWidth="50.0" text="Add">
+                     <VBox.margin>
+                        <Insets top="15.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button id="buttonDelete" fx:id="buttonDelete" mnemonicParsing="false" text="Delete" textFill="#f80202">
+                     <VBox.margin>
+                        <Insets bottom="15.0" top="15.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </VBox>
             <Button id="buttonClose" fx:id="buttonClose" mnemonicParsing="false" prefHeight="30.0" prefWidth="76.0" text="Close">
                <font>
                   <Font size="14.0" />
                </font>
                <HBox.margin>
-                  <Insets left="250.0" top="60.0" />
+                  <Insets left="85.0" top="50.0" />
                </HBox.margin>
                <effect>
                   <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
