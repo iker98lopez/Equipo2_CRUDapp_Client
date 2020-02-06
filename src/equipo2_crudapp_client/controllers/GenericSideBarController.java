@@ -212,6 +212,10 @@ public class GenericSideBarController {
             Parent root = (Parent) loader.load();
             WishListViewController controller = ((WishListViewController) loader.getController());
             controller.setStage(new Stage());
+            /**
+             * Modificacion Adrian Garcia 06/02/2020
+             */
+            controller.setUser(user);
             controller.initStage(root);
             stage.hide();
         } catch (IOException ex) {

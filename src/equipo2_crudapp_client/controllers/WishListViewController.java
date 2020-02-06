@@ -62,9 +62,8 @@ public class WishListViewController extends GenericSideBarController {
      */
     private Set<Wish> wishes = new HashSet<Wish>();
     /**
-     * The user that is logged
+     * Modificacion Adrian garcia 06/02/2020
      */
-    private User user;
 
     /**
      * Logger to output messages to the console
@@ -138,7 +137,7 @@ public class WishListViewController extends GenericSideBarController {
         checkBoxEdit.setOnAction(this::handleCheckBoxEditAction);
         
         try {
-        wishes = user.getWishList();
+        wishes.addAll(user.getWishList());
         } catch (Exception e) {
         e.printStackTrace();
         }
@@ -169,7 +168,7 @@ public class WishListViewController extends GenericSideBarController {
         for (int i = 0; i < checkedItems.size(); i++) {
             if (wishes.contains(checkedItems.get(i))) {
                 try {
-                    CLIENT.removeWish("" + checkedItems.get(i).getId());
+                    CLIENT.removeWish("" + checkedItems.get(i).getWishId());
                 } catch (ClientErrorException clientErrorException) {
                     clientErrorException.printStackTrace();
                 }
@@ -248,7 +247,7 @@ public class WishListViewController extends GenericSideBarController {
                 Wish wish = ((Wish) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                 Double newPrice = t.getNewValue();
                 wish.setMinPrice(newPrice);
-                CLIENT.modifyWish(wish, "" + wish.getId());
+                CLIENT.modifyWish(wish, "" + wish.getWishId());
             }
         }
         );
@@ -256,9 +255,6 @@ public class WishListViewController extends GenericSideBarController {
     }
 
     /**
-     * Method to set the active user
+     * Modificacion Adrian Garcia 06/02/2020
      */
-    public void setUser(User user){
-        this.user = user;
-    }
 }
