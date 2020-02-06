@@ -7,14 +7,18 @@ package equipo2_crudapp_client.controllers;
 
 import equipo2_crudapp_classes.classes.Shop;
 import equipo2_crudapp_classes.classes.User;
+import equipo2_crudapp_classes.classes.Wish;
 import equipo2_crudapp_client.clients.ShopClient;
 import java.util.HashSet;
-import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import javafx.beans.property.BooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -23,9 +27,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javax.ws.rs.core.GenericType;
@@ -55,6 +62,11 @@ public class ShopsViewController{
      * Stage of the controller
      */
     private Stage stage;
+    
+    /**
+     * List of wishes that will be deleted
+     */
+    private Map<Wish, BooleanProperty> checkedRows;
     
     /**
      * Scene of the controller
@@ -116,9 +128,26 @@ public class ShopsViewController{
     private Button buttonDelete;
     
     /**
+     * Filters the shops
+     */
+    @FXML
+    private Button buttonFilter;
+    
+    /**
+     * TextField for filtering by shop name
+     */
+    @FXML
+    private TextField textFieldShopName;
+    
+    /**
      * Set of shops
      */
     private Set<Shop> shops = new HashSet<>();
+    
+    /**
+     * Controls if the edit button is checked or not
+     */
+    private boolean toggleButtonEditIsPressed = false;
     
     /**
      * This method sets the stage
@@ -150,15 +179,60 @@ public class ShopsViewController{
         stage.setTitle("Shops");
         
         buttonClose.setOnAction(this::handleButtonCloseAction);
+        toggleButtonEdit.setOnAction(this::handleToggleButtonEditAction);
+        buttonAdd.setOnAction(this::handleButtonAddAction);
+        buttonDelete.setOnAction(this::handleButtonDeleteAction);
+        buttonFilter.setOnAction(this::handleButtonFilterAction);
+        
         buttonAdd.setVisible(false);
         buttonDelete.setVisible(false);
         labelFilterNotValid.setVisible(false);
+        
+        tableColumnName.setCellFactory(TextFieldTableCell.forTableColumn());
+        tableColumnName.setOnEditCommit(
+            new EventHandler<CellEditEvent<Shop, String>>() {
+                @Override
+                public void handle(CellEditEvent<Shop, String> t) {
+                    Shop modifiedShop = ((Shop) t.getTableView().getItems().get(
+                        t.getTablePosition().getRow()));
+                    modifiedShop.setName(t.getNewValue());
+                    try{
+                        CLIENT.modifyShop(modifiedShop, modifiedShop.getShopId().toString());
+                    } catch(Exception e) {
+                        LOGGER.warning(e.getMessage());
+                        Alert alert = new Alert(Alert.AlertType.WARNING, "Couldn't connect "
+                                + "with the server...", ButtonType.OK);
+                        alert.showAndWait();
+                    }
+                }
+            }
+        );
+        
+        tableColumnUrl.setCellFactory(TextFieldTableCell.forTableColumn());
+        tableColumnUrl.setOnEditCommit(
+            new EventHandler<CellEditEvent<Shop, String>>() {
+                @Override
+                public void handle(CellEditEvent<Shop, String> t) {
+                    Shop modifiedShop = ((Shop) t.getTableView().getItems().get(
+                        t.getTablePosition().getRow()));
+                    modifiedShop.setUrl(t.getNewValue());
+                    try{
+                        CLIENT.modifyShop(modifiedShop, modifiedShop.getShopId().toString());
+                    } catch(Exception e) {
+                        LOGGER.warning(e.getMessage());
+                        Alert alert = new Alert(Alert.AlertType.WARNING, "Couldn't connect "
+                                + "with the server...", ButtonType.OK);
+                        alert.showAndWait();
+                    }
+                }
+            }
+        );
         
         stage.show();
         
         loadData();
         
-        setTableData();
+        setTableData(shops);
     }
     
     /**
@@ -167,6 +241,24 @@ public class ShopsViewController{
      */
     private void handleButtonCloseAction(ActionEvent event){
         stage.hide();
+    }
+    
+    /**
+     * Handles the action of the filter button. Filters the shops
+     * @param event the action event
+     */
+    private void handleButtonFilterAction(ActionEvent event) {
+        Set<Shop> filteredShops = new HashSet<>();
+        
+        if(textFieldShopName.getText().length() < 18) {
+            filteredShops = shops.stream()
+                                .filter(shop -> 
+                                        shop.getName().contains(textFieldShopName.getText().toLowerCase()) ||
+                                        shop.getName().contains(textFieldShopName.getText().toUpperCase()) ||
+                                        shop.getName().contains(textFieldShopName.getText()))
+                    .collect(Collectors.toSet());
+            setTableData(filteredShops);
+        }
     }
     
     /**
@@ -184,13 +276,68 @@ public class ShopsViewController{
     }
     
     /**
+     * Allows the user to edit the table
+     * @param event the action event
+     */
+    private void handleToggleButtonEditAction(ActionEvent event){
+        if(!toggleButtonEditIsPressed){
+            buttonAdd.setVisible(true);
+            buttonDelete.setVisible(true);
+            tableViewShop.setEditable(true);
+            final TextField textFieldAddName = new TextField();
+            textFieldAddName.setPromptText("Name");
+            textFieldAddName.setMaxWidth(tableColumnName.getPrefWidth());
+            final TextField textFieldAddUrl = new TextField();
+            textFieldAddUrl.setMaxWidth(tableColumnUrl.getPrefWidth());
+            textFieldAddUrl.setPromptText("URL");
+            toggleButtonEditIsPressed = true;
+        } else{
+            buttonAdd.setVisible(false);
+            buttonDelete.setVisible(false);
+            tableViewShop.setEditable(false);
+            
+            toggleButtonEditIsPressed = false;
+        }
+    }
+    
+    /**
+     * Handles the action of adding a shop
+     * @param event the action event
+     */
+    private void handleButtonAddAction(ActionEvent event) {
+        final TextField textFieldAddName = new TextField();
+        textFieldAddName.setPromptText("Name");
+        textFieldAddName.setMaxWidth(tableColumnName.getPrefWidth());
+        final TextField textFieldAddUrl = new TextField();
+        textFieldAddUrl.setMaxWidth(tableColumnUrl.getPrefWidth());
+        textFieldAddUrl.setPromptText("URL");
+        shops.add(new Shop(textFieldAddName.getText(), textFieldAddUrl.getText()));
+        textFieldAddName.clear();
+        
+        
+        
+        textFieldAddUrl.clear();
+    }
+    
+    /**
+     * Deletes a selected shop
+     * @param event the action event
+     */
+    private void handleButtonDeleteAction(ActionEvent event) {
+        Shop selectedShop = (Shop) tableViewShop.getSelectionModel().getSelectedItem();
+        CLIENT.removeShop(selectedShop);
+        shops.remove(selectedShop);
+        setTableData(shops);
+    }
+    
+    /**
      * Method that populates tableView with shops
      */
-    private void setTableData() {
+    private void setTableData(Set<Shop> shops) {
         try{
             tableColumnName.setCellValueFactory(new PropertyValueFactory("name"));
             tableColumnUrl.setCellValueFactory(new PropertyValueFactory("url"));
-            tableColumnImage.setCellValueFactory(new PropertyValueFactory("image"));
+            //tableColumnImage.setCellValueFactory(new PropertyValueFactory("image"));
 
             ObservableList<Shop> observableShops = FXCollections.observableArrayList();
             observableShops.addAll(shops);

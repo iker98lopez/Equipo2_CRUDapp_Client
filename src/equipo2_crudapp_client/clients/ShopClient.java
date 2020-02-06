@@ -5,6 +5,7 @@
  */
 package equipo2_crudapp_client.clients;
 
+import equipo2_crudapp_classes.classes.Shop;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
@@ -33,8 +34,8 @@ public class ShopClient {
         webTarget = client.target(BASE_URI).path("shop");
     }
 
-    public void removeShop(String shop) throws ClientErrorException {
-        webTarget.path(java.text.MessageFormat.format("{0}", new Object[]{shop})).request().delete();
+    public void removeShop(Object requestEntity) throws ClientErrorException {
+        webTarget.path(java.text.MessageFormat.format("{0}", new Object[]{requestEntity})).request().delete();
     }
 
     public void modifyShop(Object requestEntity, String id) throws ClientErrorException {

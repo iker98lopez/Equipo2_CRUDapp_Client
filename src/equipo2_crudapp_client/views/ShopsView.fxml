@@ -37,7 +37,7 @@
                   <Insets left="30.0" top="30.0" />
                </HBox.margin>
             </Label>
-            <VBox alignment="CENTER" prefHeight="73.0" prefWidth="150.0">
+            <VBox alignment="TOP_CENTER" prefHeight="73.0" prefWidth="150.0">
                <children>
                   <TextField id="textFieldShopName" fx:id="textFieldShopName" prefHeight="30.0" prefWidth="133.0">
                      <font>
@@ -46,6 +46,9 @@
                      <effect>
                         <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
                      </effect>
+                     <VBox.margin>
+                        <Insets top="27.0" />
+                     </VBox.margin>
                   </TextField>
                   <Label fx:id="labelFilterNotValid" prefHeight="18.0" prefWidth="148.0" text="*Filter not valid" textFill="#ea0303" />
                </children>
@@ -61,14 +64,14 @@
                   <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
                </effect>
             </Button>
-            <ToggleButton id="toggleButtonEdit" fx:id="toggleButtonEdit" mnemonicParsing="false" prefHeight="31.0" prefWidth="50.0" text="Edit">
+            <ToggleButton id="toggleButtonEdit" fx:id="toggleButtonEdit" mnemonicParsing="false" text="Edit">
                <HBox.margin>
                   <Insets left="40.0" top="27.0" />
                </HBox.margin>
             </ToggleButton>
             <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <Button id="buttonAdd" fx:id="buttonAdd" mnemonicParsing="false" prefHeight="26.0" prefWidth="50.0" text="Add">
+                  <Button id="buttonAdd" fx:id="buttonAdd" mnemonicParsing="false" text="Add">
                      <VBox.margin>
                         <Insets top="15.0" />
                      </VBox.margin>
