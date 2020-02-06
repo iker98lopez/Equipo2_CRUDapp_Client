@@ -221,7 +221,7 @@ public class SignInViewController {
                 controller.setUser(testUser);
                 controller.initStage(root);
                 stage.hide();
-            }catch(Exception e) {
+            } catch(Exception e) {
                 LOGGER.severe(e.getMessage());
             }    
         } else {
@@ -280,6 +280,10 @@ public class SignInViewController {
                     textFieldPasswordShow.setText("");
                 } catch (IOException exception) {
                     LOGGER.warning("There was an error opening the window. " + exception.getMessage());
+                } catch (InternalServerErrorException exception) {
+                    LOGGER.warning("There was an error trying to connect to the server. " + exception.getMessage());
+                    Alert alert = new Alert(Alert.AlertType.WARNING, "There was an error trying to connect to the server.\nPlease try again later.", ButtonType.OK);
+                    alert.showAndWait();
                 }
             }
         }   
