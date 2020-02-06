@@ -3,7 +3,6 @@ package equipo2_crudapp_client.controllers;
 
 import equipo2_crudapp_classes.classes.Software;
 import java.io.File;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -36,7 +35,7 @@ public class ListViewResultsCell extends ListCell<Software> {
         super.updateItem(software, empty);
         if (software != null && !empty) { 
             name.setText(software.getName());
-            File file = new File("src/foto.jpg");
+            File file = new File("src/logoOfertAPPs.png");
             Image image = new Image(file.toURI().toString());
             imageView.setImage(image);
             setGraphic(content);

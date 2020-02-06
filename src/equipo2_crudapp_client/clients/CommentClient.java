@@ -20,7 +20,7 @@ import javax.ws.rs.core.GenericType;
  *        client.close();
  * </pre>
  *
- * @author Diego Corral
+ * @author iker lopez carrillo
  */
 public class CommentClient {
 
@@ -37,8 +37,8 @@ public class CommentClient {
         webTarget.path(java.text.MessageFormat.format("{0}", new Object[]{id})).request(javax.ws.rs.core.MediaType.APPLICATION_XML).put(javax.ws.rs.client.Entity.entity(requestEntity, javax.ws.rs.core.MediaType.APPLICATION_XML));
     }
 
-    public void removeComment(String id) throws ClientErrorException {
-        webTarget.path(java.text.MessageFormat.format("{0}", new Object[]{id})).request().delete();
+    public void removeComment(String comment) throws ClientErrorException {
+        webTarget.path(java.text.MessageFormat.format("{0}", new Object[]{comment})).request().delete();
     }
 
     public <T> T findComment(Class<T> responseType, String id) throws ClientErrorException {

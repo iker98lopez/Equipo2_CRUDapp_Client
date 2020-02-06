@@ -5,6 +5,7 @@
  */
 package equipo2_crudapp_client.controllers;
 
+import equipo2_crudapp_classes.classes.Software;
 import equipo2_crudapp_classes.classes.User;
 import equipo2_crudapp_classes.classes.Wish;
 import equipo2_crudapp_client.clients.WishClient;
@@ -148,13 +149,8 @@ public class WishListViewController extends GenericSideBarController {
     }
 
     /**
-     * This method sets the stage
-     *
-     * @param stage Stage to be setted
+     * Modificacion Adrian 06/02/2020
      */
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
 
     /**
      * Method that deletes selected wishes from wishList

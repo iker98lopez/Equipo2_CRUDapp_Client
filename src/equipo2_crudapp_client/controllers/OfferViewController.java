@@ -259,15 +259,6 @@ public class OfferViewController {
         stage.setTitle("See Offer");
         stage.show();
 
-        try {
-            softwares = SOFTWARECLIENT.findAllSoftwares(new GenericType<Set<Software>>() {
-            });
-            shops = SHOPCLIENT.findAllShops(new GenericType<Set<Shop>>() {
-            });
-        } catch (NotFoundException exception) {
-            LOGGER.warning("There was a problem fetching information from the server. " + exception.getMessage());
-        }
-
         datePickerExpirationDate.setVisible(false);
 
         labelSoftwareNameWarning.setVisible(false);
@@ -352,7 +343,7 @@ public class OfferViewController {
 
                         if (alertSave.getResult() == ButtonType.OK) {
                             if (checkedFields) {
-                                OFFERCLIENT.deleteOffer(offer.getOfferId());
+                                OFFERCLIENT.removeOffer(offer);
                                 scene.getStylesheets().add("/equipo2_crudapp_client/views/textField.css");
 
                                 textFieldSoftwareName.setEditable(false);
@@ -444,6 +435,15 @@ public class OfferViewController {
                 labelUrlWarning.setVisible(false);
             }
         });
+        
+        try {
+            softwares = SOFTWARECLIENT.findAllSoftwares(new GenericType<Set<Software>>() {
+            });
+            shops = SHOPCLIENT.findAllShops(new GenericType<Set<Shop>>() {
+            });
+        } catch (NotFoundException exception) {
+            LOGGER.warning("There was a problem fetching information from the server. " + exception.getMessage());
+        }
     }
 
     /**
@@ -484,8 +484,8 @@ public class OfferViewController {
         checkedFields = true;
 
         if (textFieldSoftwareName.getText().length() >= 3
-                && textFieldSoftwareName.getText().length() < 18
-                && textFieldSoftwareName.getText().matches("[a-zA-Z0-9\\.\\-\\*\\_]+")) {
+                && textFieldSoftwareName.getText().length() < 32
+                && textFieldSoftwareName.getText().matches("[a-zA-Z0-9\\.\\-\\*\\_\\s]+")) {
 
             labelSoftwareNameWarning.setVisible(false);
         } else if (!textFieldSoftwareName.getText().equals("")) {
@@ -495,8 +495,8 @@ public class OfferViewController {
         }
 
         if (textFieldShop.getText().length() >= 3
-                && textFieldShop.getText().length() < 18
-                && textFieldShop.getText().matches("[a-zA-Z0-9\\.\\-\\*\\_]+")) {
+                && textFieldShop.getText().length() < 24
+                && textFieldShop.getText().matches("[a-zA-Z0-9\\.\\-\\*\\_\\s]+")) {
 
             labelShopWarning.setVisible(false);
         } else if (!textFieldShop.getText().equals("")) {
@@ -522,7 +522,7 @@ public class OfferViewController {
         }
 
         if (textFieldUrl.getText().length() >= 3
-                && textFieldUrl.getText().length() < 18
+                && textFieldUrl.getText().length() < 128
                 && textFieldUrl.getText().matches("[a-zA-Z0-9\\.\\*\\_\\/\\=\\?\\-\\(\\)\\'\\|\\@\\#\\$\\&]+")) {
 
             labelUrlWarning.setVisible(false);
@@ -583,7 +583,7 @@ public class OfferViewController {
         alert.showAndWait();
 
         if (alert.getResult() == ButtonType.OK) {
-            OFFERCLIENT.deleteOffer(offer.getOfferId());
+            OFFERCLIENT.removeOffer(offer);
             stage.hide();
         }
     }

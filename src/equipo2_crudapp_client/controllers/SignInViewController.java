@@ -5,28 +5,44 @@
  */
 package equipo2_crudapp_client.controllers;
 
+import equipo2_crudapp_ciphering.ClientCipher;
+import equipo2_crudapp_classes.classes.User;
+import equipo2_crudapp_classes.enumerators.UserStatus;
+import equipo2_crudapp_classes.exceptions.IncorrectPasswordException;
+import equipo2_crudapp_classes.exceptions.UserDisabledException;
+import equipo2_crudapp_classes.exceptions.UserNotFoundException;
+import equipo2_crudapp_client.clients.UserClient;
 import java.io.IOException;
+import java.util.Optional;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
+import javax.ws.rs.InternalServerErrorException;
+import javax.ws.rs.NotFoundException;
+import javax.xml.bind.DatatypeConverter;
 
 /**
  * Controller for the sign in view
  * @author Diego Corral
  */
 public class SignInViewController {
+
+    private User testUser = new User();
     
     /**
      * Logger for SignInViewController class
@@ -43,24 +59,65 @@ public class SignInViewController {
      */
     private boolean checkedSyntax;
     
+    private static final UserClient USERCLIENT = new UserClient();
+    
+    /**
+     * 
+     */
     @FXML
     private Label labelLoginWarning;
+    
+    /**
+     * 
+     */
     @FXML
     private TextField textFieldLogin;
+    
+    /**
+     * 
+     */
     @FXML
     private Label labelPasswordWarning;
+    
+    /**
+     * 
+     */
     @FXML
     private PasswordField textFieldPassword;
+    
+    /**
+     * 
+     */
     @FXML
     private TextField textFieldPasswordShow;
+    
+    /**
+     * 
+     */
     @FXML
     private CheckBox checkBoxShowPassword;
+    
+    /**
+     * 
+     */
     @FXML
     private Button buttonSignIn;
+    
+    /**
+     * 
+     */
     @FXML
     private Hyperlink hyperLinkSignUp;
+    
+    /**
+     * 
+     */
     @FXML
     private Button buttonExit;
+    
+    /**
+     * Opens 
+     */
     @FXML
     private Hyperlink hyperLinkForgotPassword;
     
@@ -86,6 +143,10 @@ public class SignInViewController {
         stage.setTitle("Sign in");
         stage.show();
 
+        testUser.setLogin("TEST");
+        testUser.setPassword("TEST");
+        testUser.setEmail("test@test.com");
+        
         labelLoginWarning.setVisible(false);
         labelPasswordWarning.setVisible(false);
         textFieldPasswordShow.setVisible(false);
@@ -94,6 +155,7 @@ public class SignInViewController {
         buttonSignIn.setOnAction(this::handleButtonSignInAction);
         hyperLinkSignUp.setOnAction(this::handleHyperlinkSignUpAction);
         buttonExit.setOnAction(this::handleButtonExitAction);
+        hyperLinkForgotPassword.setOnAction(this::handleHyperlinkForgotPassword);
 
         textFieldLogin.focusedProperty().addListener(this::focusChanged);
         textFieldPassword.focusedProperty().addListener(this::focusChanged);
@@ -125,71 +187,82 @@ public class SignInViewController {
             labelPasswordWarning.setVisible(true);
             labelPasswordWarning.setText("*This field is empty");
         }
-        
-        /*if (checkedSyntax) {
-            User user = new User(textFieldLogin.getText().trim(), textFieldPassword.getText().trim());
-            try {
-                user = CLIENT.signIn(user);
 
-                FXMLLoader loader;
-                Parent root;
-                loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/MainView.fxml"));
-                root = (Parent) loader.load();
+        if (textFieldLogin.getText().equalsIgnoreCase(testUser.getLogin())) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/MainView.fxml"));
+                Parent root = (Parent) loader.load();
                 MainViewController controller = ((MainViewController) loader.getController());
-                controller.setUser(user);
+                controller.setUser(testUser);
                 controller.initStage(root);
                 stage.hide();
-                
-            } catch (ServerException ex) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "There was an error connecting to the server.\nPlease try again later.", ButtonType.OK);
-                alert.showAndWait();
-                
-                textFieldPassword.setText("");
-                textFieldPasswordShow.setText("");
-                LOGGER.warning("There was an error connecting to the server.");
-            } catch (UserDisabledException ex) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "The user trying to log in has been disabled.", ButtonType.OK);
-                alert.showAndWait();
-                
-                labelLoginWarning.setVisible(true);
-                
-                textFieldPassword.setText("");
-                textFieldPasswordShow.setText("");
-                LOGGER.warning("The user has been disabled.");
-            } catch (IncorrectUserException ex) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "The user is not correct.\nPlease try again.", ButtonType.OK);
-                alert.showAndWait();
-                
-                labelLoginWarning.setVisible(true);
-                
-                textFieldPassword.setText("");
-                textFieldPasswordShow.setText("");
-                LOGGER.warning("The user is not correct.");
-            } catch (IncorrectPasswordException ex) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "The password is not correct.\nPlease try again.", ButtonType.OK);
-                alert.showAndWait();
-                
-                labelPasswordWarning.setVisible(true);
-                
-                textFieldPassword.setText("");
-                textFieldPasswordShow.setText("");
-                LOGGER.warning("The password is not correct.");
-            } catch (IOException ex) {
-                LOGGER.warning("There was an error trying to open LogOutView");
+            } catch (IOException exception) {
+                LOGGER.warning("There was an error trying to open the main view as test. " + exception.getMessage());
             }
-        }*/
-        
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/MainView.fxml"));
-            Parent root = (Parent) loader.load();
-            MainViewController controller = ((MainViewController) loader.getController());
-            //controller.setUser(user);
-            controller.initStage(root);
-            stage.hide();
-        } catch (IOException ex) {
-            LOGGER.severe(ex.getMessage());
         }
         
+        if (checkedSyntax) {
+            try {
+                User user = new User();
+                String login = textFieldLogin.getText();
+                String password = DatatypeConverter.printHexBinary(ClientCipher.cipherText(textFieldPassword.getText().getBytes()));
+
+                try {
+                    user = USERCLIENT.findUserByLogin(user.getClass(), login);
+                } catch (NotFoundException exception) {
+                    throw new UserNotFoundException(exception.getMessage());
+                }
+
+                try {
+                    user = USERCLIENT.checkUserPassword(user.getClass(), login, password);
+                } catch (NotFoundException exception) {
+                    throw new IncorrectPasswordException(exception.getMessage());
+                }
+
+                if (user != null && user.getStatus() == UserStatus.DISABLED) {
+                    throw new UserDisabledException();
+                } else {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/MainView.fxml"));
+                    Parent root = (Parent) loader.load();
+                    MainViewController controller = ((MainViewController) loader.getController());
+                    controller.setUser(user);
+                    controller.initStage(root);
+                    stage.hide();
+                }
+            } catch (InternalServerErrorException exception) {
+                LOGGER.warning("There was an error trying to connect to the server. " + exception.getMessage());
+                Alert alert = new Alert(Alert.AlertType.WARNING, "There was an error trying to connect to the server.\nPlease try again later.", ButtonType.OK);
+                alert.showAndWait();
+            } catch (UserNotFoundException exception) {
+                LOGGER.warning("User does not exist. " + exception.getMessage());
+                Alert alert = new Alert(Alert.AlertType.WARNING, "User does not exist.", ButtonType.OK);
+                alert.showAndWait();
+                
+                textFieldLogin.setText("");
+                textFieldPassword.setText("");
+                textFieldPasswordShow.setText("");
+            } catch (IncorrectPasswordException exception) {
+                LOGGER.warning("Password is not correct. " + exception.getMessage());
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Password is not correct.", ButtonType.OK);
+                alert.showAndWait();
+                
+                textFieldLogin.setText("");
+                textFieldPassword.setText("");
+                textFieldPasswordShow.setText("");
+            } catch (UserDisabledException exception) {
+                LOGGER.warning("User has been disabled. " + exception.getMessage());
+                
+                Alert alert = new Alert(Alert.AlertType.WARNING, "User has been disabled.", ButtonType.OK);
+                alert.showAndWait();
+                
+                textFieldLogin.setText("");
+                textFieldPassword.setText("");
+                textFieldPasswordShow.setText("");
+            } catch (IOException exception) {
+                LOGGER.warning("There was an error opening the window. " + exception.getMessage());
+            }
+        }
+             
     }
     
     /**
@@ -200,15 +273,15 @@ public class SignInViewController {
      */
     public void handleHyperlinkSignUpAction(ActionEvent event) {
 
-        /*try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/signupsigninapp/views/SignUpView.fxml"));
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/SignUpView.fxml"));
             Parent root = (Parent) loader.load();
-            SignUpController controller = ((SignUpController) loader.getController());
+            SignUpViewController controller = ((SignUpViewController) loader.getController());
             controller.initStage(root);
             stage.hide();
         } catch (IOException ex) {
             LOGGER.warning("There was an error trying to open SignUpView");
-        }*/
+        }
     }
     
     /**
@@ -233,7 +306,23 @@ public class SignInViewController {
     }
     
     public void handleHyperlinkForgotPassword(ActionEvent event){
+        TextInputDialog textInputDialog = new TextInputDialog();
+        textInputDialog.setTitle("Password recovery");
+        textInputDialog.setHeaderText(null);
+        textInputDialog.setContentText("Please enter your account's e-mail:");
+        Optional<String> result = textInputDialog.showAndWait();
         
+        if (result.isPresent()){
+            String email = textInputDialog.getEditor().getText();
+            
+            try {
+                USERCLIENT.findUserByEmail(User.class, email);
+            } catch (NotFoundException | InternalServerErrorException exception) {
+                LOGGER.warning("There is no user with email: " + email + ". " + exception.getMessage());
+            }
+            
+            USERCLIENT.getRecoveryCode(email);
+        }
     }
     
     /**

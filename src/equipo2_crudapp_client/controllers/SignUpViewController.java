@@ -1,10 +1,8 @@
 package equipo2_crudapp_client.controllers;
 
+import equipo2_crudapp_ciphering.ClientCipher;
 import equipo2_crudapp_classes.classes.User;
-import equipo2_crudapp_classes.exceptions.EmailAlreadyInUseException;
-import equipo2_crudapp_classes.exceptions.ServerException;
-import equipo2_crudapp_classes.exceptions.UserAlreadyExistsException;
-import java.awt.event.KeyEvent;
+import equipo2_crudapp_client.clients.UserClient;
 import javafx.event.ActionEvent;
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -22,8 +20,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import equipo2_crudapp_client.clients.UserClient;
 import javax.ws.rs.ClientErrorException;
+import javax.xml.bind.DatatypeConverter;
 
 /**
  * This class controls the SignUpView
@@ -180,7 +178,7 @@ public class SignUpViewController {
 
         if (e.getSource() == buttonBack) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/signupsigninapp/views/SignInView.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/SignInView.fxml"));
                 Parent root = (Parent) loader.load();
                 SignInViewController controller = ((SignInViewController) loader.getController());
                 controller.setStage(new Stage());
@@ -217,10 +215,10 @@ public class SignUpViewController {
             
             if (checkedSyntax) {
                 String login = textFieldLogin.getText();
-                String password = textFieldPassword.getText();
+                String password = DatatypeConverter.printHexBinary(ClientCipher.cipherText(textFieldPassword.getText().getBytes()));
                 String email = textFieldEmail.getText();
                 String fullName = textFieldFullName.getText();
-                User user = new User(login, password, email, fullName);
+                User user = new User(login, password, fullName, email);
 
                 try {
                     CLIENT.createUser(user);
@@ -228,42 +226,18 @@ public class SignUpViewController {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION, "User sign up completed successfully", ButtonType.OK);
                     alert.showAndWait();
 
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/signupsigninapp/views/SignInView.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/SignInView.fxml"));
                     Parent root = (Parent) loader.load();
                     SignInViewController controller = ((SignInViewController) loader.getController());
                     controller.setStage(new Stage());
                     controller.initStage(root);
                     stage.hide();
-                } catch (ServerException ex) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR, "There was an error connecting to the server.\nPlease try again later.", ButtonType.OK);
-                    alert.showAndWait();
-
-                    LOGGER.info("There was an error from client side.");
                 } catch (ClientErrorException ex) {
                     Alert alert = new Alert(Alert.AlertType.ERROR, "There was an error on Client side.\nPlease try again later.", ButtonType.OK);
                     alert.showAndWait();
 
                     LOGGER.info("There was an error from server side.");
-                }catch (EmailAlreadyInUseException ex) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR, "The E-mail is already in use.\nPlease try again.", ButtonType.OK);
-                    alert.showAndWait();
-
-                    labelEmailWarning.setVisible(true);
-                    labelEmailWarning.setText("*E-mail is already in use");
-
-                    textFieldEmail.setText("");
-                    LOGGER.info("Email is already in use.");
-                } catch (UserAlreadyExistsException ex) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR, "The user already exists.\nPlease try again.", ButtonType.OK);
-                    alert.showAndWait();
-
-                    labelLoginWarning.setVisible(true);
-                    labelLoginWarning.setText("*Login is already in use");
-
-                    textFieldLogin.setText("");
-                    LOGGER.info("User already exists.");
-                }
-                catch (IOException ex) {
+                } catch (IOException ex) {
                     Alert alert = new Alert(Alert.AlertType.ERROR, "There was an error opening the Sign In window.", ButtonType.OK);
                     alert.showAndWait();
 

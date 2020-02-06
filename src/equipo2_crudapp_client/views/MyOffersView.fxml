@@ -15,7 +15,7 @@
 
 <VBox alignment="TOP_CENTER" prefHeight="500.0" prefWidth="700.0" style="-fx-background-color: #323232;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TableView id="tableOffers" fx:id="tableOffers" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="700.0" stylesheets="@styles.css" tableMenuButtonVisible="true">
+      <TableView id="tableViewOffers" fx:id="tableViewOffers" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="700.0" stylesheets="@styles.css" tableMenuButtonVisible="true">
         <columns>
           <TableColumn id="tableColumnSoftware" fx:id="tableColumnSoftware" minWidth="88.0" prefWidth="135.0" sortType="DESCENDING" text="Software" />
             <TableColumn id="tableColumnBasePrice" fx:id="tableColumnBasePrice" minWidth="86.0" prefWidth="127.0" sortType="DESCENDING" text="Base Price" />
@@ -81,7 +81,7 @@
                         <Font size="14.0" />
                      </font>
                   </TextField>
-                  <Label id="LabelFilterByShop" fx:id="LabelFilterByShop" layoutX="60.0" layoutY="13.0" text="Filter by shop:" textFill="WHITE">
+                  <Label id="LabelMinimumDiscount" fx:id="LabelMinimumDiscount" text="Minimum discount:" textFill="WHITE">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -89,7 +89,7 @@
                         <Insets left="30.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField id="textFieldFilterByShop" fx:id="TextFieldFilterByShop" layoutX="218.0" layoutY="10.0" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" promptText="Shop">
+                  <TextField id="textFieldMinimumDiscount" fx:id="textFieldMinimumDiscount" maxWidth="150.0" minWidth="39.0" prefHeight="30.0" prefWidth="44.0" promptText="100">
                      <effect>
                         <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
                      </effect>
@@ -100,6 +100,14 @@
                         <Font size="14.0" />
                      </font>
                   </TextField>
+                  <Label text="\%" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Label>
                </children>
                <VBox.margin>
                   <Insets top="10.0" />
@@ -107,7 +115,7 @@
             </HBox>
             <HBox alignment="CENTER_LEFT">
                <children>
-                  <Label id="LabelMinimumDiscount" fx:id="LabelMinimumDiscount" text="Minimum discount %:" textFill="WHITE">
+                  <Label id="LabelFilterByShop" fx:id="LabelFilterByShop" text="Filter by shop:" textFill="WHITE">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -115,12 +123,12 @@
                         <Insets left="30.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField id="textFieldMinimumDiscount" fx:id="textFieldMinimumDiscount" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" promptText="00">
+                  <TextField id="textFieldFilterByShop" fx:id="TextFieldFilterByShop" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" promptText="Shop">
                      <effect>
                         <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
                      </effect>
                      <HBox.margin>
-                        <Insets left="23.0" />
+                        <Insets left="70.0" />
                      </HBox.margin>
                      <font>
                         <Font size="14.0" />
@@ -136,6 +144,25 @@
                      <font>
                         <Font size="14.0" />
                      </font>
+                  </Button>
+                  <Button id="buttonClearFilters" fx:id="buttonClearFilters" mnemonicParsing="false" text="Clear Filters">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="25.0" />
+                     </HBox.margin>
+                     <effect>
+                        <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
+                     </effect>
+                  </Button>
+                  <Button mnemonicParsing="false" text="Close">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="25.0" />
+                     </HBox.margin>
                   </Button>
                </children>
                <VBox.margin>

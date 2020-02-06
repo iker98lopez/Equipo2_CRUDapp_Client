@@ -41,6 +41,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.GenericType;
 
@@ -216,14 +217,8 @@ public class InsertOfferViewController {
         stage.setScene(scene);
         stage.setResizable(false);
         stage.setTitle("Create New Offer");
+        stage.getScene().getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, this::closeWindowEvent);
         stage.show();
-
-        try {
-            softwares = SOFTWARECLIENT.findAllSoftwares(new GenericType<Set<Software>>() {});
-            shops = SHOPCLIENT.findAllShops(new GenericType<Set<Shop>>() {});
-        } catch(NotFoundException exception) {
-            LOGGER.warning("There was a problem fetching information from the server. " + exception.getMessage());
-        }
         
         datePickerExpirationDate.setValue(LocalDate.now());
 
@@ -323,6 +318,13 @@ public class InsertOfferViewController {
                 labelDiscountWarning.setVisible(false);
             }
         });
+        
+        try {
+            softwares = SOFTWARECLIENT.findAllSoftwares(new GenericType<Set<Software>>() {});
+            shops = SHOPCLIENT.findAllShops(new GenericType<Set<Shop>>() {});
+        } catch(NotFoundException exception) {
+            LOGGER.warning("There was a problem fetching information from the server. " + exception.getMessage());
+        }
     }
 
     private void checkFields() {
@@ -380,7 +382,7 @@ public class InsertOfferViewController {
         }
 
         if (textFieldUrl.getText().length() >= 3
-                && textFieldUrl.getText().length() < 18
+                && textFieldUrl.getText().length() < 128
                 && textFieldUrl.getText().matches("[a-zA-Z0-9\\.\\*\\_\\/\\=\\?\\-\\(\\)\\'\\|\\@\\#\\$\\&]+")) {
 
             labelUrlWarning.setVisible(false);
@@ -456,11 +458,14 @@ public class InsertOfferViewController {
      *
      * @param event Event triggered.
      */
-    public void handleButtonCancelAction(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to cancel the creation of a new offer?");
-        alert.showAndWait();
+    private void handleButtonCancelAction(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Are you sure you want to cancel the creation of a new offer?");
+        alert.getButtonTypes().remove(ButtonType.OK);
+        alert.getButtonTypes().add(ButtonType.CANCEL);
+        alert.getButtonTypes().add(ButtonType.YES);
+        alert.setTitle("Cancel Creation");
 
-        if (alert.getResult() == ButtonType.OK) {
+        if (alert.getResult() == ButtonType.YES) {
             stage.hide();
         }
     }
@@ -472,7 +477,7 @@ public class InsertOfferViewController {
      *
      * @param event Event triggered.
      */
-    public void handleButtonAcceptAction(ActionEvent event) {
+    private void handleButtonAcceptAction(ActionEvent event) {
 
         checkFields();
 
@@ -519,6 +524,26 @@ public class InsertOfferViewController {
             OFFERCLIENT.createOffer(offer);
             
             stage.hide();
+        }
+    }
+    
+    /**
+     * Event to show an alert when the user presses the close button and ask for
+     * confirmation before closing.
+     * 
+     * @param event Event launched by the window.
+     */
+    private void closeWindowEvent (WindowEvent event) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.getButtonTypes().remove(ButtonType.OK);
+        alert.getButtonTypes().add(ButtonType.CANCEL);
+        alert.getButtonTypes().add(ButtonType.YES);
+        alert.setTitle("Close window");
+        alert.setContentText(String.format("Close without saving?"));
+        alert.showAndWait();
+
+        if (alert.getResult() == ButtonType.CANCEL) {
+            event.consume();
         }
     }
     

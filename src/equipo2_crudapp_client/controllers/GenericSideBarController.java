@@ -233,6 +233,7 @@ public class GenericSideBarController {
             Parent root = (Parent) loader.load();
             UserViewController controller = ((UserViewController) loader.getController());
             controller.setStage(new Stage());
+            controller.setUser(user);
             controller.initStage(root);
             stage.hide();
         } catch (IOException ex) {

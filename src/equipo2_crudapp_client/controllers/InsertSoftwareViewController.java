@@ -42,6 +42,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.GenericType;
 
@@ -195,13 +196,8 @@ public class InsertSoftwareViewController {
         stage.setScene(scene);
         stage.setResizable(false);
         stage.setTitle("Create New Software");
+        stage.getScene().getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, this::closeWindowEvent);
         stage.show();
-
-        try{
-            softwares = SOFTWARECLIENT.findAllSoftwares(new GenericType<Set<Software>>() {});
-        } catch (NotFoundException exception) {
-            LOGGER.warning("There are no softwares to be found. " + exception.getMessage());
-        }    
         
         textFieldParentSoftware.setDisable(true);
         datePickerReleaseDate.setValue(LocalDate.now());
@@ -266,6 +262,12 @@ public class InsertSoftwareViewController {
                 labelDescriptionWarning.setVisible(false);
             }
         });
+        
+        try{
+            softwares = SOFTWARECLIENT.findAllSoftwares(new GenericType<Set<Software>>() {});
+        } catch (NotFoundException exception) {
+            LOGGER.warning("There are no softwares to be found. " + exception.getMessage());
+        } 
     }
 
     /**
@@ -300,10 +302,13 @@ public class InsertSoftwareViewController {
      * @param event Event triggered.
      */
     public void handleButtonCancelAction(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to cancel the creation of a new software?");
-        alert.showAndWait();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Are you sure you want to cancel the creation of a new software?");
+        alert.getButtonTypes().remove(ButtonType.OK);
+        alert.getButtonTypes().add(ButtonType.CANCEL);
+        alert.getButtonTypes().add(ButtonType.YES);
+        alert.setTitle("Cancel Creation");
 
-        if (alert.getResult() == ButtonType.OK) {
+        if (alert.getResult() == ButtonType.YES) {
             stage.hide();
         }
     }
@@ -371,8 +376,8 @@ public class InsertSoftwareViewController {
         checkedFields = true;
 
         if (textFieldSoftwareName.getText().length() >= 3
-                && textFieldSoftwareName.getText().length() < 18
-                && textFieldSoftwareName.getText().matches("[a-zA-Z0-9\\.\\-\\*\\_]+")) {
+                && textFieldSoftwareName.getText().length() < 32
+                && textFieldSoftwareName.getText().matches("[a-zA-Z0-9\\.\\-\\*\\_\\s]+")) {
 
             labelSoftwareNameWarning.setVisible(false);
         } else if (!textFieldSoftwareName.getText().equals("")) {
@@ -382,8 +387,8 @@ public class InsertSoftwareViewController {
         }
 
         if (textFieldPublisher.getText().length() >= 3
-                && textFieldPublisher.getText().length() < 18
-                && textFieldPublisher.getText().matches("[a-zA-Z0-9\\.\\-\\*\\_]+")) {
+                && textFieldPublisher.getText().length() < 24
+                && textFieldPublisher.getText().matches("[a-zA-Z0-9\\.\\-\\*\\_\\s]+")) {
 
             labelPublisherWarning.setVisible(false);
         } else if (!textFieldPublisher.getText().equals("")) {
@@ -491,6 +496,26 @@ public class InsertSoftwareViewController {
         }
     }
 
+    /**
+     * Event to show an alert when the user presses the close button and ask for
+     * confirmation before closing.
+     * 
+     * @param event Event launched by the window.
+     */
+    private void closeWindowEvent (WindowEvent event) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.getButtonTypes().remove(ButtonType.OK);
+        alert.getButtonTypes().add(ButtonType.CANCEL);
+        alert.getButtonTypes().add(ButtonType.YES);
+        alert.setTitle("Close window");
+        alert.setContentText(String.format("Close without saving?"));
+        alert.showAndWait();
+
+        if (alert.getResult() == ButtonType.CANCEL) {
+            event.consume();
+        }
+    }
+    
     /**
      * This method sets the stage.
      *
