@@ -34,8 +34,12 @@ public class ShopClient {
         webTarget = client.target(BASE_URI).path("shop");
     }
 
-    public void removeShop(Object requestEntity) throws ClientErrorException {
-        webTarget.path(java.text.MessageFormat.format("{0}", new Object[]{requestEntity})).request().delete();
+    public void removeShop(String shop) throws ClientErrorException {
+        webTarget.path(java.text.MessageFormat.format("{0}", new Object[]{shop})).request().delete();
+    }
+    
+    public void removeShopById(String id) throws ClientErrorException {
+        webTarget.path(java.text.MessageFormat.format("{0}", new Object[]{id})).request().delete();
     }
 
     public void modifyShop(Object requestEntity, String id) throws ClientErrorException {

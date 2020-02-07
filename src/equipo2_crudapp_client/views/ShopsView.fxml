@@ -27,7 +27,7 @@
             <DropShadow color="#0000005e" offsetY="3.0" />
          </effect>
       </TableView>
-      <HBox prefHeight="190.0" prefWidth="700.0">
+      <HBox prefHeight="190.0" prefWidth="754.0">
          <children>
             <Label id="labelShopName" fx:id="labelShopName" prefWidth="80.0" text="Shop Name:" textFill="WHITE">
                <font>
@@ -71,12 +71,12 @@
             </ToggleButton>
             <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <Button id="buttonAdd" fx:id="buttonAdd" mnemonicParsing="false" text="Add">
+                  <Button id="buttonAdd" fx:id="buttonAdd" mnemonicParsing="false" prefWidth="75.0" text="Add">
                      <VBox.margin>
                         <Insets top="15.0" />
                      </VBox.margin>
                   </Button>
-                  <Button id="buttonDelete" fx:id="buttonDelete" mnemonicParsing="false" text="Delete" textFill="#f80202">
+                  <Button id="buttonDelete" fx:id="buttonDelete" mnemonicParsing="false" prefWidth="75.0" text="Delete" textFill="#f80202">
                      <VBox.margin>
                         <Insets bottom="15.0" top="15.0" />
                      </VBox.margin>

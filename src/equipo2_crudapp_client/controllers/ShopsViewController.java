@@ -11,6 +11,7 @@ import equipo2_crudapp_classes.classes.Wish;
 import equipo2_crudapp_client.clients.ShopClient;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -30,11 +31,13 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javax.ws.rs.core.GenericType;
 
 /**
@@ -149,20 +152,12 @@ public class ShopsViewController{
      */
     private boolean toggleButtonEditIsPressed = false;
     
-    /**
-     * This method sets the stage
-     * @param stage Stage to be set
-     */
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-    
-    /**
-     * This method sets the user
-     * @param user User
-     */
     public void setUser(User user) {
         this.user = user;
+    }
+    
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
     
     /** 
@@ -184,8 +179,6 @@ public class ShopsViewController{
         buttonDelete.setOnAction(this::handleButtonDeleteAction);
         buttonFilter.setOnAction(this::handleButtonFilterAction);
         
-        buttonAdd.setVisible(false);
-        buttonDelete.setVisible(false);
         labelFilterNotValid.setVisible(false);
         
         tableColumnName.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -272,6 +265,7 @@ public class ShopsViewController{
             Alert alert = new Alert(Alert.AlertType.WARNING, "Couldn't connect "
                     + "with the server...", ButtonType.OK);
             alert.showAndWait();
+            LOGGER.warning(e.getMessage());
         }
     }
     
@@ -281,19 +275,9 @@ public class ShopsViewController{
      */
     private void handleToggleButtonEditAction(ActionEvent event){
         if(!toggleButtonEditIsPressed){
-            buttonAdd.setVisible(true);
-            buttonDelete.setVisible(true);
             tableViewShop.setEditable(true);
-            final TextField textFieldAddName = new TextField();
-            textFieldAddName.setPromptText("Name");
-            textFieldAddName.setMaxWidth(tableColumnName.getPrefWidth());
-            final TextField textFieldAddUrl = new TextField();
-            textFieldAddUrl.setMaxWidth(tableColumnUrl.getPrefWidth());
-            textFieldAddUrl.setPromptText("URL");
             toggleButtonEditIsPressed = true;
         } else{
-            buttonAdd.setVisible(false);
-            buttonDelete.setVisible(false);
             tableViewShop.setEditable(false);
             
             toggleButtonEditIsPressed = false;
@@ -305,18 +289,39 @@ public class ShopsViewController{
      * @param event the action event
      */
     private void handleButtonAddAction(ActionEvent event) {
-        final TextField textFieldAddName = new TextField();
-        textFieldAddName.setPromptText("Name");
-        textFieldAddName.setMaxWidth(tableColumnName.getPrefWidth());
-        final TextField textFieldAddUrl = new TextField();
-        textFieldAddUrl.setMaxWidth(tableColumnUrl.getPrefWidth());
-        textFieldAddUrl.setPromptText("URL");
-        shops.add(new Shop(textFieldAddName.getText(), textFieldAddUrl.getText()));
-        textFieldAddName.clear();
+        String name = "";
+        String url = "";
         
-        
-        
-        textFieldAddUrl.clear();
+        TextInputDialog textInputDialogName = new TextInputDialog();
+        textInputDialogName.setTitle("Add shop");
+        textInputDialogName.setHeaderText(null);
+        textInputDialogName.setContentText("Enter the shop's name:");
+        textInputDialogName.initStyle(StageStyle.UTILITY);
+        Optional<String> resultName = textInputDialogName.showAndWait();
+
+        if (resultName.isPresent()) {
+            name = textInputDialogName.getEditor().getText();
+            TextInputDialog textInputDialogUrl = new TextInputDialog();
+            textInputDialogUrl.setTitle("Add shop");
+            textInputDialogUrl.setHeaderText(null);
+            textInputDialogUrl.setContentText("Enter the shop's url:");
+            Optional<String> resultUrl = textInputDialogUrl.showAndWait();
+
+            if (resultUrl.isPresent()) {
+                url = textInputDialogUrl.getEditor().getText();
+                try {
+                    CLIENT.createShop(new Shop(name, url));
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "Shop added correctly", ButtonType.OK);
+                    alert.showAndWait();
+                    loadData();
+                    setTableData(shops);
+                } catch(Exception e) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING, "Error connecting with the server", ButtonType.OK);
+                    alert.showAndWait();
+                    LOGGER.warning(e.getMessage());
+                }
+            }
+        }
     }
     
     /**
@@ -325,7 +330,7 @@ public class ShopsViewController{
      */
     private void handleButtonDeleteAction(ActionEvent event) {
         Shop selectedShop = (Shop) tableViewShop.getSelectionModel().getSelectedItem();
-        CLIENT.removeShop(selectedShop);
+        CLIENT.removeShopById(selectedShop.getShopId().toString());
         shops.remove(selectedShop);
         setTableData(shops);
     }
@@ -348,7 +353,5 @@ public class ShopsViewController{
                     + "table data", ButtonType.OK);
             alert.showAndWait();
         }
-        
-
     }
 }
