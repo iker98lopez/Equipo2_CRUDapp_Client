@@ -5,6 +5,7 @@
  */
 package equipo2_crudapp_client.controllers;
 
+import equipo2_crudapp_classes.classes.Comment;
 import equipo2_crudapp_classes.classes.Offer;
 import equipo2_crudapp_classes.classes.Shop;
 import equipo2_crudapp_classes.classes.Software;
@@ -14,9 +15,11 @@ import equipo2_crudapp_client.clients.OfferClient;
 import equipo2_crudapp_client.clients.ShopClient;
 import equipo2_crudapp_client.clients.SoftwareClient;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -36,6 +39,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -45,7 +49,9 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.NotFoundException;
+import javax.ws.rs.ServerErrorException;
 import javax.ws.rs.core.GenericType;
 
 /**
@@ -88,7 +94,7 @@ public class OfferViewController {
     /**
      * Set of type software to contain every software received from the server.
      */
-    private Set<Software> softwares = new HashSet<Software>();
+    private Set<Software> softwares = new HashSet<>();
 
     /**
      * Instance of the client manager for the entity Shop.
@@ -98,7 +104,7 @@ public class OfferViewController {
     /**
      * Set of type shop to contain every shop received from the server.
      */
-    private Set<Shop> shops = new HashSet<Shop>();
+    private Set<Shop> shops = new HashSet<>();
 
     /**
      * Context menu to show suggestions when the user starts writing the name of
@@ -279,7 +285,7 @@ public class OfferViewController {
         labelDiscountedPrice.setText(String.valueOf(offer.getDicountedPrice()));
         textFieldBasePrice.setText(String.valueOf(offer.getBasePrice()));
         textFieldDiscount.setText(String.valueOf(offer.getDiscount()));
-        labelUsername.setText(null);
+        labelUsername.setText(user.getLogin());
         textFieldUrl.setText(offer.getUrl());
         labelExpirationDate.setText(String.valueOf(offer.getExpiringDate()));
 
@@ -288,6 +294,8 @@ public class OfferViewController {
         textFieldBasePrice.focusedProperty().addListener(this::focusChanged);
         textFieldDiscount.focusedProperty().addListener(this::focusChanged);
         textFieldUrl.focusedProperty().addListener(this::focusChanged);
+        
+        buttonComment.setOnAction(this::handleButtonCommentAction);
 
         if (user.getPrivilege().equals(UserPrivilege.USER) && user.getUserId() != null) {
             toggleButtonEdit.setVisible(false);
@@ -343,7 +351,6 @@ public class OfferViewController {
 
                         if (alertSave.getResult() == ButtonType.OK) {
                             if (checkedFields) {
-                                OFFERCLIENT.removeOffer(offer);
                                 scene.getStylesheets().add("/equipo2_crudapp_client/views/textField.css");
 
                                 textFieldSoftwareName.setEditable(false);
@@ -353,8 +360,21 @@ public class OfferViewController {
                                 textFieldUrl.setEditable(false);
 
                                 datePickerExpirationDate.setVisible(false);
-                                //labelExpirationDate.setText(datePickerExpirationDate.getValue());
+                                labelExpirationDate.setText(datePickerExpirationDate.getValue().toString());
                                 labelExpirationDate.setVisible(true);
+                                
+                                try {
+                                    offer.setBasePrice(Double.valueOf(textFieldBasePrice.getText()));
+                                    offer.setDicountedPrice((Double.valueOf(textFieldBasePrice.getText()) * (Double.valueOf(textFieldDiscount.getText()))) / 100);
+                                    offer.setExpiringDate(new Date(datePickerExpirationDate.getValue().toEpochDay()));
+                                    offer.setUrl(textFieldUrl.getText());
+                                    offer.setShop(SHOPCLIENT.findAllShops(new GenericType<Set<Shop>>() {}).stream().filter(shop -> shop.getName().equals(textFieldShop.getText())).findFirst().get());
+                                    OFFERCLIENT.editOffer(offer, offer.getOfferId());
+                                } catch (ServerErrorException exception) {
+                                    LOGGER.warning("There was an error saving the offer." + exception.getMessage());
+                                    Alert alertServer = new Alert(Alert.AlertType.ERROR, "There was an error saving the offer.");
+                                    alertServer.showAndWait();
+                                }
                             } else {
                                 Alert alertSyntax = new Alert(Alert.AlertType.ERROR, "Some fields are not valid. Please correct them before saving.");
                                 alertSyntax.showAndWait();
@@ -443,6 +463,8 @@ public class OfferViewController {
             });
         } catch (NotFoundException exception) {
             LOGGER.warning("There was a problem fetching information from the server. " + exception.getMessage());
+            Alert alertServer = new Alert(Alert.AlertType.ERROR, "There was an error fetching the information.\nPlease try again later.");
+            alertServer.showAndWait();
         }
     }
 
@@ -570,6 +592,38 @@ public class OfferViewController {
         entriesPopUp.getItems().clear();
         entriesPopUp.getItems().addAll(menuItems);
     }
+    
+    /**
+     * This method handles the action of the Button buttonComment. It creates an
+     * alert window to let the user write their comment and then it creates the
+     * new comment.
+     * 
+     * @param event Event triggered.
+     */
+    private void handleButtonCommentAction(Event event) {
+        TextInputDialog textInputDialog = new TextInputDialog();
+        textInputDialog.setTitle("Create comment");
+        textInputDialog.setHeaderText(null);
+        textInputDialog.setContentText("Please enter your comment:");
+        Optional<String> result = textInputDialog.showAndWait();
+        
+        if (result.isPresent()){
+            Comment comment = new Comment();
+            comment.setComment(textInputDialog.getEditor().getText());
+            comment.setUser(user);
+            Set<Comment> comments = offer.getComments();
+            comments.add(comment);
+            offer.setComments(comments);
+            
+            try {
+                OFFERCLIENT.editOffer(offer, offer.getOfferId());
+            } catch (NotFoundException | InternalServerErrorException exception) {
+                LOGGER.warning("There was a problem adding the comment." + exception.getMessage());
+                Alert alertServer = new Alert(Alert.AlertType.ERROR, "There was an error adding the comment.\nPlease try again later.");
+                alertServer.showAndWait();
+            }
+        }
+    }
 
     /**
      * This method handles the action of the Button buttonDelete. It creates an
@@ -583,8 +637,13 @@ public class OfferViewController {
         alert.showAndWait();
 
         if (alert.getResult() == ButtonType.OK) {
-            OFFERCLIENT.removeOffer(offer);
-            stage.hide();
+            try {
+                OFFERCLIENT.removeOffer(offer);
+                stage.hide();
+            } catch (ServerErrorException exception) {
+                Alert alertServer = new Alert(Alert.AlertType.ERROR, "There was an error deleting the offer.");
+                alertServer.showAndWait();
+            }
         }
     }
 

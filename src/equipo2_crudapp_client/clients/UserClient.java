@@ -33,7 +33,7 @@ public class UserClient {
         webTarget = client.target(BASE_URI).path("user");
     }
 
-    public <T> T findUser(Class<T> responseType, String id) throws ClientErrorException {
+    public <T> T findUser(Class<T> responseType, int id) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("{0}", new Object[]{id}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);

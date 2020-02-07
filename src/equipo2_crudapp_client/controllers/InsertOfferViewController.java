@@ -8,9 +8,11 @@ package equipo2_crudapp_client.controllers;
 import equipo2_crudapp_classes.classes.Offer;
 import equipo2_crudapp_classes.classes.Shop;
 import equipo2_crudapp_classes.classes.Software;
+import equipo2_crudapp_classes.classes.User;
 import equipo2_crudapp_client.clients.OfferClient;
 import equipo2_crudapp_client.clients.ShopClient;
 import equipo2_crudapp_client.clients.SoftwareClient;
+import equipo2_crudapp_client.clients.UserClient;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashSet;
@@ -43,6 +45,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javax.ws.rs.NotFoundException;
+import javax.ws.rs.ServerErrorException;
 import javax.ws.rs.core.GenericType;
 
 /**
@@ -63,6 +66,16 @@ public class InsertOfferViewController {
     private Stage stage;
 
     /**
+     * User of the application
+     */
+    private User user;
+    
+    /**
+     * Instance of the client manager for the entity User.
+     */
+    private final UserClient USERCLIENT = new UserClient();
+    
+    /**
      * Instance of the client manager for the entity Offer.
      */
     private final OfferClient OFFERCLIENT = new OfferClient();
@@ -75,7 +88,7 @@ public class InsertOfferViewController {
     /**
      * Set of type software to contain every software received from the server.
      */
-    private Set<Software> softwares = new HashSet<Software>();
+    private Set<Software> softwares = new HashSet<>();
 
     /**
      * Instance of the client manager for the entity Shop.
@@ -85,7 +98,7 @@ public class InsertOfferViewController {
     /**
      * Set of type shop to contain every shop received from the server.
      */
-    private Set<Shop> shops = new HashSet<Shop>();
+    private Set<Shop> shops = new HashSet<>();
 
     /**
      * Context menu to show suggestions when the user starts writing the name of
@@ -220,6 +233,37 @@ public class InsertOfferViewController {
         stage.getScene().getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, this::closeWindowEvent);
         stage.show();
         
+        Alert alert = null;
+        try {
+            softwares = SOFTWARECLIENT.findAllSoftwares(new GenericType<Set<Software>>() {});
+        } catch(NotFoundException exception) {
+            LOGGER.warning("There are no softwares in the database. " + exception.getMessage());
+            alert = new Alert(Alert.AlertType.WARNING, "No softwares in the database", ButtonType.OK);
+        } catch(ServerErrorException exception) {
+            LOGGER.warning("There was an error with the server. " + exception.getMessage());
+            alert = new Alert(Alert.AlertType.ERROR, "There was a problem connecting to the server.\nPlease try again later.", ButtonType.OK);
+        } finally {
+            if (alert != null) {
+                alert.showAndWait();
+                stage.hide();
+            }
+        }
+        
+        try {
+            shops = SHOPCLIENT.findAllShops(new GenericType<Set<Shop>>() {});
+        } catch(NotFoundException exception) {
+            LOGGER.warning("There are no shops in the database. " + exception.getMessage());
+            alert = new Alert(Alert.AlertType.WARNING, "No shops in the database", ButtonType.OK);
+        } catch(ServerErrorException exception) {
+            LOGGER.warning("There was an error with the server. " + exception.getMessage());
+            alert = new Alert(Alert.AlertType.ERROR, "There was a problem connecting to the server.\nPlease try again later.", ButtonType.OK);
+        } finally {
+            if (alert != null) {
+                alert.showAndWait();
+                stage.hide();
+            }
+        }
+        
         datePickerExpirationDate.setValue(LocalDate.now());
 
         labelSoftwareNameWarning.setVisible(false);
@@ -319,12 +363,9 @@ public class InsertOfferViewController {
             }
         });
         
-        try {
-            softwares = SOFTWARECLIENT.findAllSoftwares(new GenericType<Set<Software>>() {});
-            shops = SHOPCLIENT.findAllShops(new GenericType<Set<Shop>>() {});
-        } catch(NotFoundException exception) {
-            LOGGER.warning("There was a problem fetching information from the server. " + exception.getMessage());
-        }
+            datePickerExpirationDate.valueProperty().addListener((ov, oldValue, newValue) -> {
+            labelExpirationDateWarning.setVisible(false);
+        });
     }
 
     private void checkFields() {
@@ -464,7 +505,9 @@ public class InsertOfferViewController {
         alert.getButtonTypes().add(ButtonType.CANCEL);
         alert.getButtonTypes().add(ButtonType.YES);
         alert.setTitle("Cancel Creation");
-
+        
+        alert.showAndWait();
+        
         if (alert.getResult() == ButtonType.YES) {
             stage.hide();
         }
@@ -513,17 +556,30 @@ public class InsertOfferViewController {
 
         if (checkedFields) {
             Offer offer = new Offer();
+            Alert alert = null;
             
-            offer.setShop(shops.stream().filter(shop -> shop.getName().equals(textFieldShop.getText())).findFirst().get());
-            offer.setExpiringDate(new Date(datePickerExpirationDate.getValue().toEpochDay()));
-            offer.setBasePrice(Double.valueOf(textFieldBasePrice.getText()));
-            offer.setDicountedPrice(Double.valueOf(textFieldDiscountedPrice.getText()));
-            offer.setDiscount(Integer.valueOf(textFieldDiscount.getText()));
-            offer.setUrl(textFieldUrl.getText());
-            
-            OFFERCLIENT.createOffer(offer);
-            
-            stage.hide();
+            try {
+                offer.setUser(user);
+                offer.setShop(shops.stream().filter(shop -> shop.getName().equals(textFieldShop.getText())).findFirst().get());
+                offer.setExpiringDate(new Date(datePickerExpirationDate.getValue().toEpochDay()));
+                offer.setBasePrice(Double.valueOf(textFieldBasePrice.getText()));
+                offer.setDicountedPrice(Double.valueOf(textFieldDiscountedPrice.getText()));
+                offer.setDiscount(Integer.valueOf(textFieldDiscount.getText()));
+                offer.setUrl(textFieldUrl.getText());
+                
+                OFFERCLIENT.createOffer(offer);
+            } catch (ServerErrorException exception) {
+                LOGGER.warning("There was an error with the server. " + exception.getMessage());
+                alert = new Alert(Alert.AlertType.ERROR, "Error connecting with the server.\nPlease try again later.", ButtonType.OK);
+            } finally {
+                if (alert != null) {
+                    alert.showAndWait();
+                } else {
+                    alert = new Alert(Alert.AlertType.INFORMATION, "Offer created successfully.", ButtonType.OK);
+                    alert.showAndWait();
+                    stage.hide();
+                }
+            }
         }
     }
     
@@ -545,6 +601,15 @@ public class InsertOfferViewController {
         if (alert.getResult() == ButtonType.CANCEL) {
             event.consume();
         }
+    }
+    
+    /**
+     * This method sets the user.
+     * 
+     * @param user user to be set.
+     */
+    public void setUser(User user) {
+        this.user = user;
     }
     
     /**

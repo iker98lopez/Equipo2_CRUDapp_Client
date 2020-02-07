@@ -147,6 +147,7 @@ public class GenericSideBarController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/MyOffersView.fxml"));
             Parent root = (Parent) loader.load();
             MyOffersViewController controller = ((MyOffersViewController) loader.getController());
+            controller.setUser(user);
             controller.setStage(new Stage());
             controller.initStage(root);
         } catch (IOException ex) {
@@ -163,6 +164,7 @@ public class GenericSideBarController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/InsertOfferView.fxml"));
             Parent root = (Parent) loader.load();
             InsertOfferViewController controller = ((InsertOfferViewController) loader.getController());
+            controller.setUser(user);
             controller.setStage(new Stage());
             controller.initStage(root);
         } catch (IOException ex) {
