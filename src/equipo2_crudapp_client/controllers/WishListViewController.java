@@ -7,6 +7,8 @@ package equipo2_crudapp_client.controllers;
 
 import equipo2_crudapp_classes.classes.Wish;
 import equipo2_crudapp_client.clients.WishClient;
+import equipo2_crudapp_client.clients.WishClientFactory;
+import equipo2_crudapp_client.clients.WishClientImplementation;
 import equipo2_crudapp_client.table_classes.TableSoftware;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,7 +57,7 @@ public class WishListViewController extends GenericSideBarController {
     /**
      * Client to make petitions
      */
-    private static final WishClient CLIENT = new WishClient();
+    private final WishClient CLIENT = WishClientFactory.getWishClient();
 
     /**
      * Set of wishes used to recieve the wishes
@@ -199,6 +201,7 @@ public class WishListViewController extends GenericSideBarController {
             if(!checkedItems.isEmpty()) {
                 for(Wish wish: checkedItems)
                     CLIENT.removeWish(""+wish.getWishId());
+                user.setWishList(wishes);
             }
             checkedItems.clear();
         }
