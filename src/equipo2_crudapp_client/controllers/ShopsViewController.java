@@ -24,6 +24,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
@@ -246,9 +247,7 @@ public class ShopsViewController{
         if(textFieldShopName.getText().length() < 18) {
             filteredShops = shops.stream()
                                 .filter(shop -> 
-                                        shop.getName().contains(textFieldShopName.getText().toLowerCase()) ||
-                                        shop.getName().contains(textFieldShopName.getText().toUpperCase()) ||
-                                        shop.getName().contains(textFieldShopName.getText()))
+                                            shop.getName().toLowerCase().contains(textFieldShopName.getText().toLowerCase()))
                     .collect(Collectors.toSet());
             setTableData(filteredShops);
         }
@@ -289,8 +288,8 @@ public class ShopsViewController{
      * @param event the action event
      */
     private void handleButtonAddAction(ActionEvent event) {
-        String name = "";
-        String url = "";
+        String name = null;
+        String url = null;
         
         TextInputDialog textInputDialogName = new TextInputDialog();
         textInputDialogName.setTitle("Add shop");
@@ -330,9 +329,15 @@ public class ShopsViewController{
      */
     private void handleButtonDeleteAction(ActionEvent event) {
         Shop selectedShop = (Shop) tableViewShop.getSelectionModel().getSelectedItem();
-        CLIENT.removeShopById(selectedShop.getShopId().toString());
-        shops.remove(selectedShop);
-        setTableData(shops);
+        try{
+            CLIENT.removeShopById(selectedShop.getShopId().toString());
+            shops.remove(selectedShop);
+            setTableData(shops);
+        }catch(Exception e) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Error connecting with the server", ButtonType.OK);
+            alert.showAndWait();
+            LOGGER.warning(e.getMessage());
+        }
     }
     
     /**
