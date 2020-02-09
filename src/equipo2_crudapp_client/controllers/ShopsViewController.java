@@ -24,7 +24,6 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
@@ -96,12 +95,6 @@ public class ShopsViewController{
     private TableColumn tableColumnName;
     
     /**
-     * Table column that shows the shop's image
-     */
-    @FXML
-    private TableColumn tableColumnImage;
-    
-    /**
      * Table column that shows the shop's url
      */
     @FXML
@@ -153,10 +146,18 @@ public class ShopsViewController{
      */
     private boolean toggleButtonEditIsPressed = false;
     
+    /**
+     * Setter for the user
+     * @param user The user
+     */
     public void setUser(User user) {
         this.user = user;
     }
     
+    /**
+     * Setter for the stage
+     * @param stage the stage
+     */
     public void setStage(Stage stage) {
         this.stage = stage;
     }
@@ -189,13 +190,19 @@ public class ShopsViewController{
                 public void handle(CellEditEvent<Shop, String> t) {
                     Shop modifiedShop = ((Shop) t.getTableView().getItems().get(
                         t.getTablePosition().getRow()));
-                    modifiedShop.setName(t.getNewValue());
-                    try{
-                        CLIENT.modifyShop(modifiedShop, modifiedShop.getShopId().toString());
-                    } catch(Exception e) {
-                        LOGGER.warning(e.getMessage());
-                        Alert alert = new Alert(Alert.AlertType.WARNING, "Couldn't connect "
-                                + "with the server...", ButtonType.OK);
+                    if(t.getNewValue().length() < 18 && t.getNewValue().length() > 0) {
+                        modifiedShop.setName(t.getNewValue());
+                        try{
+                            CLIENT.modifyShop(modifiedShop, modifiedShop.getShopId().toString());
+                        } catch(Exception e) {
+                            LOGGER.warning(e.getMessage());
+                            Alert alert = new Alert(Alert.AlertType.WARNING, "Couldn't connect "
+                                    + "with the server...", ButtonType.OK);
+                            alert.showAndWait();
+                        }
+                    }
+                    else {
+                        Alert alert = new Alert(Alert.AlertType.WARNING, "Value not valid...", ButtonType.OK);
                         alert.showAndWait();
                     }
                 }
@@ -209,13 +216,19 @@ public class ShopsViewController{
                 public void handle(CellEditEvent<Shop, String> t) {
                     Shop modifiedShop = ((Shop) t.getTableView().getItems().get(
                         t.getTablePosition().getRow()));
-                    modifiedShop.setUrl(t.getNewValue());
-                    try{
-                        CLIENT.modifyShop(modifiedShop, modifiedShop.getShopId().toString());
-                    } catch(Exception e) {
-                        LOGGER.warning(e.getMessage());
-                        Alert alert = new Alert(Alert.AlertType.WARNING, "Couldn't connect "
-                                + "with the server...", ButtonType.OK);
+                    if(t.getNewValue().length() < 64 && t.getNewValue().length() > 0) {
+                        modifiedShop.setUrl(t.getNewValue());
+                        try{
+                            CLIENT.modifyShop(modifiedShop, modifiedShop.getShopId().toString());
+                        } catch(Exception e) {
+                            LOGGER.warning(e.getMessage());
+                            Alert alert = new Alert(Alert.AlertType.WARNING, "Couldn't connect "
+                                    + "with the server...", ButtonType.OK);
+                            alert.showAndWait();
+                        }
+                    }
+                    else {
+                        Alert alert = new Alert(Alert.AlertType.WARNING, "Value not valid...", ButtonType.OK);
                         alert.showAndWait();
                     }
                 }
@@ -260,6 +273,7 @@ public class ShopsViewController{
         try{
             shops = CLIENT.findAllShops(new GenericType<Set<Shop>>() {});
         } catch(Exception e) {
+            
             LOGGER.warning(e.getMessage());
             Alert alert = new Alert(Alert.AlertType.WARNING, "Couldn't connect "
                     + "with the server...", ButtonType.OK);
@@ -310,7 +324,7 @@ public class ShopsViewController{
                 url = textInputDialogUrl.getEditor().getText();
                 try {
                     CLIENT.createShop(new Shop(name, url));
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "Shop added correctly", ButtonType.OK);
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "Shop " + name + " " + url + " added successfully", ButtonType.OK);
                     alert.showAndWait();
                     loadData();
                     setTableData(shops);
@@ -329,15 +343,23 @@ public class ShopsViewController{
      */
     private void handleButtonDeleteAction(ActionEvent event) {
         Shop selectedShop = (Shop) tableViewShop.getSelectionModel().getSelectedItem();
-        try{
-            CLIENT.removeShopById(selectedShop.getShopId().toString());
-            shops.remove(selectedShop);
-            setTableData(shops);
-        }catch(Exception e) {
-            Alert alert = new Alert(Alert.AlertType.WARNING, "Error connecting with the server", ButtonType.OK);
+        if(selectedShop != null) {
+            try{
+                CLIENT.removeShopById(selectedShop.getShopId().toString());
+                shops.remove(selectedShop);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Shop deleted successfully", ButtonType.OK);
+                alert.showAndWait();
+                setTableData(shops);
+            }catch(Exception e) {
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Error connecting with the server", ButtonType.OK);
+                alert.showAndWait();
+                LOGGER.warning(e.getMessage());
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Please select a shop to delete", ButtonType.OK);
             alert.showAndWait();
-            LOGGER.warning(e.getMessage());
         }
+        
     }
     
     /**
@@ -347,7 +369,6 @@ public class ShopsViewController{
         try{
             tableColumnName.setCellValueFactory(new PropertyValueFactory("name"));
             tableColumnUrl.setCellValueFactory(new PropertyValueFactory("url"));
-            //tableColumnImage.setCellValueFactory(new PropertyValueFactory("image"));
 
             ObservableList<Shop> observableShops = FXCollections.observableArrayList();
             observableShops.addAll(shops);
