@@ -264,7 +264,7 @@ public class InsertOfferViewController {
             }
         }
         
-        datePickerExpirationDate.setValue(LocalDate.now());
+        datePickerExpirationDate.setValue(LocalDate.now().plusDays(1));
 
         labelSoftwareNameWarning.setVisible(false);
         labelShopWarning.setVisible(false);
@@ -382,7 +382,7 @@ public class InsertOfferViewController {
             }
         }
 
-        if (datePickerExpirationDate.getValue().isBefore(LocalDate.now().plusDays(1))) {
+        if (datePickerExpirationDate.getValue().isAfter(LocalDate.now())) {
             labelExpirationDateWarning.setVisible(false);
         } else {
             labelExpirationDateWarning.setVisible(true);

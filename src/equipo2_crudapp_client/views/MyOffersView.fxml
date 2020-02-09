@@ -14,162 +14,162 @@
 <?import javafx.scene.text.Font?>
 
 <VBox alignment="TOP_CENTER" prefHeight="500.0" prefWidth="700.0" style="-fx-background-color: #323232;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="equipo2_crudapp_client.controllers.MyOffersViewController">
-   <children>
-      <TableView id="tableViewOffers" fx:id="tableViewOffers" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="700.0" stylesheets="@styles.css" tableMenuButtonVisible="true">
-        <columns>
-          <TableColumn id="tableColumnSoftware" fx:id="tableColumnSoftware" minWidth="88.0" prefWidth="135.0" sortType="DESCENDING" text="Software" />
-            <TableColumn id="tableColumnBasePrice" fx:id="tableColumnBasePrice" minWidth="86.0" prefWidth="127.0" sortType="DESCENDING" text="Base Price" />
-            <TableColumn id="tableColumnDiscountedPrice" fx:id="tableColumnDiscountedPrice" minWidth="100.0" prefWidth="147.0" sortType="DESCENDING" text="Discounted Price" />
-            <TableColumn id="tableColumnDiscount" fx:id="tableColumnDiscount" minWidth="60.0" prefWidth="120.0" sortType="DESCENDING" text="Discount %" />
-          <TableColumn id="tableColumnShop" fx:id="tableColumnShop" minWidth="35.0" prefWidth="70.0" sortType="DESCENDING" text="Shop" />
-            <TableColumn id="tableColumnUrl" fx:id="tableColumnUrl" minWidth="41.0" prefWidth="100.0" sortType="DESCENDING" text="URL" />
-        </columns>
-         <columnResizePolicy>
-            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-         </columnResizePolicy>
-         <effect>
-            <DropShadow color="#0000005e" height="63.75" offsetY="3.0" radius="15.4375" width="0.0" />
-         </effect>
-      </TableView>
-      <VBox prefHeight="150.0">
-         <children>
-            <FlowPane alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="700.0">
-               <children>
-                  <HBox alignment="CENTER" prefHeight="30.0" prefWidth="121.0">
-                     <children>
-                        <Label id="labelQuery" fx:id="labelQuery" prefWidth="117.0" text="&quot;search query&quot;" textFill="WHITE">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
+    <children>
+        <TableView id="tableViewOffers" fx:id="tableViewOffers" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="700.0" stylesheets="@styles.css" tableMenuButtonVisible="true">
+            <columns>
+                <TableColumn id="tableColumnSoftware" fx:id="tableColumnSoftware" minWidth="88.0" prefWidth="135.0" sortType="DESCENDING" text="Software" />
+                <TableColumn id="tableColumnBasePrice" fx:id="tableColumnBasePrice" minWidth="86.0" prefWidth="127.0" sortType="DESCENDING" text="Base Price" />
+                <TableColumn id="tableColumnDiscountedPrice" fx:id="tableColumnDiscountedPrice" minWidth="100.0" prefWidth="147.0" sortType="DESCENDING" text="Discounted Price" />
+                <TableColumn id="tableColumnDiscount" fx:id="tableColumnDiscount" minWidth="60.0" prefWidth="120.0" sortType="DESCENDING" text="Discount %" />
+                <TableColumn id="tableColumnShop" fx:id="tableColumnShop" minWidth="35.0" prefWidth="70.0" sortType="DESCENDING" text="Shop" />
+                <TableColumn id="tableColumnUrl" fx:id="tableColumnUrl" minWidth="41.0" prefWidth="100.0" sortType="DESCENDING" text="URL" />
+            </columns>
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+            </columnResizePolicy>
+            <effect>
+                <DropShadow color="#0000005e" height="63.75" offsetY="3.0" radius="15.4375" width="0.0" />
+            </effect>
+        </TableView>
+        <VBox prefHeight="150.0">
+            <children>
+                <FlowPane alignment="CENTER_LEFT" prefHeight="45.0" prefWidth="700.0">
+                    <children>
+                        <HBox alignment="CENTER" prefHeight="30.0" prefWidth="121.0">
+                            <children>
+                                <Label id="labelQuery" fx:id="labelQuery" prefWidth="117.0" text="&quot;search query&quot;" textFill="WHITE">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                                <Button id="buttonDeleteQuery" fx:id="buttonDeleteQuery" mnemonicParsing="false" style="-fx-background-color: transparent;" text="X" textFill="WHITE">
+                                    <font>
+                                        <Font name="System Bold" size="14.0" />
+                                    </font>
+                                    <cursor>
+                                        <Cursor fx:constant="HAND" />
+                                    </cursor>
+                                    <effect>
+                                        <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
+                                    </effect>
+                                </Button>
+                            </children>
+                        </HBox>
+                    </children>
+                    <padding>
+                        <Insets left="10.0" right="10.0" />
+                    </padding>
+                </FlowPane>
+                <HBox alignment="CENTER_LEFT">
+                    <children>
+                        <Label id="LabelFilterByName" fx:id="LabelFilterByName" text="Filter by software name:" textFill="WHITE">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                            <HBox.margin>
+                                <Insets left="30.0" />
+                            </HBox.margin>
                         </Label>
-                        <Button id="buttonDeleteQuery" fx:id="buttonDeleteQuery" mnemonicParsing="false" style="-fx-background-color: transparent;" text="X" textFill="WHITE">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                           <effect>
-                              <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
-                           </effect>
+                        <TextField id="textFieldFilterByName" fx:id="textFieldFilterByName" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" promptText="Name">
+                            <effect>
+                                <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
+                            </effect>
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </TextField>
+                        <Label id="LabelMinimumDiscount" fx:id="LabelMinimumDiscount" text="Minimum discount:" textFill="WHITE">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                            <HBox.margin>
+                                <Insets left="30.0" />
+                            </HBox.margin>
+                        </Label>
+                        <TextField id="textFieldMinimumDiscount" fx:id="textFieldMinimumDiscount" maxWidth="150.0" minWidth="39.0" prefHeight="30.0" prefWidth="44.0" promptText="100">
+                            <effect>
+                                <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
+                            </effect>
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </TextField>
+                        <Label text="\%" textFill="WHITE">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                        </Label>
+                    </children>
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin>
+                </HBox>
+                <HBox alignment="CENTER_LEFT">
+                    <children>
+                        <Label id="LabelFilterByShop" fx:id="LabelFilterByShop" text="Filter by shop:" textFill="WHITE">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                            <HBox.margin>
+                                <Insets left="30.0" />
+                            </HBox.margin>
+                        </Label>
+                        <TextField id="textFieldFilterByShop" fx:id="textFieldFilterByShop" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" promptText="Shop">
+                            <effect>
+                                <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
+                            </effect>
+                            <HBox.margin>
+                                <Insets left="70.0" />
+                            </HBox.margin>
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </TextField>
+                        <Button id="buttonApplyFilter" fx:id="buttonApplyFilter" mnemonicParsing="false" text="Apply filter">
+                            <HBox.margin>
+                                <Insets left="30.0" />
+                            </HBox.margin>
+                            <effect>
+                                <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
+                            </effect>
+                            <font>
+                                <Font size="14.0" />
+                            </font>
                         </Button>
-                     </children>
-                  </HBox>
-               </children>
-               <padding>
-                  <Insets left="10.0" right="10.0" />
-               </padding>
-            </FlowPane>
-            <HBox alignment="CENTER_LEFT">
-               <children>
-                  <Label id="LabelFilterByName" fx:id="LabelFilterByName" text="Filter by software name:" textFill="WHITE">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="30.0" />
-                     </HBox.margin>
-                  </Label>
-                  <TextField id="textFieldFilterByName" fx:id="textFieldFilterByName" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" promptText="Name">
-                     <effect>
-                        <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
-                     </effect>
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </TextField>
-                  <Label id="LabelMinimumDiscount" fx:id="LabelMinimumDiscount" text="Minimum discount:" textFill="WHITE">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="30.0" />
-                     </HBox.margin>
-                  </Label>
-                  <TextField id="textFieldMinimumDiscount" fx:id="textFieldMinimumDiscount" maxWidth="150.0" minWidth="39.0" prefHeight="30.0" prefWidth="44.0" promptText="100">
-                     <effect>
-                        <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
-                     </effect>
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </TextField>
-                  <Label text="\%" textFill="WHITE">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                  </Label>
-               </children>
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-            </HBox>
-            <HBox alignment="CENTER_LEFT">
-               <children>
-                  <Label id="LabelFilterByShop" fx:id="LabelFilterByShop" text="Filter by shop:" textFill="WHITE">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="30.0" />
-                     </HBox.margin>
-                  </Label>
-                  <TextField id="textFieldFilterByShop" fx:id="textFieldFilterByShop" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" promptText="Shop">
-                     <effect>
-                        <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
-                     </effect>
-                     <HBox.margin>
-                        <Insets left="70.0" />
-                     </HBox.margin>
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </TextField>
-                  <Button id="buttonApplyFilter" fx:id="buttonApplyFilter" mnemonicParsing="false" text="Apply filter">
-                     <HBox.margin>
-                        <Insets left="30.0" />
-                     </HBox.margin>
-                     <effect>
-                        <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
-                     </effect>
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Button>
-                  <Button id="buttonClearFilters" fx:id="buttonClearFilters" mnemonicParsing="false" text="Clear Filters">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="25.0" />
-                     </HBox.margin>
-                     <effect>
-                        <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
-                     </effect>
-                  </Button>
-                  <Button mnemonicParsing="false" text="Close">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="25.0" />
-                     </HBox.margin>
-                  </Button>
-               </children>
-               <VBox.margin>
-                  <Insets top="20.0" />
-               </VBox.margin>
-            </HBox>
-         </children>
-      </VBox>
-   </children>
+                        <Button id="buttonClearFilters" fx:id="buttonClearFilters" mnemonicParsing="false" text="Clear Filters">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                            <HBox.margin>
+                                <Insets left="25.0" />
+                            </HBox.margin>
+                            <effect>
+                                <DropShadow color="#0000005e" offsetX="3.0" offsetY="3.0" />
+                            </effect>
+                        </Button>
+                        <Button id="buttonClose" fx:id="buttonClose" mnemonicParsing="false" text="Close">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                            <HBox.margin>
+                                <Insets left="25.0" />
+                            </HBox.margin>
+                        </Button>
+                    </children>
+                    <VBox.margin>
+                        <Insets top="20.0" />
+                    </VBox.margin>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
 </VBox>

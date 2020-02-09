@@ -13,6 +13,7 @@ import equipo2_crudapp_classes.classes.Wish;
 import equipo2_crudapp_client.clients.SoftwareClient;
 import equipo2_crudapp_client.table_classes.TableShop;
 import equipo2_crudapp_client.table_classes.TableSoftware;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,9 +24,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -150,6 +153,12 @@ public class MyOffersViewController {
     private Button buttonClearFilters;
 
     /**
+     * Button to close the window.
+     */
+    @FXML
+    private Button buttonClose;
+
+    /**
      * This method initialises the stage, shows the window, sets the components
      * and assigns the listeners.
      *
@@ -168,19 +177,23 @@ public class MyOffersViewController {
         offers = user.getOffers();
 
         try {
-            softwares = SOFTWARECLIENT.findAllSoftwares(new GenericType<Set<Software>>() {});
+            softwares = SOFTWARECLIENT.findAllSoftwares(new GenericType<Set<Software>>() {
+            });
         } catch (NotFoundException exception) {
             LOGGER.warning("There are no softwares to be found. " + exception.getMessage());
         } catch (ServerErrorException exception) {
             LOGGER.warning("There was an error connecting to the server.\nPlease try again later. " + exception.getMessage());
         }
-        
+
         buttonApplyFilter.setOnAction(this::handleButtonApplyFilterAction);
         buttonClearFilters.setOnAction(this::handleButtonClearFiltersAction);
+        buttonClose.setOnAction(this::handleButtonCloseAction);
 
-        ObservableList<Offer> observableOffers = FXCollections.observableArrayList();
-        observableOffers.addAll(offers);
-        setTableData(observableOffers);
+        if (offers != null) {
+            ObservableList<Offer> observableOffers = FXCollections.observableArrayList();
+            observableOffers.addAll(offers);
+            setTableData(observableOffers);
+        }
     }
 
     /**
@@ -189,29 +202,35 @@ public class MyOffersViewController {
      * @param event Event triggered.
      */
     public void handleButtonApplyFilterAction(ActionEvent event) {
-        if (textFieldFilterByName.getText().isEmpty()) {
+        if (!textFieldFilterByName.getText().isEmpty()) {
             String nameFilter = textFieldFilterByName.getText();
             softwares = softwares.stream()
                     .filter(software -> software
-                    .getName()
-                    .matches(nameFilter))
+                    .getName().toLowerCase()
+                    .contains(nameFilter.toLowerCase()))
                     .collect(Collectors.toSet());
-        }
 
-        if (textFieldFilterByShop.getText().isEmpty()) {
-            String shopFilter = textFieldFilterByShop.getText();
             offers = offers.stream()
-                    .filter(offer -> offer
-                    .getShop().getName()
-                    .matches(shopFilter))
+                    .filter(offer -> offer.equals(softwares.stream()
+                    .anyMatch(software -> software.getOffers() != null
+                    && software.getOffers().contains(offer))))
                     .collect(Collectors.toList());
         }
 
-        if (textFieldMinimumDiscount.getText().isEmpty()) {
-            String minimumDicountFilter = textFieldMinimumDiscount.getText();
+        if (!textFieldFilterByShop.getText().isEmpty()) {
+            String shopFilter = textFieldFilterByShop.getText();
             offers = offers.stream()
                     .filter(offer -> offer
-                    .getDicountedPrice() < Double.valueOf(minimumDicountFilter))
+                    .getShop().getName().toLowerCase()
+                    .contains(shopFilter.toLowerCase()))
+                    .collect(Collectors.toList());
+        }
+
+        if (!textFieldMinimumDiscount.getText().isEmpty()) {
+            String minimumDiscountFilter = textFieldMinimumDiscount.getText();
+            offers = offers.stream()
+                    .filter(offer -> offer
+                    .getDiscount() >= Double.valueOf(minimumDiscountFilter))
                     .collect(Collectors.toList());
         }
 
@@ -236,7 +255,7 @@ public class MyOffersViewController {
         } catch (ServerErrorException exception) {
             LOGGER.warning("There was an error connecting to the server.\nPlease try again later. " + exception.getMessage());
         }
-        
+
         ObservableList<Offer> observableOffers = FXCollections.observableArrayList();
         observableOffers.addAll(offers);
         setTableData(observableOffers);
@@ -246,35 +265,51 @@ public class MyOffersViewController {
      * Method that sets the data of the table using an ObservableList of offers.
      */
     private void setTableData(ObservableList<Offer> offers) {
-
-        tableColumnSoftware.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Offer, String>, ObservableValue<String>>() {
+        tableColumnSoftware.setCellValueFactory(new Callback<
+        TableColumn.CellDataFeatures<Offer, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Offer, String> data) {
-                /*
+            public ObservableValue<String> call(
+                    TableColumn.CellDataFeatures<Offer, String> data) {
+
                 TableSoftware tableSoftware = new TableSoftware(softwares.stream()
-                        .filter(software -> software.getOffers().stream()
-                        .anyMatch(offer -> offer.getOfferId().equals(data.getValue().getOfferId())))
-                        .findFirst()
+                        .filter(software -> software.getOffers() != null && software.getOffers().stream()
+                        .anyMatch(softwareOffer -> softwareOffer.getOfferId()
+                        .equals(data.getValue().getOfferId())))
+                        .findAny()
                         .get().getName());
-                */
-                
-                TableSoftware tableSoftware = new TableSoftware();
-                for (Software software : softwares) {
-                    if (software.getOffers() != null){
-                        List<Offer> softwareOffers = software.getOffers();
-                        for (Offer softwareOffer : softwareOffers) {
-                            for(Offer offer : offers) {
-                                if (offer.getOfferId().equals(softwareOffer.getOfferId())) {
-                                    tableSoftware = new TableSoftware(software.getName());
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-                
+
                 return tableSoftware.getNameProperty();
             }
+        });
+        tableColumnSoftware.setCellFactory(tc -> {
+            TableCell<Object, String> cell = new TableCell<Object, String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    setText(item);
+                }
+            };
+
+            cell.setOnMouseClicked(event -> {
+                try {
+                    Offer offer = offers.stream().findFirst().orElse(null);
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/OfferView.fxml"));
+                    Parent root = (Parent) loader.load();
+                    OfferViewController controller = ((OfferViewController) loader.getController());
+                    controller.setStage(new Stage());
+                    controller.setOffer(offer);
+                    controller.setSoftware(softwares.stream()
+                            .filter(software -> software.getOffers() != null
+                            && software.getOffers().contains(offer))
+                            .findFirst().get());
+                    controller.setUser(user);
+                    controller.initStage(root);
+                    stage.hide();
+                } catch (IOException exception) {
+                    LOGGER.warning("Error opening the offer view. " + exception.getMessage());
+                }
+            });
+            return cell;
         });
 
         tableColumnBasePrice.setCellValueFactory(new PropertyValueFactory("basePrice"));
@@ -286,7 +321,9 @@ public class MyOffersViewController {
             @Override
             public ObservableValue<String> call(
                     TableColumn.CellDataFeatures<Offer, String> data) {
+
                 TableShop tableShop = new TableShop(data.getValue().getShop().getName());
+
                 return tableShop.getNameProperty();
             }
         });
@@ -296,6 +333,15 @@ public class MyOffersViewController {
         ObservableList<Offer> observableOffers = FXCollections.observableArrayList();
         observableOffers.addAll(offers);
         tableViewOffers.setItems(observableOffers);
+    }
+
+    /**
+     * Method to handle the action of the Button buttonClose.
+     *
+     * @param event Event triggered.
+     */
+    private void handleButtonCloseAction(ActionEvent event) {
+        stage.hide();
     }
 
     /**

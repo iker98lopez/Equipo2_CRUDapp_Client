@@ -14,7 +14,11 @@ import equipo2_crudapp_classes.enumerators.UserPrivilege;
 import equipo2_crudapp_client.clients.OfferClient;
 import equipo2_crudapp_client.clients.ShopClient;
 import equipo2_crudapp_client.clients.SoftwareClient;
-import java.time.LocalDate;
+import java.io.IOException;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -27,6 +31,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Side;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -49,6 +54,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.ServerErrorException;
@@ -85,6 +91,11 @@ public class OfferViewController {
      * Offer to show and edit in this view.
      */
     private Offer offer;
+
+    /**
+     * Software of the offer.
+     */
+    private Software software;
 
     /**
      * Instance of the client manager for the entity Software.
@@ -263,9 +274,11 @@ public class OfferViewController {
         stage.setScene(scene);
         stage.setResizable(false);
         stage.setTitle("See Offer");
+        stage.getScene().getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, this::closeWindowEvent);
         stage.show();
 
-        datePickerExpirationDate.setVisible(false);
+        labelExpirationDate.setVisible(false);
+        datePickerExpirationDate.setEditable(false);
 
         labelSoftwareNameWarning.setVisible(false);
         labelShopWarning.setVisible(false);
@@ -280,21 +293,24 @@ public class OfferViewController {
         textFieldDiscount.setEditable(false);
         textFieldUrl.setEditable(false);
 
-        textFieldSoftwareName.setText(null);
+        textFieldSoftwareName.setText(software.getName());
         textFieldShop.setText(offer.getShop().getName());
         labelDiscountedPrice.setText(String.valueOf(offer.getDicountedPrice()));
         textFieldBasePrice.setText(String.valueOf(offer.getBasePrice()));
         textFieldDiscount.setText(String.valueOf(offer.getDiscount()));
         labelUsername.setText(user.getLogin());
         textFieldUrl.setText(offer.getUrl());
-        labelExpirationDate.setText(String.valueOf(offer.getExpiringDate()));
+
+        Instant instant = Instant.ofEpochMilli(offer.getExpiringDate().getTime());
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+        datePickerExpirationDate.setValue(localDateTime.toLocalDate());
 
         textFieldSoftwareName.focusedProperty().addListener(this::focusChanged);
         textFieldShop.focusedProperty().addListener(this::focusChanged);
         textFieldBasePrice.focusedProperty().addListener(this::focusChanged);
         textFieldDiscount.focusedProperty().addListener(this::focusChanged);
         textFieldUrl.focusedProperty().addListener(this::focusChanged);
-        
+
         buttonComment.setOnAction(this::handleButtonCommentAction);
 
         if (user.getPrivilege().equals(UserPrivilege.USER) && user.getUserId() != null) {
@@ -315,9 +331,7 @@ public class OfferViewController {
                         textFieldDiscount.setEditable(true);
                         textFieldUrl.setEditable(true);
 
-                        datePickerExpirationDate.setVisible(true);
-                        datePickerExpirationDate.setValue(LocalDate.parse(labelExpirationDate.getText()));
-                        labelExpirationDate.setVisible(false);
+                        datePickerExpirationDate.setEditable(true);
                     } else {
 
                         checkFields();
@@ -359,16 +373,15 @@ public class OfferViewController {
                                 textFieldDiscount.setEditable(false);
                                 textFieldUrl.setEditable(false);
 
-                                datePickerExpirationDate.setVisible(false);
-                                labelExpirationDate.setText(datePickerExpirationDate.getValue().toString());
-                                labelExpirationDate.setVisible(true);
-                                
+                                datePickerExpirationDate.setEditable(false);
+
                                 try {
                                     offer.setBasePrice(Double.valueOf(textFieldBasePrice.getText()));
                                     offer.setDicountedPrice((Double.valueOf(textFieldBasePrice.getText()) * (Double.valueOf(textFieldDiscount.getText()))) / 100);
                                     offer.setExpiringDate(new Date(datePickerExpirationDate.getValue().toEpochDay()));
                                     offer.setUrl(textFieldUrl.getText());
-                                    offer.setShop(SHOPCLIENT.findAllShops(new GenericType<Set<Shop>>() {}).stream().filter(shop -> shop.getName().equals(textFieldShop.getText())).findFirst().get());
+                                    offer.setShop(SHOPCLIENT.findAllShops(new GenericType<Set<Shop>>() {
+                                    }).stream().filter(shop -> shop.getName().equals(textFieldShop.getText())).findFirst().get());
                                     OFFERCLIENT.editOffer(offer, offer.getOfferId());
                                 } catch (ServerErrorException exception) {
                                     LOGGER.warning("There was an error saving the offer." + exception.getMessage());
@@ -455,7 +468,7 @@ public class OfferViewController {
                 labelUrlWarning.setVisible(false);
             }
         });
-        
+
         try {
             softwares = SOFTWARECLIENT.findAllSoftwares(new GenericType<Set<Software>>() {
             });
@@ -490,7 +503,9 @@ public class OfferViewController {
                     && Integer.valueOf(textFieldDiscount.getText()) > 0) {
                 labelDiscountedPrice.setText((String.valueOf(
                         Double.valueOf(textFieldBasePrice.getText())
-                        * Integer.valueOf(textFieldDiscount.getText()) / 100)));
+                        - Double.valueOf(textFieldBasePrice.getText())
+                        * Integer.valueOf(textFieldDiscount.getText())
+                        / 100)));
             }
 
             checkFields();
@@ -535,7 +550,7 @@ public class OfferViewController {
             checkedFields = false;
         }
 
-        if (textFieldDiscount.getText().matches("\\d{1,2}")) {
+        if (textFieldDiscount.getText().matches("(?:\\b|-)([1-9]{1,2}[0]?|100)\\b")) {
             labelDiscountWarning.setVisible(false);
         } else if (!textFieldDiscount.getText().equals("")) {
             labelDiscountWarning.setVisible(true);
@@ -592,12 +607,12 @@ public class OfferViewController {
         entriesPopUp.getItems().clear();
         entriesPopUp.getItems().addAll(menuItems);
     }
-    
+
     /**
      * This method handles the action of the Button buttonComment. It creates an
      * alert window to let the user write their comment and then it creates the
      * new comment.
-     * 
+     *
      * @param event Event triggered.
      */
     private void handleButtonCommentAction(Event event) {
@@ -606,15 +621,25 @@ public class OfferViewController {
         textInputDialog.setHeaderText(null);
         textInputDialog.setContentText("Please enter your comment:");
         Optional<String> result = textInputDialog.showAndWait();
-        
-        if (result.isPresent()){
+
+        if (result.isPresent()) {
             Comment comment = new Comment();
             comment.setComment(textInputDialog.getEditor().getText());
             comment.setUser(user);
-            Set<Comment> comments = offer.getComments();
+            Set<Comment> comments = new HashSet();
+            if (offer.getComments() != null) {
+                comments.addAll(offer.getComments());
+            }
             comments.add(comment);
             offer.setComments(comments);
-            
+
+            offer.setBasePrice(Double.valueOf(textFieldBasePrice.getText()));
+            offer.setDicountedPrice((Double.valueOf(textFieldBasePrice.getText()) * (Double.valueOf(textFieldDiscount.getText()))) / 100);
+            offer.setExpiringDate(new Date(datePickerExpirationDate.getValue().toEpochDay()));
+            offer.setUrl(textFieldUrl.getText());
+            offer.setShop(SHOPCLIENT.findAllShops(new GenericType<Set<Shop>>() {
+            }).stream().filter(shop -> shop.getName().equals(textFieldShop.getText())).findFirst().get());
+
             try {
                 OFFERCLIENT.editOffer(offer, offer.getOfferId());
             } catch (NotFoundException | InternalServerErrorException exception) {
@@ -638,12 +663,31 @@ public class OfferViewController {
 
         if (alert.getResult() == ButtonType.OK) {
             try {
-                OFFERCLIENT.removeOffer(offer);
+                OFFERCLIENT.removeOffer(offer.getOfferId());
                 stage.hide();
             } catch (ServerErrorException exception) {
+                LOGGER.warning("There was an error trying to delete the offer. " + exception.getMessage());
                 Alert alertServer = new Alert(Alert.AlertType.ERROR, "There was an error deleting the offer.");
                 alertServer.showAndWait();
             }
+        }
+    }
+
+    /**
+     * Event to open again the MyOffersView table when this view is closed.
+     *
+     * @param event Event launched by the window.
+     */
+    private void closeWindowEvent(WindowEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/equipo2_crudapp_client/views/MyOffersView.fxml"));
+            Parent root = (Parent) loader.load();
+            MyOffersViewController controller = ((MyOffersViewController) loader.getController());
+            controller.setUser(user);
+            controller.setStage(new Stage());
+            controller.initStage(root);
+        } catch (IOException exception) {
+            LOGGER.warning("There was a problem opening the window. " + exception.getMessage());
         }
     }
 
@@ -663,6 +707,15 @@ public class OfferViewController {
      */
     public void setOffer(Offer offer) {
         this.offer = offer;
+    }
+
+    /**
+     * This method sets the software.
+     *
+     * @param software Software to be set.
+     */
+    public void setSoftware(Software software) {
+        this.software = software;
     }
 
     /**
